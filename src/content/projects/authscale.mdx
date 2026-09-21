@@ -1,0 +1,124 @@
+---
+name: "AuthScale"
+order: 2
+description: "A cloud-native authentication and identity platform built on AWS for secure user management, JWT authentication, scalable API traffic, and reliable backend operations."
+tags: ["AWS", "Backend Development", "Cloud Computing", "Authentication", "System Design"]
+# image: "../../assets/projects/cover-authscale.png"   (uncomment once the cover file is added)
+role: "Solo"
+year: 2026
+status: "Completed"
+---
+
+import AuthScaleArchitecture from '@/components/diagrams/AuthScaleArchitecture.astro'
+
+## Overview
+
+AuthScale is a cloud-native authentication and identity management platform built to demonstrate how a production-style backend can be designed, secured, deployed, and scaled using AWS infrastructure.
+
+The platform manages the complete authentication lifecycle, including user registration, secure password storage, login, JWT-based authorization, refresh-token management, email verification, password recovery, logout, and role-based access control.
+
+The project focuses on building the backend as a horizontally scalable service rather than relying on a single server. Multiple application instances can run behind an AWS Application Load Balancer while sharing centralized database and caching infrastructure.
+
+## What it does
+
+- Provides secure user registration and login
+- Hashes passwords using Argon2 before database storage
+- Generates short-lived JWT access tokens
+- Uses refresh tokens for persistent authentication sessions
+- Implements refresh-token rotation
+- Supports logout and token invalidation
+- Provides role-based access control
+- Supports email verification
+- Provides password reset workflows
+- Implements Redis-backed API rate limiting
+- Validates and sanitizes incoming API requests
+- Provides protected user and administrative APIs
+- Includes health-check endpoints for infrastructure monitoring
+- Records application and authentication events for debugging and auditing
+
+## Architecture
+
+The application is deployed using a distributed AWS architecture designed to separate traffic management, application compute, persistent storage, caching, security, and monitoring.
+
+The Node.js backend runs across multiple EC2 instances behind an AWS Application Load Balancer. Incoming requests are distributed across healthy instances, allowing the application layer to scale horizontally. An EC2 Auto Scaling Group manages the backend instances and can increase or decrease application capacity based on infrastructure demand.
+
+Amazon RDS PostgreSQL provides managed persistent storage for user and authentication data, while Amazon ElastiCache for Redis provides low-latency storage for temporary application state and caching. The infrastructure is organized inside an AWS VPC with controlled network access between the application and managed services.
+
+<AuthScaleArchitecture />
+
+## AWS services
+
+Each service is responsible for a specific part of the infrastructure:
+
+- **Amazon EC2** runs the Node.js backend application. Multiple instances provide horizontal scalability and reduce dependence on a single server.
+- **Application Load Balancer** distributes incoming HTTP and HTTPS traffic between healthy EC2 instances and performs application health checks.
+- **EC2 Auto Scaling** manages the number of application instances based on configured scaling conditions.
+- **Amazon RDS PostgreSQL** provides managed relational database infrastructure for persistent application data.
+- **Amazon ElastiCache for Redis** provides low-latency caching and shared temporary state across backend instances.
+- **Amazon VPC** isolates the infrastructure and controls communication between the application, database, and caching layers.
+- **AWS IAM** manages permissions for application and deployment resources using controlled access policies.
+- **Amazon CloudWatch** provides centralized application logs, infrastructure metrics, and monitoring information.
+
+## Scalability
+
+The API layer is designed to be stateless, allowing multiple EC2 instances to process requests independently. Because application instances are not tied to individual users, the Application Load Balancer can distribute incoming traffic across available servers.
+
+The Auto Scaling Group allows additional application instances to be introduced when demand increases and unnecessary capacity to be removed when demand decreases.
+
+Redis provides a shared low-latency layer for temporary state, allowing distributed application instances to access common caching and rate-limit information. The database layer is separated from the application compute layer using Amazon RDS, allowing compute capacity and persistent storage to scale independently.
+
+The system can be evaluated using tools such as k6 by gradually increasing concurrent traffic and measuring throughput, p95 latency, response errors, and infrastructure utilization.
+
+## Security
+
+Security is incorporated across both the application and cloud infrastructure.
+
+Passwords are never stored in plaintext and are processed using Argon2 before persistence. JWT access tokens are short-lived to reduce the impact of token exposure. Authentication endpoints use Redis-backed rate limiting to restrict repeated login and account-recovery attempts.
+
+The backend exposes REST APIs organized around authentication and user management. The API validates incoming request bodies, and authentication middleware verifies JWT access tokens before allowing requests to protected resources. Role-based middleware adds authorization checks for administrative operations.
+
+Secrets such as database credentials and JWT signing keys are kept outside the source code through environment-based configuration and AWS access controls. AWS IAM policies restrict access to AWS resources, while VPC networking controls communication between the application and managed services.
+
+## Monitoring and deployment
+
+AWS CloudWatch is used for application logging and infrastructure monitoring. Application logs can capture authentication failures, API errors, unexpected exceptions, and important application events. Infrastructure metrics such as EC2 CPU utilization, network activity, instance health, and application behavior can be monitored to identify capacity or reliability issues. The Application Load Balancer performs health checks so that unhealthy application instances can be removed from the active request pool.
+
+The backend is containerized using Docker to provide a consistent runtime environment across development and deployment. GitHub Actions automates the CI/CD workflow by running tests, building the application, and deploying new versions. The deployment process is designed to reduce manual server configuration and provide a repeatable workflow for releasing backend changes. Production credentials and infrastructure configuration are kept separate from the application source code.
+
+## Engineering focus
+
+The main engineering areas of the project include:
+
+- Secure password hashing with Argon2
+- JWT-based authentication
+- Refresh-token rotation
+- Role-based authorization
+- Redis-backed distributed rate limiting
+- Stateless REST API architecture
+- EC2 horizontal scaling
+- Application Load Balancing
+- EC2 Auto Scaling Groups
+- Amazon RDS PostgreSQL
+- Amazon ElastiCache Redis
+- AWS IAM
+- VPC-based network isolation
+- Docker containerization
+- GitHub Actions CI/CD
+- CloudWatch logging and monitoring
+- Health checks and failure handling
+- Concurrent-load testing
+- API validation and error handling
+
+## What I learned
+
+Building AuthScale provided practical experience in designing backend systems beyond individual API endpoints.
+
+The project required understanding how authentication, database persistence, caching, load balancing, security, monitoring, and application scaling interact within a distributed AWS environment. It also demonstrated why stateless application servers are useful for horizontal scaling and how managed AWS services can be combined to build reliable cloud applications.
+
+## Future direction
+
+The platform can be extended with multi-factor authentication, OAuth2 and OpenID Connect, social login, device management, session dashboards, detailed audit logs, and fine-grained permissions.
+
+Future infrastructure improvements could include Terraform-based infrastructure as code, blue-green deployments, database read replicas, CloudFront integration, automated security scanning, and larger distributed load-testing scenarios.
+
+The architecture is intentionally modular so that additional identity and authentication capabilities can be introduced without redesigning the core backend.

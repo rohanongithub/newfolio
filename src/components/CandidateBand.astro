@@ -112,8 +112,8 @@ const current = 1
     background: #fff;
     transform-origin: left center;
     transform: scaleX(var(--p, 0.3333));
-    transition: transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
-    animation: stage-fill-in 1100ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+    transition: transform 720ms var(--ease-out-expo);
+    animation: stage-fill-in 1100ms var(--ease-out-expo) 150ms both;
   }
   @keyframes stage-fill-in {
     from {
@@ -133,9 +133,9 @@ const current = 1
     background: hsl(var(--band));
     color: hsl(var(--band));
     transition:
-      background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+      background-color 300ms var(--ease-out-expo),
+      border-color 300ms var(--ease-out-expo),
+      transform 500ms var(--ease-out-expo);
   }
   .stage-check {
     opacity: 0;
@@ -172,9 +172,9 @@ const current = 1
     padding: 1px 0;
     border-radius: 4px;
     transition:
-      background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-      color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-      padding 300ms cubic-bezier(0.16, 1, 0.3, 1);
+      background-color 300ms var(--ease-out-expo),
+      color 300ms var(--ease-out-expo),
+      padding 300ms var(--ease-out-expo);
   }
   .stage-label-end {
     left: auto;
@@ -189,6 +189,11 @@ const current = 1
     font-weight: 700;
     padding: 1px 8px;
     margin-left: -2px;
+  }
+
+  /* Returning to Home in the same session: show the rail already settled. */
+  :global(html[data-rail-seen]) .stage-fill {
+    animation: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -248,5 +253,16 @@ const current = 1
     })
   }
 
-  document.addEventListener('astro:page-load', init)
+  // The intro plays once per page lifetime. On later client-side arrivals at Home the new
+  // document is marked before it is painted, so the rail does not replay.
+  const w = window as unknown as { __railPlayed?: boolean }
+  document.addEventListener('astro:before-swap', (event) => {
+    if (w.__railPlayed) {
+      event.newDocument.documentElement.setAttribute('data-rail-seen', '')
+    }
+  })
+  document.addEventListener('astro:page-load', () => {
+    w.__railPlayed = true
+    init()
+  })
 </script>

@@ -15,6 +15,10 @@ import { Icon } from 'astro-icon/components'
 </button>
 
 <script>
+  // The theme change spreads from the button as a growing circle (View Transitions API).
+  // Browsers without it, and visitors who prefer reduced motion, get an instant switch.
+  let running: ViewTransition | null = null
+
   function initThemeToggle() {
     const button = document.querySelector<HTMLButtonElement>(
       '[data-theme-toggle]',
@@ -32,10 +36,7 @@ import { Icon } from 'astro-icon/components'
     }
     sync()
 
-    button.addEventListener('click', () => {
-      // Suppress per-element transitions for one frame so the whole page flips together.
-      root.classList.add('disable-transitions')
-      const dark = !root.classList.contains('dark')
+    const applyTheme = (dark: boolean) => {
       root.classList.toggle('dark', dark)
       try {
         localStorage.setItem('theme', dark ? 'dark' : 'light')
@@ -43,11 +44,95 @@ import { Icon } from 'astro-icon/components'
         // Private mode or blocked storage: the choice just won't persist.
       }
       sync()
+      // Small icon swap; removed again once it has played.
+      button.setAttribute('data-swapped', '')
+      window.setTimeout(() => button.removeAttribute('data-swapped'), 400)
+    }
+
+    const switchInstantly = (dark: boolean) => {
+      // Suppress per-element transitions for one frame so the whole page flips together.
+      root.classList.add('disable-transitions')
+      applyTheme(dark)
       window.requestAnimationFrame(() =>
         window.requestAnimationFrame(() =>
           root.classList.remove('disable-transitions'),
         ),
       )
+    }
+
+    button.addEventListener('click', async () => {
+      const dark = !root.classList.contains('dark')
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+
+      if (reduceMotion || typeof document.startViewTransition !== 'function') {
+        switchInstantly(dark)
+        return
+      }
+
+      // A second click while one is running: finish that one immediately.
+      running?.skipTransition()
+
+      const rect = button.getBoundingClientRect()
+      const x = rect.left + rect.width / 2
+      const y = rect.top + rect.height / 2
+      const radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
+      )
+
+      // Timing comes from the shared motion tokens in global.css.
+      const styles = getComputedStyle(root)
+      // The minifier may rewrite 650ms as .65s, so read the unit instead of assuming milliseconds.
+      const rawDuration = styles.getPropertyValue('--dur-reveal').trim()
+      const duration =
+        (rawDuration.endsWith('ms')
+          ? parseFloat(rawDuration)
+          : parseFloat(rawDuration) * 1000) || 650
+      const easing =
+        styles.getPropertyValue('--ease-reveal').trim() ||
+        'cubic-bezier(0.4, 0, 0.2, 1)'
+
+      root.style.setProperty('--reveal-x', `${x}px`)
+      root.style.setProperty('--reveal-y', `${y}px`)
+      root.classList.add('theme-reveal')
+
+      const transition = document.startViewTransition(() => {
+        root.classList.add('disable-transitions')
+        applyTheme(dark)
+      })
+      running = transition
+
+      try {
+        await transition.ready
+        root.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${radius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration,
+            easing,
+            // Hold the final circle until the transition ends (the base style clips to zero).
+            fill: 'forwards',
+            pseudoElement: '::view-transition-new(root)',
+          },
+        )
+        await transition.finished
+      } catch {
+        // Skipped or interrupted: the theme is already applied, nothing more to do.
+      }
+
+      // Only the latest transition cleans up, so a skipped one cannot cut a newer one short.
+      if (running === transition) {
+        running = null
+        root.classList.remove('theme-reveal', 'disable-transitions')
+        root.style.removeProperty('--reveal-x')
+        root.style.removeProperty('--reveal-y')
+      }
     })
   }
 

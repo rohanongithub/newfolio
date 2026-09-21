@@ -1,0 +1,382 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<section class="panel flex flex-col p-4 sm:p-5" aria-labelledby="claim-title" data-claim>
+  <h2 id="claim-title" class="panel-title">Claim Yours</h2>
+  <p class="mt-2 text-sm text-muted-foreground">
+    Claim your personalised visitor card. It is generated fresh from this site, and no two
+    look alike.
+  </p>
+  <div class="mt-auto pt-4">
+    <button type="button" class="btn btn-primary" data-claim-open>Claim</button>
+  </div>
+
+  <dialog class="claim-dialog" aria-labelledby="claim-dialog-title" data-claim-dialog>
+    <div class="flex items-start justify-between gap-4 px-4 pt-4 sm:px-5 sm:pt-5">
+      <h3 id="claim-dialog-title" class="panel-title" data-claim-title>Claim your card</h3>
+      <button
+        type="button"
+        class="-mr-2 -mt-1 grid size-10 flex-shrink-0 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        aria-label="Close"
+        data-claim-close
+      >
+        <Icon name="lucide:x" class="size-5" />
+      </button>
+    </div>
+
+    <form class="px-4 pb-4 pt-3 sm:px-5 sm:pb-5" novalidate data-claim-form>
+      <label for="claim-name" class="text-sm font-medium">Good Name</label>
+      <input
+        id="claim-name"
+        name="name"
+        type="text"
+        maxlength="24"
+        autocomplete="nickname"
+        autocapitalize="words"
+        spellcheck="false"
+        placeholder="What should the card call you?"
+        aria-describedby="claim-hint claim-error"
+        class="claim-input mt-1.5 text-base"
+        data-claim-input
+      />
+      <p id="claim-error" class="mt-1.5 text-sm font-medium text-destructive" hidden data-claim-error>
+      </p>
+      <p id="claim-hint" class="mt-2 text-xs text-muted-foreground">
+        Your name stays in your browser. The first card you claim also adds you to a visitor
+        counter.
+      </p>
+      <button type="submit" class="btn btn-primary mt-4 w-full" data-claim-submit>
+        Get card
+      </button>
+    </form>
+
+    <div class="px-4 pb-4 pt-3 sm:px-5 sm:pb-5" hidden data-claim-result>
+      <div class="claim-stage" data-claim-stage>
+        <canvas width="1200" height="1800" role="img" aria-label="Your visitor card"
+          data-claim-canvas></canvas>
+        <span class="claim-sheen" aria-hidden="true"></span>
+      </div>
+      <div class="mt-4 grid grid-cols-2 gap-2">
+        <button type="button" class="btn btn-outline" data-claim-shuffle>
+          <Icon name="lucide:shuffle" class="size-4" />
+          Shuffle
+        </button>
+        <button type="button" class="btn btn-primary" data-claim-download>
+          <Icon name="lucide:download" class="size-4" />
+          <span data-claim-download-label>Download PNG</span>
+        </button>
+      </div>
+      <button
+        type="button"
+        class="mx-auto mt-3 block rounded px-2 py-1.5 text-sm font-medium text-primary underline decoration-primary/30 underline-offset-[3px] hover:decoration-primary"
+        data-claim-edit
+      >
+        Change name
+      </button>
+    </div>
+
+    <p class="sr-only" role="status" aria-live="polite" data-claim-status></p>
+  </dialog>
+</section>
+
+<style is:global>
+  .claim-dialog {
+    width: min(26rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    padding: 0;
+    color: hsl(var(--card-foreground));
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius, 0.5rem);
+    box-shadow: 0 24px 60px -24px hsl(var(--band) / 0.55);
+  }
+  .claim-dialog::backdrop {
+    background: transparent;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .claim-dialog[open],
+  .claim-dialog[open]::backdrop {
+    animation: claim-in var(--dur-base) var(--ease-out-expo);
+  }
+  @keyframes claim-in {
+    from {
+      opacity: 0;
+    }
+  }
+  .claim-dialog[open] {
+    animation-name: claim-pop;
+  }
+  @keyframes claim-pop {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  .claim-input {
+    display: block;
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 0.75rem;
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--input));
+    border-radius: 0.375rem;
+  }
+  .claim-input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+  .claim-input[aria-invalid='true'] {
+    border-color: hsl(var(--destructive));
+  }
+
+  /* Card preview: sized by height budget so the dialog never outgrows the viewport. */
+  .claim-stage {
+    --rx: 0deg;
+    --ry: 0deg;
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    width: min(100%, calc(min(62dvh, 620px) * 2 / 3));
+    margin: 0 auto;
+    aspect-ratio: 2 / 3;
+    border-radius: 3% / 2%;
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform var(--dur-base) var(--ease-out-expo);
+    filter: drop-shadow(0 14px 22px hsl(var(--band) / 0.3));
+  }
+  .claim-stage canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .claim-stage[data-fresh] canvas {
+    animation: card-in var(--dur-base) var(--ease-out-expo);
+  }
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+  /* A moving glint on holographic cards; the foil itself is baked into the PNG. */
+  .claim-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: soft-light;
+    background:
+      radial-gradient(circle at var(--mx) var(--my), rgb(255 255 255 / 0.85), transparent 45%),
+      linear-gradient(
+        115deg,
+        hsl(0 100% 70% / 0.5),
+        hsl(60 100% 60% / 0.5),
+        hsl(150 100% 60% / 0.5),
+        hsl(220 100% 70% / 0.5),
+        hsl(300 100% 70% / 0.5)
+      );
+    transition: opacity var(--dur-base) var(--ease-out-expo);
+  }
+  .claim-stage[data-holo='true'][data-tilting] .claim-sheen {
+    opacity: 0.7;
+  }
+</style>
+
+<script>
+  type Lib = typeof import('@/lib/visitor-card')
+  type Spec = import('@/lib/visitor-card').CardSpec
+
+  function initClaim() {
+    const root = document.querySelector<HTMLElement>('[data-claim]')
+    if (!root || root.dataset.bound) return
+    root.dataset.bound = 'true'
+
+    const $ = <T extends HTMLElement>(selector: string) =>
+      root.querySelector<T>(selector)!
+    const dialog = $<HTMLDialogElement>('[data-claim-dialog]')
+    const openBtn = $<HTMLButtonElement>('[data-claim-open]')
+    const closeBtn = $<HTMLButtonElement>('[data-claim-close]')
+    const form = $<HTMLFormElement>('[data-claim-form]')
+    const input = $<HTMLInputElement>('[data-claim-input]')
+    const errorEl = $<HTMLElement>('[data-claim-error]')
+    const submit = $<HTMLButtonElement>('[data-claim-submit]')
+    const result = $<HTMLElement>('[data-claim-result]')
+    const title = $<HTMLElement>('[data-claim-title]')
+    const stage = $<HTMLElement>('[data-claim-stage]')
+    const canvas = $<HTMLCanvasElement>('[data-claim-canvas]')
+    const shuffleBtn = $<HTMLButtonElement>('[data-claim-shuffle]')
+    const downloadBtn = $<HTMLButtonElement>('[data-claim-download]')
+    const downloadLabel = $<HTMLElement>('[data-claim-download-label]')
+    const editBtn = $<HTMLButtonElement>('[data-claim-edit]')
+    const status = $<HTMLElement>('[data-claim-status]')
+
+    let libPromise: Promise<Lib> | undefined
+    const lib = () => (libPromise ??= import('@/lib/visitor-card'))
+    let name = ''
+    let number: number | null = null
+    let spec: Spec | undefined
+    let busy = false
+    let savedTimer: number | undefined
+
+    const announce = (text: string) => {
+      status.textContent = ''
+      window.setTimeout(() => (status.textContent = text), 30)
+    }
+
+    const showStep = (step: 'form' | 'result') => {
+      form.hidden = step !== 'form'
+      result.hidden = step !== 'result'
+      title.textContent = step === 'form' ? 'Claim your card' : 'Your card'
+    }
+
+    const setError = (message: string) => {
+      errorEl.textContent = message
+      errorEl.hidden = !message
+      input.setAttribute('aria-invalid', message ? 'true' : 'false')
+    }
+
+    const paint = async (l: Lib) => {
+      await l.loadFonts()
+      spec = l.makeSpec({ name, label: l.visitorLabel(number) })
+      l.drawCard(canvas, spec)
+      canvas.setAttribute(
+        'aria-label',
+        `Visitor card for ${name}. ${spec.label}. ${spec.when}. Location Earth.`,
+      )
+      stage.dataset.holo = String(spec.holo)
+      stage.removeAttribute('data-fresh')
+      void stage.offsetWidth
+      stage.setAttribute('data-fresh', '')
+    }
+
+    openBtn.addEventListener('pointerenter', () => void lib(), { once: true })
+    openBtn.addEventListener('click', () => {
+      void lib()
+      showStep(spec ? 'result' : 'form')
+      dialog.showModal()
+      if (!spec) input.focus()
+    })
+    closeBtn.addEventListener('click', () => dialog.close())
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close()
+    })
+
+    input.addEventListener('input', () => setError(''))
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      if (busy) return
+      const l = await lib()
+      const clean = l.cleanName(input.value)
+      if (!clean) {
+        setError('Enter a good name to get your card.')
+        input.focus()
+        return
+      }
+      busy = true
+      submit.disabled = true
+      submit.textContent = 'Making your card'
+      try {
+        name = clean
+        input.value = clean
+        number = await l.claimNumber()
+        await paint(l)
+        showStep('result')
+        shuffleBtn.focus()
+        announce('Your card is ready.')
+      } finally {
+        busy = false
+        submit.disabled = false
+        submit.textContent = 'Get card'
+      }
+    })
+
+    shuffleBtn.addEventListener('click', async () => {
+      if (busy) return
+      busy = true
+      try {
+        await paint(await lib())
+        announce('New card ready.')
+      } finally {
+        busy = false
+      }
+    })
+
+    editBtn.addEventListener('click', () => {
+      showStep('form')
+      input.focus()
+      input.select()
+    })
+
+    downloadBtn.addEventListener('click', async () => {
+      const l = await lib()
+      const filename = `rohandev-card-${l.fileSlug(name)}.png`
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/png'),
+      )
+      if (!blob) {
+        announce('Could not create the image. Try shuffling and downloading again.')
+        return
+      }
+      const file = new File([blob], filename, { type: 'image/png' })
+      // On phones the share sheet offers "Save Image"; elsewhere a plain download is best.
+      if (
+        window.matchMedia('(pointer: coarse)').matches &&
+        navigator.canShare?.({ files: [file] })
+      ) {
+        try {
+          await navigator.share({ files: [file], title: 'My visitor card' })
+          return
+        } catch (error) {
+          if ((error as DOMException).name === 'AbortError') return
+        }
+      }
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.setTimeout(() => URL.revokeObjectURL(url), 4000)
+      downloadLabel.textContent = 'Saved'
+      window.clearTimeout(savedTimer)
+      savedTimer = window.setTimeout(
+        () => (downloadLabel.textContent = 'Download PNG'),
+        1800,
+      )
+      announce('Card downloaded.')
+    })
+
+    // Gentle tilt on desktop only; touch and reduced-motion visitors get a still card.
+    const canTilt = () =>
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    stage.addEventListener('pointermove', (event) => {
+      if (!canTilt()) return
+      const box = stage.getBoundingClientRect()
+      const px = (event.clientX - box.left) / box.width
+      const py = (event.clientY - box.top) / box.height
+      stage.style.setProperty('--ry', `${((px - 0.5) * 10).toFixed(2)}deg`)
+      stage.style.setProperty('--rx', `${((0.5 - py) * 10).toFixed(2)}deg`)
+      stage.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`)
+      stage.style.setProperty('--my', `${(py * 100).toFixed(1)}%`)
+      stage.setAttribute('data-tilting', '')
+    })
+    stage.addEventListener('pointerleave', () => {
+      stage.style.setProperty('--rx', '0deg')
+      stage.style.setProperty('--ry', '0deg')
+      stage.removeAttribute('data-tilting')
+    })
+  }
+
+  document.addEventListener('astro:page-load', initClaim)
+</script>

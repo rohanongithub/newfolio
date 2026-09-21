@@ -18,7 +18,7 @@ A personal portfolio for Rohan, SWE at TechCrafter (BTech CSE, JSSATE, Bengaluru
 
 ## Positioning
 
-The site is a working developer's own site, not a template. It carries real projects, a blog, and live signals of activity (GitHub contributions, what he is listening to). Which of these signals survive is a design decision, not a product commitment.
+The site is a working developer's own site, not a template. It carries real projects, a blog, and a live signal of activity (GitHub contributions). Which of these signals survive is a design decision, not a product commitment.
 
 ## Operating Context
 
@@ -29,9 +29,9 @@ The site is a working developer's own site, not a template. It carries real proj
 ## Capabilities and Constraints
 
 - Stack: Astro 5 (static output), React 18 islands, Tailwind 3, shadcn/ui (Radix). Stays as is.
-- Routes that exist and must keep working: `/`, `/about` (labelled "works" in the nav), `/blog` (paginated), `/blog/[id]`, `/authors`, `/authors/[id]`, `/tags`, `/tags/[id]`, `/projects/tremis`, `/404`, `/rss.xml`, `/robots.txt`.
+- Routes that exist and must keep working: `/`, `/about` (labelled "works" in the nav), `/blog` (paginated), `/blog/[id]`, `/authors`, `/authors/[id]`, `/tags`, `/tags/[id]`, `/projects/[id]`, `/404`, `/rss.xml`, `/robots.txt`.
 - Build is `astro check && astro build`; it must pass.
-- The GitHub contribution tile needs `ACCESS_TOKEN` in `.env` at build time. The last.fm tile fetches client-side from a third-party endpoint.
+- The GitHub contribution tile needs `ACCESS_TOKEN` in `.env` at build time.
 - Decided by the owner: the production domain is `https://rohandev.vercel.app`, and the Google Drive link is the canonical resume. The projects section is going to be replaced by the owner later; treat it as placeholder content and do not edit it.
 
 ## Brand Commitments
@@ -44,8 +44,7 @@ The site is a working developer's own site, not a template. It carries real proj
 ## Evidence on Hand
 
 - One blog post: "My portfolio Journey" (2025-01-31), with screenshots.
-- Project logos in `public/project-logos/` (rohandev, weatherapp, lumen, and numbered SVGs); `src/content/projects/project-a|b|c.md` are real projects (First Portfolio, LumenAI, Rohan4Casts).
-- A `/projects/tremis` stub ("An in-memory database").
+- Two projects so far: AEGIS (`src/content/projects/aegis.md`, industrial safety platform, solo, 2026, in progress) and AuthScale (`src/content/projects/authscale.mdx`, AWS authentication platform, solo, 2026, completed). Neither cover image has been supplied yet, so both show a two-letter placeholder tile. Project rows on Home and Works are tiles that open a dedicated page at `/projects/[id]` with the full write-up; there are no external project links (the owner does not share them).
 - Branded share images (`public/static/twitter-card.png`, `1200x630.png`) and an avatar (`public/avatar.svg`).
 - Absent, so must not be fabricated: testimonials, customer or employer names, metrics, awards, analytics, and any project claims not in the content files.
 

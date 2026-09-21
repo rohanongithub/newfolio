@@ -1,0 +1,107 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  value: string
+}
+
+const { value } = Astro.props
+---
+
+<span class="inline-flex items-center gap-1">
+  <button
+    type="button"
+    data-copy-email={value}
+    class="copy-btn relative grid size-8 flex-shrink-0 place-items-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-accent-foreground"
+    aria-label="Copy email address"
+    title="Copy email address"
+  >
+    <Icon name="lucide:copy" class="copy-icon absolute size-4" />
+    <Icon name="lucide:check" class="check-icon absolute size-4" />
+  </button>
+  <span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
+</span>
+
+<style>
+  .copy-icon,
+  .check-icon {
+    transition:
+      opacity var(--dur-fast) var(--ease-out-expo),
+      transform var(--dur-fast) var(--ease-out-expo);
+  }
+  .check-icon {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  .copy-btn[data-copied] {
+    color: hsl(var(--primary));
+  }
+  .copy-btn[data-copied] .copy-icon {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  .copy-btn[data-copied] .check-icon {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+<script>
+  // Clipboard needs a secure context; fall back to a hidden textarea where it is missing.
+  function legacyCopy(text: string): boolean {
+    const field = document.createElement('textarea')
+    field.value = text
+    field.setAttribute('readonly', '')
+    field.style.position = 'fixed'
+    field.style.opacity = '0'
+    document.body.appendChild(field)
+    field.select()
+    let ok = false
+    try {
+      ok = document.execCommand('copy')
+    } catch {
+      ok = false
+    }
+    field.remove()
+    return ok
+  }
+
+  function initCopyEmail() {
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-copy-email]')
+      .forEach((button) => {
+        if (button.dataset.bound) return
+        button.dataset.bound = 'true'
+        const status = button.parentElement?.querySelector<HTMLElement>(
+          '[data-copy-status]',
+        )
+        let timer: number | undefined
+
+        button.addEventListener('click', async () => {
+          const text = button.dataset.copyEmail ?? ''
+          let ok = false
+          try {
+            await navigator.clipboard.writeText(text)
+            ok = true
+          } catch {
+            ok = legacyCopy(text)
+          }
+
+          window.clearTimeout(timer)
+          if (ok) {
+            button.setAttribute('data-copied', '')
+            if (status) status.textContent = 'Email address copied'
+            timer = window.setTimeout(() => {
+              button.removeAttribute('data-copied')
+              if (status) status.textContent = ''
+            }, 1600)
+          } else if (status) {
+            status.textContent =
+              'Could not copy automatically. Select the address and copy it.'
+          }
+        })
+      })
+  }
+
+  document.addEventListener('astro:page-load', initCopyEmail)
+</script>

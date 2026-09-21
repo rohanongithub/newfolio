@@ -177,9 +177,6 @@ components:
   chip-cobalt:
     backgroundColor: "{colors.cobalt-wash}"
     textColor: "{colors.cobalt-wash-ink}"
-  chip-green:
-    backgroundColor: "{colors.advance-green}"
-    textColor: "{colors.card}"
   monogram-tile:
     backgroundColor: "#ffffff"
     textColor: "{colors.cobalt-band}"
@@ -207,7 +204,7 @@ Density is moderate and data-first. Structure comes from 1px hairlines and backg
 - Full-width cobalt band on every page (profile band on the home page, a shorter page band with breadcrumb elsewhere) above a paper ground.
 - Hairline-bordered panels with a barely-there shadow; rows separated by dividers, not cards inside cards.
 - Bricolage Grotesque for the name and headings, Hanken Grotesk for UI, JetBrains Mono only for dates, counts and addresses.
-- One signature component (the four-stage rail) and one authored motion moment.
+- One signature component (the four-stage rail) and two authored motion moments: the rail, and the theme reveal from the toggle. Everything else that moves is small feedback.
 - Monochrome icons throughout; the Stack grid uses currentColor glyphs, never brand colours.
 - Identity is a name, not a logo: the header carries only the "rohandev" wordmark. The one mark is a white "R" tile beside the name in the profile band, echoed as the favicon and on the share cards.
 
@@ -221,7 +218,7 @@ A cool paper-and-ink palette with one saturated cobalt, one signal green and one
 - **Cobalt Wash** (hsl(232 100% 96%)) with **Cobalt Wash Ink** (hsl(232 80% 36%)): row hover, outline-button hover, the cobalt chip. Dark equivalents are Night Wash and Night Wash Ink.
 
 ### Secondary
-- **Advance Green** (hsl(158 84% 26%)): the Advance button and the "Now playing" chip; also added lines in code diffs. Deepens on hover to hsl(158 84% 22%). Dark uses hsl(158 72% 28%) with white text.
+- **Advance Green** (hsl(158 84% 26%)): the Advance button; also added lines in code diffs. Deepens on hover to hsl(158 84% 22%). Dark uses hsl(158 72% 28%) with white text.
 
 ### Tertiary
 - **Stage Amber** (hsl(44 100% 82%)) with **Stage Amber Ink** (hsl(36 100% 16%)): the current-stage marker and label on the rail, and the "Open to projects" status chip. The stage pair is theme-invariant because it sits on the band. The chip variant of amber inverts in dark (Night Amber, hsl(38 55% 20%), with amber text).
@@ -259,7 +256,7 @@ A cool paper-and-ink palette with one saturated cobalt, one signal green and one
 - **Label** (500, 0.75rem/1.25rem): chips and tags. Title case as authored, no uppercase, no letter-spacing.
 - **Meta** (mono, 0.75rem, tabular numerals): dates, reading time, counts, repository addresses, breadcrumbs, "N items".
 - **Caption** (Hanken 400, 0.75rem, Slate Text): plain-language notes such as "Opens on Google Drive" and "Read the write-up on this site". Sans, not mono; mono is for data.
-- **Article prose**: Tailwind Typography with all prose colours mapped to the theme tokens. Blog posts use `prose-lg` (18px body) in a centred column of `min(40rem, 100%)`, which sets about 77 characters per line; the Tremis write-up uses default `prose` capped at 68ch. Headings in Bricolage, links in the link hue with a 40%-opacity underline that firms on hover.
+- **Article prose**: Tailwind Typography with all prose colours mapped to the theme tokens. Blog posts use `prose-lg` (18px body) in a centred column of `min(40rem, 100%)`, which sets about 77 characters per line; project write-ups on the Works page use default `prose` capped at 68ch inside the project panel. Headings in Bricolage, links in the link hue with a 40%-opacity underline that firms on hover.
 
 ### Named Rules
 **The Data Is Mono Rule.** Only dates, IDs, counts, addresses and breadcrumbs use the mono face. Names, titles and sentences never do.
@@ -268,9 +265,9 @@ A cool paper-and-ink palette with one saturated cobalt, one signal green and one
 
 ## Layout
 
-A single centred container, 1152px max (max-w-6xl), 16px gutters that widen to 24px from sm. The sticky header is 56px tall. Below a full-bleed band, home is a two-column grid at lg: a fluid main column (Work samples, Writing, Activity) and a fixed 20rem aside (Details, Stack, Listening); it collapses to one column below lg. Spacing rhythm is 32px between panels, 16px vertical / 16-20px horizontal padding in rows, and 20px inside panels. The band's top padding is 40px on mobile and 56px from sm; the stage rail closes the band with 32px of bottom padding. The first rows of Work samples must begin above the fold on desktop.
+A single centred container, 1152px max (max-w-6xl), 16px gutters that widen to 24px from sm. The sticky header is 56px tall. Below a full-bleed band, home is a two-column grid at lg: a fluid main column (Work samples, Writing, Activity) and a fixed 20rem aside (Details, Stack, Claim Yours); it collapses to one column below lg. The home page shows at most two works and one post (`SITE.NUM_WORKS_ON_HOMEPAGE`, `NUM_POSTS_ON_HOMEPAGE`). From lg the two columns are equal height and the last panel in each stretches so the bottoms of Activity and Claim Yours align exactly: the Claim button sits at the bottom of its panel, the Stack panel keeps its natural height (no blank space under it), and the heatmap cells stay near square. Spacing rhythm is 32px between panels, 16px vertical / 16-20px horizontal padding in rows, and 20px inside panels. The band's top padding is 40px on mobile and 56px from sm; the stage rail closes the band with 32px of bottom padding. The first rows of Work samples must begin above the fold on desktop.
 
-The tab counts in the header hide below sm; tabs shrink their padding rather than wrap. Text measure is capped at 65-68ch. Stack is a fixed 3x3 grid at every width. Scroll padding is 5rem to clear the sticky header. Blog posts sit in a three-track grid whose centre column is `min(40rem, 100%)` with 16px inline padding; the cover image may run to 1000px.
+The tab counts in the header hide below sm; tabs shrink their padding rather than wrap. Text measure is capped at 65-68ch. Stack is one row of three tiles at every width. Scroll padding is 5rem to clear the sticky header. Blog posts sit in a three-track grid whose centre column is `min(40rem, 100%)` with 16px inline padding; the cover image may run to 1000px.
 
 ## Elevation & Depth
 
@@ -295,12 +292,13 @@ Small, practical radii: 8px on panels and code blocks, 6px on buttons, tiles and
 - **Resume (light):** white fill with deep-cobalt text, on the band only. Hover fills with Cobalt Mute.
 - **Advance:** Advance Green fill, white text, arrow icon, with the Advance ring. Hover deepens to hsl(158 84% 22%).
 - **Outline:** card fill, 1px strong hairline. Hover gets a Cobalt Wash fill and a cobalt-link border. Used for the theme toggle and social icon buttons: 40px square, icon-only (the theme toggle is 36px below sm, 40px from sm). Control borders use the strengthened `--input` hairline.
+- **Primary (`.btn-primary`):** link-hue fill with white text (dark text on periwinkle in dark), used for Claim, Get card and Download PNG. Hover softens to 88% opacity.
 - **Primary / secondary / ghost / link (shadcn variants):** used inside blog post navigation, pagination and tags. Primary is the cobalt-link fill with white text (dark text on periwinkle in dark).
 - **Focus:** global `:focus-visible` is a 2px outline in `--ring` (cobalt in light, periwinkle in dark) with 2px offset and a 4px radius. Inside `.bg-band` the outline is white (#fff), because the ring equals the band colour. The shadcn `ui/button` variants use their own 2px ring with a 2px background-coloured offset instead of the outline.
 
 ### Chips
 - **Style:** 4px radius, 12px/20px text at weight 500, Fog fill with ink text. Variants: amber (status and current stage), cobalt (wash), green (live).
-- **Use:** tags on rows and posts, the status in Details ("Open to projects", theme-aware amber), the "Now playing / Last played" state.
+- **Use:** tags on rows and posts, the status in Details ("Open to projects", theme-aware amber).
 - **On the band:** the status chip is translucent white (15%) with a small green dot, not one of the fill variants.
 
 ### Cards / Containers (Panel)
@@ -308,31 +306,49 @@ Small, practical radii: 8px on panels and code blocks, 6px on buttons, tiles and
 - Never nest a bordered panel inside a panel; inside, use dividers and rows.
 
 ### Rows (Work and Post)
-Dense, whole-row links. Work row: square thumbnail (56-64px, 80-112px on the Works page), Bricolage title with a trailing arrow (up-right for external), description, chips. The home page clamps descriptions to three lines; the Works page shows them in full with a mono repository address line (or, for the local Tremis write-up, a sans caption). Post row: mono date column (128px, hidden below sm and moved under the title), title, description, reading time, chips. Hover fills the row with Cobalt Wash and turns the title cobalt-link; the arrow shifts 2px right.
+Dense rows. Work rows are whole-row links to the project's own page (`/projects/[id]`), with a small arrow after the title that shifts 2px right on hover: square thumbnail (56-64px, 80-112px on the Works page; a cobalt letter tile when no cover image exists), Bricolage title with an optional status chip, an optional mono role and year line on the Works page, description, chips. The home page clamps descriptions to three lines; the Works page shows them in full inside one "All works" panel. The project page uses the blog reading layout: the band carries the title, description, status chip, role and year and tags; the body is `prose-lg` in a 40rem column with the sticky "On this page" rail on wide screens, and previous and next project links at the end. Post row: mono date column (128px, hidden below sm and moved under the title), title, description, reading time, chips. On rows (work and post), hover fills the row with Cobalt Wash and turns the title cobalt-link.
+
+### Architecture Diagram
+Inline SVG figure for project write-ups (`src/components/diagrams/`), drawn on a narrow 300-unit canvas so its 12px labels stay legible on phones (about 15px on desktop, at most 380px wide). Every colour is a theme token, so it follows light and dark: key nodes use Cobalt Wash fill with the link-hue stroke and Wash Ink text, plain nodes the page ground with the strong hairline, flow arrows the link hue at 1.5px, monitoring a dotted muted line, and grouping boundaries dashed strong hairlines with muted labels. It sits directly on the panel (no card around it), carries an `aria-labelledby` title and description, and a caption that explains the line styles in theme-neutral words.
+
+### Motion
+Shared tokens live in `:root`: `--ease-out-expo` (cubic-bezier(0.16, 1, 0.3, 1), for arrivals), `--ease-reveal` (cubic-bezier(0.4, 0, 0.2, 1), for the full-screen reveal only), `--dur-fast` 150ms, `--dur-base` 250ms and `--dur-reveal` 650ms. Every effect has a reduced-motion path and content is visible without JavaScript.
+- **Theme reveal.** The new theme grows as a circle from the centre of the toggle button (View Transitions API, 650ms), the same in both directions; the moon and sun swap with a 250ms rotate and scale. It is scoped to `html.theme-reveal` so page-navigation transitions are untouched. `--ease-reveal` is used because out-expo would cover most of the screen in about 130ms and read as a flash. No support or reduced motion means an instant switch; a second click skips the running transition. The token is read with its unit (the minifier rewrites 650ms as .65s), and the animation uses `fill: forwards` so the clip does not snap back before the transition ends.
+- **Reading progress.** A 2px line in the link hue on the header's bottom hairline, driven by a CSS scroll timeline on post and project pages; hidden where scroll timelines are unsupported. It is a readout of scroll position, so it stays under reduced motion.
+- **Copy email.** A 32px icon button beside the email in Details; the copy icon swaps to a check for 1.6s (150ms) and a polite live region says "Email address copied". Reduced motion keeps the swap, without the easing.
+- **Claim card.** The dialog fades and rises 8px over 250ms; a fresh card fades in from 97% over 250ms; the tilt eases over 250ms. Reduced motion removes the tilt and the fades.
+- **Diagram draw.** The AuthScale architecture draws itself once when scrolled to, in about 1.3s: boundaries, then each line and node in the order requests travel, with arrowheads arriving as lines land. The script arms the hidden start state only when the figure is below the fold and motion is allowed; otherwise it is static and complete.
 
 ### Inputs / Fields
-None in the build. There are no forms; contact is a mailto action.
+One field, in the Claim Yours dialog: "Good Name", a 44px-tall text input (16px text so phones do not zoom), 6px radius, the strong `--input` hairline, page-ground fill; invalid state is a destructive border with a message below, and the error clears on typing. Contact elsewhere is a mailto action.
 
 ### Navigation
 Sticky white header, 56px, hairline bottom. Wordmark left (Bricolage bold, no mark). Tabs (Overview, Works, Blog) sit right in 14px semibold with a mono count chip (hidden below sm). Active tab is cobalt-link with a 2px underline flush to the header's bottom edge; inactive is Slate Text, going to ink on hover. Theme toggle is an outline icon button, 36px below sm and 40px from sm (moon in light, sun in dark). Sub-pages show a mono breadcrumb on the band. There is no hamburger; the three tabs fit on mobile.
 
 ### Stage Rail (signature)
-A 2px track (white at 50%) along the band's bottom edge with four 20px dots: Applied, Screening, Interview, Offer. Completed stages fill white with a check; the current stage is the Stage Amber dot (scaled 1.2, with a translucent halo) and an amber label pill in bold; future stages are hollow with 55% white borders and Cobalt Mute labels. Home loads at Screening (index 1), the fill drawing in from zero. "Advance to interview" moves the rail to Interview, then after 900ms opens the prefilled mailto (immediately under reduced motion). The rail returns to Screening on window focus or after 7 seconds, because the email may never be sent. Dot fill, border and label changes ease over 300ms on the expo-out curve; the dot scale takes 500ms. It announces stage changes through a polite live region.
+A 2px track (white at 50%) along the band's bottom edge with four 20px dots: Applied, Screening, Interview, Offer. Completed stages fill white with a check; the current stage is the Stage Amber dot (scaled 1.2, with a translucent halo) and an amber label pill in bold; future stages are hollow with 55% white borders and Cobalt Mute labels. Home loads at Screening (index 1), the fill drawing in from zero. "Advance to interview" moves the rail to Interview, then after 900ms opens the prefilled mailto (immediately under reduced motion). The rail returns to Screening on window focus or after 7 seconds, because the email may never be sent. Dot fill, border and label changes ease over 300ms on the expo-out curve; the dot scale takes 500ms. It announces stage changes through a polite live region. The fill-in intro plays on a fresh load or reload; on a client-side return to Home it arrives already settled (`html[data-rail-seen]`, set before paint).
 
 ### Name Block (signature)
 The profile band opens with a white "R" tile in band-coloured Bricolage 800, 8px radius, beside the name. Below sm the tile is 80px square and top-aligned with the name. From sm the row stretches (`items-stretch`): the tile is 116px wide (7.25rem) and fills the row height, the h1 is trimmed with negative em margins (-0.128em at sm, -0.075em below) and the subtitle carries -0.41em below, so the tile's top matches the top of the "Rohan" ink and its bottom sits on the subtitle baseline. The subtitle ("SWE at TechCrafter · BTech CSE, JSSATE") stacks role and education on two lines below sm and shows the "·" separator only from sm. Keep the tile, name and subtitle as one unit; do not re-space them independently.
 
 ### Identity Assets
-The favicon set (favicon.svg, favicon.ico, 16/32 PNG, apple-touch-icon, android icons, mstile, safari-pinned-tab.svg) is a cobalt (#2440F5) tile with a white Bricolage Grotesque "R". The share images (`twitter-card.png` for home, `1200x630.png` for posts) are cobalt cards carrying the tile, name and (home only) the stage rail. The `theme-color` meta is media-aware: #2440F5 in light, #192EB8 in dark.
+The favicon set (favicon.svg, favicon.ico, 16/32 PNG, apple-touch-icon, android icons, mstile, safari-pinned-tab.svg) is a cobalt (#2440F5) tile with a white Bricolage Grotesque "R". The share images (`twitter-card.png` for home, `1200x630.png` for posts) are cobalt cards carrying the tile, name and (home only) the stage rail. The `theme-color` meta is media-aware: #2440F5 in light, #192EB8 in dark. Project share cards (`public/static/og/<id>.png`, from `npm run og`) use the same cobalt style with the tile, wordmark, project name, role, year, status chip and up to five tags.
 
 ### Stack Tiles
-A 3x3 grid, 8px gaps, of identical tiles: 1px hairline, 6px radius, paper fill, a 24px monochrome simple-icons glyph in currentColor above a 12px medium label. No brand colours, so every tile is theme-safe and equal in weight.
+One row of three identical tiles (Docker, AWS, Node.js), 8px gaps: 1px hairline, 6px radius, paper fill, a 24px monochrome simple-icons glyph in currentColor above a 12px medium label. No brand colours, so every tile is theme-safe and equal in weight.
+
+### Claim Yours and the Visitor Card
+A panel at the foot of the aside: title, two lines of text and one Claim button, nothing else. Claim opens a centred native `<dialog>` (26rem max, 8px radius, cobalt-tinted shadow, dimmed backdrop, focus trapped, Esc and backdrop click close, focus returns to Claim). Step one asks for the Good Name; step two shows the card with Shuffle, Download PNG and Change name. The name is cleaned (control characters and repeated spaces removed, 24 characters) and never leaves the browser.
+- **Card.** Drawn on a 1200x1800 canvas (2:3) with 36px corners left transparent in the PNG. A large art block (one of horizon, orbit rings, layered ridges, dome), the name in Bricolage 800 (shrinks, or wraps to two lines), a mono caption ("CALM EXPLORER"), an outlined info strip (Earth, hatched cell, date and time in IST), "DOWNLOADED FROM rohandev.vercel.app" with the R tile, and two or three round worn-ink stamps in random places, never over the name. The pill on the art shows "VISITOR No. N" from the counter, or "CARD ID xxxx" when the counter is unreachable (no invented rank).
+- **Colour.** Every card draws a new base hue kept at least 24 degrees from the last six (stored in `localStorage`), one of five schemes, a tinted paper ground (about one in seven is deep), and ink chosen for at least 4.5:1 (the name is above 11:1). The card is a generated artifact, so it does not follow the site theme.
+- **Holo.** About one card in four gets baked-in rainbow foil, micro-lines and glints over the art and frame. The preview also tilts up to 5 degrees with a moving sheen on desktop pointers; touch and reduced motion get a still card.
+- **Download.** PNG named `rohandev-card-<name>.png`; on phones the share sheet is used when available so "Save Image" works.
 
 ### Details Rail
 Key-value list: label in Slate Text left, value right-aligned at medium weight, links in cobalt-link with a 30% underline, rows separated by dividers. A Resume link card follows (40px icon tile in Cobalt Wash, "Opens on Google Drive" as a sans caption).
 
-### Activity and Listening
-Activity is a 26-week contribution grid of 3px-gapped square cells stepping through Fog then 25/50/75/100% of the link hue. Listening is a compact track row with 56px artwork and a live-state chip. Both render nothing when their data is missing.
+### Activity
+The activity panel is a 26-week contribution grid of 3px-gapped square cells stepping through Fog then 25/50/75/100% of the link hue. It renders nothing when its data is missing.
 
 ## Do's and Don'ts
 
@@ -341,7 +357,8 @@ Activity is a 26-week contribution grid of 3px-gapped square cells stepping thro
 - **Do** use hairline borders and dividers for structure; reserve the panel shadow for panels and the Advance ring for the one action button.
 - **Do** set dates, counts, IDs, URLs and breadcrumbs in JetBrains Mono with tabular numerals.
 - **Do** keep icons monochrome (currentColor), including tech-stack glyphs.
-- **Do** use the ease-out exponential curve `cubic-bezier(0.16, 1, 0.3, 1)` for authored motion, and honour `prefers-reduced-motion`.
+- **Do** keep browser surfaces themed: selected text on the band is white with cobalt text, row focus rings are drawn inside the row (rows live in overflow-hidden panels), and every hover style applies only where a real hover exists so taps do not leave rows highlighted.
+- **Do** use the shared motion tokens (out-expo for arrivals, `--ease-reveal` for the theme reveal) and honour `prefers-reduced-motion`. Check the timing token's unit if it is read in JavaScript.
 - **Do** write the theme choice to localStorage under "theme" and apply it before paint; follow the system until the visitor chooses.
 - **Do** lift cobalt text to periwinkle in dark and keep cobalt as a fill only on the band.
 - **Do** draw focus outlines in white inside the cobalt band and in `--ring` everywhere else; keep control borders at the `--input` hairline so they hold 3:1.

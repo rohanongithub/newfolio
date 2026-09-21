@@ -34,7 +34,7 @@ const works = await getWorks()
         class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
       >
         <h2 id="all-works" class="panel-title">All works</h2>
-        <span class="meta">{works.length} items</span>
+        <span class="meta">{works.length} {works.length === 1 ? 'project' : 'projects'}</span>
       </header>
       <ul class="divide-y">
         {

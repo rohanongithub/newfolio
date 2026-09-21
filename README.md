@@ -9,6 +9,7 @@ npm install
 npm run dev        # http://localhost:1234
 npm run build      # astro check + astro build
 npm run preview    # serve the built dist/
+npm run og         # regenerate per-project share cards (needs local Chrome)
 ```
 
 ## Environment

@@ -19,21 +19,20 @@
 
 - `src/content/blog/portfolio-journey/index.mdx`: "My portfolio Journey", 2025-01-31, with `2024.png`.
 - `src/content/authors/rohan.md`
-- `src/content/projects/project-a.md` (First Portfolio), `project-b.md` (LumenAI), `project-c.md` (Rohan4Casts): real projects with real links, not placeholders
-- `/projects/tremis`: stub page, "An in-memory database"
+- `src/content/projects/aegis.md`: AEGIS, the owner's project (solo, 2026, in progress). Its tile opens `/projects/aegis`, which shows the full write-up.
+- `src/content/projects/authscale.mdx`: AuthScale (solo, 2026, completed). Its tile opens `/projects/authscale`. MDX so it can embed `src/components/diagrams/AuthScaleArchitecture.astro`, an inline SVG of the AWS architecture.
 
 ## Assets
 
-- Project logos: `public/project-logos/` (rohandev.png, weatherapp.png, lumen.png, 1-4.svg)
+- Project covers: none yet (cover-authscale.png and the AEGIS cover are still to come). Add files under `src/assets/projects/` and set `image:` in the project's frontmatter.
 - Carousel images (sunset, lantern): removed from the site at the owner's request; still in git history.
 - Blog screenshots: `public/images/blog-images/portfolio-journey-images/`
-- Tech-stack icons: replaced by monochrome `simple-icons` glyphs (JavaScript, Node.js, Express, PostgreSQL, Python, Tailwind CSS, Axios, Git, Cursor); the old colour SVGs were deleted.
+- Tech-stack icons: replaced by monochrome `simple-icons` glyphs (Docker, AWS, JavaScript, Node.js, Express, PostgreSQL, Python, Axios, Git); the old colour SVGs were deleted.
 - Social and PWA: favicons, `site.webmanifest`, `twitter-card.png`, `1200x630.png`
 
 ## Live features
 
 - GitHub contribution heatmap (`src/scripts/github.ts`, needs `ACCESS_TOKEN`)
-- last.fm now-playing (`src/lib/music.ts`, `src/components/Music.tsx`)
 - RSS (`/rss.xml`), sitemap, robots
 
 ## Not available (do not fabricate)

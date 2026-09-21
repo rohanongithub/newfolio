@@ -1,7 +1,7 @@
 # Astro conventions
 
 - Use `@/` imports for anything under `src/`.
-- Prefer `.astro` components; use a React island (`client:load` / `client:visible`) only for real interactivity (e.g. `Music.tsx`, menus).
+- Prefer `.astro` components; use a React island (`client:load` / `client:visible`) only for real interactivity (e.g. pagination, avatar).
 - Style with Tailwind utilities and the HSL CSS variables in `src/styles/global.css`; extend `tailwind.config.ts` rather than hardcoding hex values in markup.
 - Fonts are self-hosted in `public/fonts/` and declared with `@font-face` in `global.css`. Reference families by name, not file path, in `tailwind.config.ts`.
 - Merge class names with `cn()` from `src/lib/utils.ts`.

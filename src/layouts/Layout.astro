@@ -8,9 +8,11 @@ type Props = {
   title: string
   description: string
   image?: string
+  imageAlt?: string
+  jsonLd?: Record<string, unknown>
 }
 
-const { title, description, image } = Astro.props
+const { title, description, image, imageAlt, jsonLd } = Astro.props
 ---
 
 <!doctype html>
@@ -24,6 +26,8 @@ const { title, description, image } = Astro.props
       title={`${title} | ${SITE.TITLE}`}
       description={description}
       image={image}
+      imageAlt={imageAlt}
+      jsonLd={jsonLd}
     />
   </head>
 

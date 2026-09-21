@@ -2,6 +2,8 @@ import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config: Config = {
+  // Wraps every hover: and group-hover: variant in @media (hover: hover), so taps do not stick.
+  future: { hoverOnlyWhenSupported: true },
   darkMode: ['selector'],
   content: ['./src/**/*.{astro,md,mdx,ts,tsx}'],
   theme: {

@@ -41,7 +41,15 @@
       { "name": "press", "value": "translateY(1px) on :active", "purpose": "Button press nudge (.btn)." },
       { "name": "advance-sequence", "value": "setStage(2), then mailto after 900ms (immediate under reduced motion); reset to Screening on window focus or after 7000ms", "purpose": "The one authored moment: Advance to interview." },
       { "name": "reduced-motion", "value": "animation-duration and transition-duration 0.01ms !important; scroll-behavior auto", "purpose": "Global prefers-reduced-motion clamp; .stage-fill draw-in animation also disabled." },
-      { "name": "theme-flip", "value": ".disable-transitions on <html> for two animation frames", "purpose": "Suppresses per-element transitions so the whole page flips theme together." }
+      { "name": "theme-flip", "value": ".disable-transitions on <html> for two animation frames", "purpose": "Suppresses per-element transitions so the whole page flips theme together." },
+      { "name": "ease-reveal", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "The full-screen theme reveal only. Gentler start than out-expo so the circle reads as a spread (about 39% of the radius at 200ms, 78% at 325ms) instead of a flash." },
+      { "name": "duration-tokens", "value": "--dur-fast 150ms, --dur-base 250ms, --dur-reveal 650ms", "purpose": "Shared durations for feedback (150), state and icon swaps (250) and the theme reveal (650). Read the unit in JS: the minifier emits .65s." },
+      { "name": "theme-reveal", "value": "View Transition, clip-path circle from the toggle centre to the farthest corner, 650ms ease-reveal, fill forwards; html.theme-reveal scope", "purpose": "The second authored moment. Both directions spread from the button; instant switch without support or under reduced motion; second click skips the running transition." },
+      { "name": "theme-icon-swap", "value": "rotate(-90deg) scale(.6) to none, opacity 0 to 1, 250ms out-expo", "purpose": "Moon and sun icons after a toggle." },
+      { "name": "reading-progress", "value": "2px line, scaleX 0 to 1, animation-timeline: scroll(root block), top 55px", "purpose": "Scroll readout on post and project pages; hidden where unsupported; kept under reduced motion." },
+      { "name": "copy-swap", "value": "copy icon to check, scale .5 and opacity, 150ms out-expo, reverts after 1600ms", "purpose": "Feedback for the copy-email button; announced through a polite live region." },
+      { "name": "rail-settle", "value": "html[data-rail-seen] .stage-fill { animation: none }, set on the incoming document in astro:before-swap once the intro has played", "purpose": "The 1.25s rail intro plays on a fresh load or reload only; a client-side return to Home shows the settled rail." },
+      { "name": "diagram-draw", "value": "stroke-dashoffset 1 to 0 on pathLength=1 lines and opacity fades, 28 animations over about 1.3s, once, IntersectionObserver threshold .25", "purpose": "AuthScale architecture draws in request order; static without JS, when reduced motion is preferred, or when already in view at load." }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },
@@ -117,15 +125,15 @@
       "kind": "chip",
       "refersTo": "chip",
       "description": "Default, amber (status/current stage), cobalt and green (live) chips.",
-      "html": "<span class=\"ds-chip\">TypeScript</span> <span class=\"ds-chip ds-amber\">Open to projects</span> <span class=\"ds-chip ds-cobalt\">Cobalt</span> <span class=\"ds-chip ds-green\">Now playing</span>",
-      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; background: hsl(222 33% 92%); color: hsl(228 40% 9%); font: 500 12px/20px 'Hanken Grotesk', sans-serif; } .ds-amber { background: hsl(44 100% 82%); color: hsl(36 100% 16%); } .ds-cobalt { background: hsl(232 100% 96%); color: hsl(232 80% 36%); } .ds-green { background: hsl(158 84% 26%); color: #fff; }"
+      "html": "<span class=\"ds-chip\">TypeScript</span> <span class=\"ds-chip ds-amber\">Open to projects</span> <span class=\"ds-chip ds-cobalt\">Cobalt</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; background: hsl(222 33% 92%); color: hsl(228 40% 9%); font: 500 12px/20px 'Hanken Grotesk', sans-serif; } .ds-amber { background: hsl(44 100% 82%); color: hsl(36 100% 16%); } .ds-cobalt { background: hsl(232 100% 96%); color: hsl(232 80% 36%); }"
     },
     {
       "name": "Panel with Work Row",
       "kind": "card",
       "refersTo": "panel",
       "description": "Hairline panel with a header row and a dense, whole-row link.",
-      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2 class=\"ds-panel-title\">Work samples</h2><a class=\"ds-all\" href=\"#\">All works</a></header><a class=\"ds-row\" href=\"#\"><div class=\"ds-thumb\">T</div><div><h3 class=\"ds-row-title\">Tremis</h3><p class=\"ds-row-desc\">An in-memory database.</p><ul class=\"ds-tags\"><li class=\"ds-chip\">Database</li></ul></div></a></section>",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2 class=\"ds-panel-title\">Work samples</h2><a class=\"ds-all\" href=\"#\">All works</a></header><a class=\"ds-row\" href=\"#\"><div class=\"ds-thumb\">AE</div><div><h3 class=\"ds-row-title\">AEGIS</h3><p class=\"ds-row-desc\">An AI-enabled industrial safety platform.</p><ul class=\"ds-tags\"><li class=\"ds-chip\">Analytics</li></ul></div></a></section>",
       "css": ".ds-panel { background: #fff; border: 1px solid hsl(222 26% 86%); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 0 hsl(222 30% 80% / 0.35), 0 8px 24px -16px hsl(228 40% 20% / 0.18); font-family: 'Hanken Grotesk', sans-serif; color: hsl(228 40% 9%); max-width: 640px; } .ds-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid hsl(222 26% 86%); } .ds-panel-title { margin: 0; font: 600 18px/1.25 'Bricolage Grotesque', sans-serif; letter-spacing: -0.025em; } .ds-all { font-size: 14px; font-weight: 600; color: hsl(232 91% 55%); text-decoration: none; } .ds-row { display: flex; gap: 16px; padding: 16px; text-decoration: none; color: inherit; transition: background-color 200ms; } .ds-row:hover { background: hsl(232 100% 96%); } .ds-row:hover .ds-row-title { color: hsl(232 91% 55%); } .ds-row:focus-visible { outline: 2px solid hsl(232 91% 55%); outline-offset: 2px; } .ds-thumb { flex: none; width: 56px; height: 56px; display: grid; place-items: center; border: 1px solid hsl(222 26% 86%); border-radius: 6px; background: hsl(232 91% 55%); color: #fff; font: 700 24px 'Bricolage Grotesque', sans-serif; } .ds-row-title { margin: 0; font: 600 18px 'Bricolage Grotesque', sans-serif; letter-spacing: -0.025em; transition: color 200ms; } .ds-row-desc { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: hsl(226 22% 32%); } .ds-tags { display: flex; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; } .ds-chip { display: inline-flex; padding: 2px 8px; border-radius: 4px; background: hsl(222 33% 92%); font: 500 12px/20px 'Hanken Grotesk', sans-serif; }"
     },
     {
@@ -148,7 +156,7 @@
       "name": "Stack Tile",
       "kind": "custom",
       "refersTo": "stack-tile",
-      "description": "Uniform monochrome tile; a 3x3 grid of these forms the Stack panel.",
+      "description": "Uniform monochrome tile; one row of three (Docker, AWS, Node.js) forms the Stack panel.",
       "html": "<div class=\"ds-tile\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg><span>Node.js</span></div>",
       "css": ".ds-tile { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 88px; padding: 14px 4px; border: 1px solid hsl(222 26% 86%); border-radius: 6px; background: hsl(222 43% 97%); color: hsl(228 40% 9%); font: 500 12px/1 'Hanken Grotesk', sans-serif; text-align: center; }"
     }

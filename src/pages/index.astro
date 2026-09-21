@@ -1,8 +1,9 @@
 ---
 import CandidateBand from '@/components/CandidateBand.astro'
+import ClaimCard from '@/components/ClaimCard.astro'
 import Container from '@/components/Container.astro'
+import CopyEmail from '@/components/CopyEmail.astro'
 import Github from '@/components/Github.astro'
-import Music from '@/components/Music.tsx'
 import PostRow from '@/components/PostRow.astro'
 import WorkRow from '@/components/WorkRow.astro'
 import { PROFILE, SITE, SOCIAL_LINKS } from '@/consts'
@@ -11,7 +12,7 @@ import { getWorks } from '@/lib/works'
 import { Icon } from 'astro-icon/components'
 import { getCollection } from 'astro:content'
 
-const works = await getWorks()
+const works = (await getWorks()).slice(0, SITE.NUM_WORKS_ON_HOMEPAGE)
 
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
@@ -21,37 +22,48 @@ const posts = (await getCollection('blog'))
 const github = SOCIAL_LINKS.find((l) => l.label === 'GitHub')!.href
 const twitter = SOCIAL_LINKS.find((l) => l.label === 'Twitter')!.href
 
-const details: { label: string; value: string; href?: string; chip?: boolean }[] =
+const details: {
+  label: string
+  value: string
+  href?: string
+  chip?: boolean
+  copy?: boolean
+}[] =
   [
     { label: 'Role', value: PROFILE.role },
     { label: 'Education', value: PROFILE.education },
     { label: 'Location', value: PROFILE.location },
     { label: 'Status', value: PROFILE.status, chip: true },
-    { label: 'Email', value: SITE.EMAIL, href: `mailto:${SITE.EMAIL}` },
+    { label: 'Email', value: SITE.EMAIL, href: `mailto:${SITE.EMAIL}`, copy: true },
     { label: 'GitHub', value: 'rohanongithub', href: github },
     { label: 'Twitter', value: '@rohxnp', href: twitter },
   ]
 
+// Person structured data for search engines: only facts already shown on the site.
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: PROFILE.name,
+  jobTitle: 'Software Engineer',
+  worksFor: { '@type': 'Organization', name: PROFILE.employer },
+  url: SITE.SITEURL,
+  sameAs: [github, twitter],
+}
+
 const stack = [
-  { name: 'JavaScript', icon: 'javascript' },
+  { name: 'Docker', icon: 'docker' },
+  { name: 'AWS', icon: 'amazonwebservices' },
   { name: 'Node.js', icon: 'nodedotjs' },
-  { name: 'Express', icon: 'express' },
-  { name: 'PostgreSQL', icon: 'postgresql' },
-  { name: 'Python', icon: 'python' },
-  { name: 'Tailwind CSS', icon: 'tailwindcss' },
-  { name: 'Axios', icon: 'axios' },
-  { name: 'Git', icon: 'git' },
-  { name: 'Cursor', icon: 'cursor' },
 ]
 ---
 
-<Layout title="Overview" description={SITE.DESCRIPTION}>
+<Layout title="Overview" description={SITE.DESCRIPTION} jsonLd={personLd}>
   <CandidateBand />
 
   <Container
-    class="grid grid-cols-[minmax(0,1fr)] gap-8 pt-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start"
+    class="grid grid-cols-[minmax(0,1fr)] gap-8 pt-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_20rem]"
   >
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8 lg:[&>:last-child]:flex-1">
       <section class="panel overflow-hidden" aria-labelledby="works-title">
         <header
           class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
@@ -113,26 +125,32 @@ const stack = [
       <Github />
     </div>
 
-    <aside aria-label="Candidate details" class="flex flex-col gap-8">
+    <aside
+      aria-label="Candidate details"
+      class="flex flex-col gap-8 lg:[&>:last-child]:flex-1"
+    >
       <section class="panel p-4 sm:p-5" aria-labelledby="details-title">
         <h2 id="details-title" class="panel-title">Details</h2>
         <dl class="mt-2 divide-y text-sm">
           {
             details.map((item) => (
-              <div class="flex items-baseline justify-between gap-4 py-3">
+              <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-3">
                 <dt class="flex-shrink-0 text-muted-foreground">{item.label}</dt>
-                <dd class="min-w-0 break-words text-right font-medium">
+                <dd class="ml-auto min-w-0 break-words text-right font-medium">
                   {item.chip ? (
                     <span class="chip chip-amber">{item.value}</span>
                   ) : item.href ? (
-                    <a
-                      href={item.href}
-                      target={item.href.startsWith('mailto:') ? undefined : '_blank'}
-                      rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                      class="text-primary underline decoration-primary/30 hover:decoration-primary"
-                    >
-                      {item.value}
-                    </a>
+                    <span class="inline-flex items-center gap-1">
+                      {item.copy && <CopyEmail value={item.value} />}
+                      <a
+                        href={item.href}
+                        target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+                        rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                        class="-my-1 py-1 text-primary underline decoration-primary/30 hover:decoration-primary"
+                      >
+                        {item.value}
+                      </a>
+                    </span>
                   ) : (
                     item.value
                   )}
@@ -178,8 +196,7 @@ const stack = [
         </ul>
       </section>
 
-      <Music client:load />
-
+      <ClaimCard />
     </aside>
   </Container>
 </Layout>

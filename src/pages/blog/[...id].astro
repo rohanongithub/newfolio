@@ -56,7 +56,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
   title={post.data.title}
   description={post.data.description}
   image={post.data.image?.src ?? '/static/1200x630.png'}
+  imageAlt={post.data.image ? post.data.title : 'Blog by Rohan: notes and write-ups'}
 >
+  <div class="reading-progress" aria-hidden="true"></div>
+
   <PageBand
     title={post.data.title}
     crumbs={[{ label: 'Blog', href: '/blog' }, { label: 'Post' }]}

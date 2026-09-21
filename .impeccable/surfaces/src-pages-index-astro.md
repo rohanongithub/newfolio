@@ -18,7 +18,7 @@ related_targets: ["src/pages/about.astro","src/pages/blog"]
 Whole site. Home and Works are Persuade (recruiter acts: resume, email). Blog and post pages are Read. Taxonomy pages inherit the same shell.
 
 ## Audience, job, action
-Recruiters and hiring managers skimming for candidates, or with a project to offer. Job: decide in seconds, then open the resume or email Rohan. Proof on hand: four real projects (Tremis, LumenAI, Rohan4Casts, First Portfolio), one blog post, GitHub and last.fm activity, two resume PDFs. Nothing else may be claimed.
+Recruiters and hiring managers skimming for candidates, or with a project to offer. Job: decide in seconds, then open the resume or email Rohan. Proof on hand: two projects so far (AEGIS and AuthScale, each opening its own page), one blog post, GitHub activity, a Google Drive resume. Nothing else may be claimed.
 
 ## Chosen direction
 Hiring Pipeline (assigned alternate chosen from the round: IMPECCABLE'S PICK). The site is a candidate record inside an applicant-tracking tool. Memorable moment: "Advance to interview" slides the stage marker from Screening to Interview, then opens a prefilled email.

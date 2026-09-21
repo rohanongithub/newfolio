@@ -24,7 +24,6 @@ Full visual replacement of the portfolio using the Impeccable plugin. Branch: `f
 
 All resolved in the redesign, except where noted.
 
-- `Bento.astro` loaded a missing `/src/scripts/music.ts`: bento removed.
 - `Head.astro` favicon links used `32X32` / `16X16` (files are lowercase `x`): fixed.
 - `Github.astro` loaded `/scripts/github.ts`, which is not in `public/`: script tag removed.
 - `tailwind.config.ts` font entries used file paths and misspelled filenames: replaced with family names.
@@ -34,22 +33,23 @@ All resolved in the redesign, except where noted.
 ## Open questions
 
 - (Resolved) Production domain: https://rohandev.vercel.app.
-- (Resolved: project-a|b|c are real projects, shown on Works alongside Tremis.)
+- (Resolved: the old template projects, including Tremis which was not the owner's, were replaced by AEGIS.)
 - (Resolved) Canonical resume link: Google Drive; repo PDFs removed.
 
 ## Verification
 
-`npm run build`, then dev server at port 1234, then desktop and mobile screenshots into `.impeccable/review/`. Manual checks: resume link, nav, blog pagination, MDX post (code blocks, KaTeX), GitHub and last.fm tiles if kept.
+`npm run build`, then dev server at port 1234, then desktop and mobile screenshots into `.impeccable/review/`. Manual checks: resume link, nav, blog pagination, MDX post (code blocks, KaTeX), the GitHub tile.
 
 ## Status at hand-off
 
 Built, polished, and independently reviewed. Done since the first build: light and dark themes with a toggle, uniform Stack, no logo mark in the header, favicon set, status "Open to projects", role "SWE at TechCrafter", R-tile alignment (top edge matches the name to the pixel), no emojis or em dashes, branded share images, three-line clamp on home project rows, tap-target and contrast fixes, unused files and packages removed, README added.
 
+Later additions: Stack trimmed to Docker, AWS and Node.js; Claim Yours (generated, downloadable visitor card with a real counter, IST time, stamps and holo variants; see DESIGN.md).
+
 Open items (need the owner):
 
 - GitHub Activity panel: needs `ACCESS_TOKEN` in `.env` and in Vercel environment variables.
 - (Resolved) Author bio is now "weaving codebases" and the avatar is the R tile (`public/avatar.svg`).
-- Projects section: to be replaced by the owner. Tremis is not the owner's project; do not edit the section until asked.
-- Project cover images: Tremis has an icon tile; First Portfolio and LumenAI screenshots are dark and small.
+- More projects: send them in the per-project markdown format (see CLAUDE.md). AEGIS needs a cover image (`cover-aegis.png`).
 - Works intro copy has "Its" and informal wording; left as is on the owner's instruction.
 - Interview wording on the homepage was kept by the owner although they are employed and open to projects.

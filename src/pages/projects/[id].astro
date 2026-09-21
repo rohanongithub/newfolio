@@ -1,0 +1,131 @@
+---
+import PageBand from '@/components/PageBand.astro'
+import TableOfContents from '@/components/TableOfContents.astro'
+import Layout from '@/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+import { type CollectionEntry, getCollection, render } from 'astro:content'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+type Entry = CollectionEntry<'projects'>
+
+export async function getStaticPaths() {
+  const entries = (await getCollection('projects')).sort(
+    (a, b) => a.data.order - b.data.order,
+  )
+  return entries.map((entry, i) => ({
+    params: { id: entry.id },
+    props: { entry, prev: entries[i - 1] ?? null, next: entries[i + 1] ?? null },
+  }))
+}
+
+type Props = { entry: Entry; prev: Entry | null; next: Entry | null }
+
+const { entry, prev, next } = Astro.props
+const { Content, headings } = await render(entry)
+const { name, description, tags, image, role, year, status } = entry.data
+const facts = [role, year?.toString()].filter(Boolean).join(' · ')
+
+// Per-project share card from `npm run og`; falls back to the site card when it has not been generated.
+const cardPath = `/static/og/${entry.id}.png`
+const hasCard = existsSync(join(process.cwd(), 'public', cardPath))
+const cardAlt = `${name}, a project by Rohan${facts ? `. ${facts}` : ''}${status ? `. ${status}` : ''}.`
+---
+
+<Layout
+  title={name}
+  description={description}
+  image={hasCard ? cardPath : undefined}
+  imageAlt={hasCard ? cardAlt : undefined}
+>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <PageBand
+    title={name}
+    crumbs={[{ label: 'Works', href: '/about' }, { label: name }]}
+    description={description}
+  >
+    <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+      {
+        status && (
+          <span class="inline-flex items-center rounded bg-white/15 px-2 py-1 text-xs font-medium text-white">
+            {status}
+          </span>
+        )
+      }
+      {facts && <span class="meta !text-band-mute">{facts}</span>}
+      <ul class="flex flex-wrap gap-1.5">
+        {
+          tags.map((tag) => (
+            <li class="inline-flex items-center rounded bg-white/15 px-2 py-1 text-xs font-medium text-white">
+              {tag}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </PageBand>
+
+  <section
+    class="mt-8 grid grid-cols-[minmax(0px,1fr)_min(40rem,100%)_minmax(0px,1fr)] gap-y-6 *:px-4 sm:mt-10"
+  >
+    {
+      image && (
+        <Image
+          src={image}
+          alt={`${name} cover`}
+          width={1200}
+          height={630}
+          class="col-span-full mx-auto w-full max-w-[1000px] rounded-lg object-cover"
+        />
+      )
+    }
+
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+
+    <article class="prose prose-lg col-start-2 max-w-none">
+      <Content />
+    </article>
+
+    <nav
+      aria-label="More projects"
+      class="col-start-2 flex flex-col gap-4 border-t pt-6 sm:flex-row"
+    >
+      <a
+        href={prev ? `/projects/${prev.id}` : '/about'}
+        class="btn btn-outline group h-auto w-full justify-start gap-3 py-3 no-underline sm:w-1/2"
+      >
+        <Icon
+          name="lucide:arrow-left"
+          class="size-4 flex-shrink-0 transition-transform duration-200 group-hover:-translate-x-1"
+        />
+        <span class="flex min-w-0 flex-col items-start text-left">
+          <span class="meta">{prev ? 'Previous project' : 'Back to'}</span>
+          <span class="w-full truncate text-sm font-semibold"
+            >{prev ? prev.data.name : 'All works'}</span
+          >
+        </span>
+      </a>
+      {
+        next && (
+          <a
+            href={`/projects/${next.id}`}
+            class="btn btn-outline group h-auto w-full justify-end gap-3 py-3 no-underline sm:w-1/2"
+          >
+            <span class="flex min-w-0 flex-col items-end text-right">
+              <span class="meta">Next project</span>
+              <span class="w-full truncate text-sm font-semibold">
+                {next.data.name}
+              </span>
+            </span>
+            <Icon
+              name="lucide:arrow-right"
+              class="size-4 flex-shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+            />
+          </a>
+        )
+      }
+    </nav>
+  </section>
+</Layout>

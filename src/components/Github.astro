@@ -19,7 +19,7 @@ const weeks = data?.weeks.slice(-WEEKS_SHOWN) ?? []
 
 {
   data && (
-    <section class="panel p-4 sm:p-5" aria-labelledby="activity-title">
+    <section class="panel flex flex-col p-4 sm:p-5" aria-labelledby="activity-title">
       <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h2 id="activity-title" class="panel-title">
           Activity
@@ -29,7 +29,7 @@ const weeks = data?.weeks.slice(-WEEKS_SHOWN) ?? []
         </p>
       </div>
       <div
-        class="mt-4 grid grid-flow-col grid-rows-7 gap-[3px]"
+        class="mt-4 grid grid-flow-col grid-rows-7 gap-[3px] lg:min-h-[11.5rem] lg:flex-1"
         style="grid-auto-columns: minmax(0, 1fr)"
         role="img"
         aria-label={`Contribution graph for the last ${WEEKS_SHOWN} weeks, ${data.totalContributions} contributions in the past year`}
@@ -37,7 +37,7 @@ const weeks = data?.weeks.slice(-WEEKS_SHOWN) ?? []
         {weeks.map((week) =>
           week.contributionDays.map((day) => (
             <div
-              class={`aspect-square rounded-[2px] ${levels[levelFor(day.contributionCount)]}`}
+              class={`aspect-square rounded-[2px] lg:aspect-auto ${levels[levelFor(day.contributionCount)]}`}
               title={`${day.date}: ${day.contributionCount} contributions`}
             />
           )),
