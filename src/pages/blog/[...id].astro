@@ -3,7 +3,6 @@ import Link from '@/components/Link.astro'
 import PageBand from '@/components/PageBand.astro'
 import PostNavigation from '@/components/PostNavigation.astro'
 import TableOfContents from '@/components/TableOfContents.astro'
-import { Button } from '@/components/ui/button'
 import Layout from '@/layouts/Layout.astro'
 import { parseAuthors } from '@/lib/server-utils'
 import { formatDate, readingTime } from '@/lib/utils'
@@ -123,47 +122,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
 
     {headings.length > 0 && <TableOfContents headings={headings} />}
 
-    <article class="prose prose-lg col-start-2 max-w-none">
+    <article class="prose prose-base col-start-2 max-w-none max-sm:leading-[1.65] max-sm:prose-p:my-4 max-sm:prose-li:my-0.5 sm:prose-lg">
       <Content />
     </article>
 
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
   </section>
-
-  <Button
-    variant="outline"
-    size="icon"
-    className="group fixed bottom-8 right-8 z-50 hidden"
-    id="scroll-to-top"
-    title="Scroll to top"
-    aria-label="Scroll to top"
-  >
-    <Icon
-      name="lucide:arrow-up"
-      class="mx-auto size-4 transition-all group-hover:-translate-y-0.5"
-    />
-  </Button>
-
-  <script>
-    document.addEventListener('astro:page-load', () => {
-      const scrollToTopButton = document.getElementById('scroll-to-top')
-      const footer = document.querySelector('footer')
-
-      if (scrollToTopButton && footer) {
-        scrollToTopButton.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        })
-
-        window.addEventListener('scroll', () => {
-          const footerRect = footer.getBoundingClientRect()
-          const isFooterVisible = footerRect.top <= window.innerHeight
-
-          scrollToTopButton.classList.toggle(
-            'hidden',
-            window.scrollY <= 300 || isFooterVisible,
-          )
-        })
-      }
-    })
-  </script>
 </Layout>

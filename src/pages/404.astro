@@ -1,24 +1,56 @@
 ---
 import Container from '@/components/Container.astro'
 import PageBand from '@/components/PageBand.astro'
-import { SITE } from '@/consts'
+import { NAV_LINKS, SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
+
+const blurbs: Record<string, string> = {
+  '/': 'Role, status, details and the latest work.',
+  '/about': 'Selected projects, each with its own write-up.',
+  '/blog': 'Notes on building and learning.',
+}
 ---
 
 <Layout title="Page not found" description={SITE.DESCRIPTION}>
   <PageBand
     title="Page not found"
     crumbs={[{ label: '404' }]}
-    description="This record doesn't exist. The link may be old, or the page may have moved."
-  />
+    description="This record doesn't exist. The link may be old, or the page may have moved. Pick up from one of the pages below."
+  >
+    <span
+      class="mt-5 inline-flex items-center rounded bg-white/15 px-2 py-1 text-xs font-medium text-white"
+    >
+      Record not found
+    </span>
+  </PageBand>
   <Container class="pt-8 sm:pt-10">
-    <a href="/" class="btn btn-outline group">
-      <Icon
-        name="lucide:arrow-left"
-        class="size-4 transition-transform duration-200 group-hover:-translate-x-0.5"
-      />
-      Back to overview
-    </a>
+    <section class="panel overflow-hidden" aria-labelledby="lost-title">
+      <header class="border-b px-4 py-4 sm:px-5">
+        <h2 id="lost-title" class="panel-title">Try one of these</h2>
+      </header>
+      <ul class="divide-y">
+        {
+          NAV_LINKS.map((link) => (
+            <li>
+              <a href={link.href} class="row-link group items-center no-underline">
+                <span class="min-w-0 flex-1">
+                  <span class="block font-display text-base font-semibold capitalize">
+                    {link.label}
+                  </span>
+                  <span class="block text-sm text-muted-foreground">
+                    {blurbs[link.href]}
+                  </span>
+                </span>
+                <Icon
+                  name="lucide:arrow-right"
+                  class="size-4 flex-shrink-0 text-primary transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </Container>
 </Layout>

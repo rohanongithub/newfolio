@@ -32,11 +32,13 @@ const weeks = data?.weeks.slice(-WEEKS_SHOWN) ?? []
         class="mt-4 grid grid-flow-col grid-rows-7 gap-[3px] lg:min-h-[11.5rem] lg:flex-1"
         style="grid-auto-columns: minmax(0, 1fr)"
         role="img"
+        data-trail
         aria-label={`Contribution graph for the last ${WEEKS_SHOWN} weeks, ${data.totalContributions} contributions in the past year`}
       >
         {weeks.map((week) =>
           week.contributionDays.map((day) => (
             <div
+              data-cell
               class={`aspect-square rounded-[2px] lg:aspect-auto ${levels[levelFor(day.contributionCount)]}`}
               title={`${day.date}: ${day.contributionCount} contributions`}
             />
@@ -46,3 +48,81 @@ const weeks = data?.weeks.slice(-WEEKS_SHOWN) ?? []
     </section>
   )
 }
+
+<script>
+  // A pointer leaves a fading light along its path. Decorative: mouse and pen only,
+  // and skipped under reduced motion.
+  function initTrail() {
+    const grid = document.querySelector<HTMLElement>('[data-trail]')
+    if (!grid || grid.dataset.bound) return
+    grid.dataset.bound = 'true'
+
+    const cells = [...grid.querySelectorAll<HTMLElement>('[data-cell]')]
+    const rows = 7
+    const cols = Math.ceil(cells.length / rows)
+    const heat = new Float32Array(cells.length)
+    const RADIUS = 1.6
+    const LIFE = 1100
+    let raf = 0
+    let last = 0
+    let prev: { c: number; r: number } | null = null
+
+    const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // Cells run down each week (column-major), so index = column * 7 + row.
+    const stamp = (c: number, r: number) => {
+      for (let cc = Math.floor(c - RADIUS); cc <= Math.ceil(c + RADIUS); cc++) {
+        for (let rr = Math.floor(r - RADIUS); rr <= Math.ceil(r + RADIUS); rr++) {
+          if (cc < 0 || rr < 0 || cc >= cols || rr >= rows) continue
+          const i = cc * rows + rr
+          if (i >= cells.length) continue
+          const v = 1 - Math.hypot(cc + 0.5 - c, rr + 0.5 - r) / RADIUS
+          if (v > heat[i]) heat[i] = v
+        }
+      }
+    }
+
+    const tick = (now: number) => {
+      if (!grid.isConnected) return
+      const dt = Math.min(now - last, 50)
+      last = now
+      let alive = false
+      for (let i = 0; i < heat.length; i++) {
+        if (heat[i] <= 0) continue
+        heat[i] = Math.max(0, heat[i] - dt / LIFE)
+        const v = heat[i]
+        if (v > 0) {
+          alive = true
+          cells[i].style.setProperty('--heat', (v * v * (3 - 2 * v)).toFixed(3))
+        } else {
+          cells[i].style.removeProperty('--heat')
+        }
+      }
+      raf = alive ? requestAnimationFrame(tick) : 0
+    }
+
+    grid.addEventListener('pointermove', (event) => {
+      if (event.pointerType === 'touch' || reduced()) return
+      const box = grid.getBoundingClientRect()
+      const c = ((event.clientX - box.left) / box.width) * cols
+      const r = ((event.clientY - box.top) / box.height) * rows
+      if (prev) {
+        // Fill in the path so fast movement leaves a continuous trail.
+        const steps = Math.max(1, Math.ceil(Math.hypot(c - prev.c, r - prev.r) / 0.5))
+        for (let s = 1; s <= steps; s++) {
+          stamp(prev.c + ((c - prev.c) * s) / steps, prev.r + ((r - prev.r) * s) / steps)
+        }
+      } else {
+        stamp(c, r)
+      }
+      prev = { c, r }
+      if (!raf) {
+        last = performance.now()
+        raf = requestAnimationFrame(tick)
+      }
+    })
+    grid.addEventListener('pointerleave', () => (prev = null))
+  }
+
+  document.addEventListener('astro:page-load', initTrail)
+</script>

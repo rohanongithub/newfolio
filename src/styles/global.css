@@ -122,6 +122,7 @@
   }
 
   html {
+    -webkit-tap-highlight-color: hsl(var(--primary) / 0.12);
     color-scheme: light;
     @apply bg-background text-foreground;
     scroll-padding-top: 5rem;
@@ -159,9 +160,59 @@
     outline-color: #fff;
   }
 
+  /* Focus lands here after "Back to top"; the region itself needs no ring. */
+  main:focus {
+    outline: none;
+  }
+
   a {
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
+  }
+
+  /* Even line breaks: no lone last word in headings, fewer orphans in running text. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  blockquote {
+    text-wrap: pretty;
+  }
+
+  /* No double-tap delay on controls. */
+  a,
+  button,
+  summary,
+  input {
+    touch-action: manipulation;
+  }
+
+  /* Hover is gated to real hover devices, so touch gets a pressed state instead. */
+  @media (hover: none) {
+    .row-link:active {
+      background: hsl(var(--accent));
+    }
+    .btn-outline:active {
+      background: hsl(var(--accent));
+      border-color: hsl(var(--primary));
+    }
+    .btn-primary:active {
+      background: hsl(var(--primary) / 0.82);
+    }
+    .btn-light:active {
+      background: hsl(var(--band-mute));
+    }
+    .btn-advance:active {
+      background: hsl(158 84% 22%);
+    }
+    .copy-btn:active {
+      background: hsl(var(--accent));
+    }
   }
 
   /* Tabular figures for dates, counts and other data */
@@ -227,6 +278,22 @@
     .row-link:hover {
       background: hsl(var(--accent));
     }
+  }
+
+  /* Activity cells: the cursor trail sets --heat (0 to 1) from the Github script. */
+  [data-cell] {
+    position: relative;
+  }
+  [data-cell]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: hsl(var(--primary));
+    opacity: calc(var(--heat, 0) * 0.85);
+    box-shadow: 0 0 calc(var(--heat, 0) * 10px) calc(var(--heat, 0) * 1px)
+      hsl(var(--primary) / calc(var(--heat, 0) * 0.55));
   }
 
   .chip {

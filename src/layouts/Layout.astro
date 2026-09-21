@@ -1,6 +1,7 @@
 ---
 import Footer from '@/components/Footer.astro'
 import Head from '@/components/Head.astro'
+import BackToTop from '@/components/BackToTop.astro'
 import Header from '@/components/Header.astro'
 import { SITE } from '@/consts'
 
@@ -45,5 +46,6 @@ const { title, description, image, imageAlt, jsonLd } = Astro.props
       </main>
       <Footer />
     </div>
+    <BackToTop />
   </body>
 </html>

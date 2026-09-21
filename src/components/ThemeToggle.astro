@@ -38,6 +38,10 @@ import { Icon } from 'astro-icon/components'
 
     const applyTheme = (dark: boolean) => {
       root.classList.toggle('dark', dark)
+      ;(window as { syncThemeColor?: (doc: Document, dark: boolean) => void }).syncThemeColor?.(
+        document,
+        dark,
+      )
       try {
         localStorage.setItem('theme', dark ? 'dark' : 'light')
       } catch {

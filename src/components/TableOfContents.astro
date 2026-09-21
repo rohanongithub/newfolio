@@ -38,7 +38,7 @@ function buildToc(headings: Heading[]): Heading[] {
 ---
 
 <details
-  open
+  data-toc-mobile
   class="panel group col-start-2 mx-4 block p-4 xl:hidden"
 >
   <summary
@@ -112,6 +112,13 @@ function buildToc(headings: Heading[]): Heading[] {
     })
   }
 
+  // Collapsed on phones so the first paragraph is not pushed down; open from tablet width up.
+  function openTocOnWide() {
+    const toc = document.querySelector<HTMLDetailsElement>('[data-toc-mobile]')
+    if (toc && window.matchMedia('(min-width: 640px)').matches) toc.open = true
+  }
+
+  document.addEventListener('astro:page-load', openTocOnWide)
   document.addEventListener('astro:page-load', setupToc)
   document.addEventListener('astro:after-swap', setupToc)
 </script>

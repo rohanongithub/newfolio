@@ -1,0 +1,81 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<button
+  type="button"
+  class="back-to-top btn btn-outline fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-10 !size-10 !px-0 sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:right-[max(1.5rem,env(safe-area-inset-right))]"
+  aria-label="Back to top"
+  data-back-to-top
+>
+  <Icon name="lucide:arrow-up" class="size-4" />
+</button>
+
+<style>
+  .back-to-top {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition:
+      opacity var(--dur-base) var(--ease-out-expo),
+      transform var(--dur-base) var(--ease-out-expo),
+      visibility 0s linear var(--dur-base),
+      background-color 200ms;
+  }
+  .back-to-top[data-visible] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+</style>
+
+<script>
+  // Shown once the page has scrolled about 1.5 screens, and hidden over the footer.
+  function initBackToTop() {
+    const button = document.querySelector<HTMLButtonElement>('[data-back-to-top]')
+    const footer = document.querySelector('footer')
+    if (!button || button.dataset.bound) return
+    button.dataset.bound = 'true'
+
+    let pastFold = false
+    let overFooter = false
+    const update = () =>
+      button.toggleAttribute('data-visible', pastFold && !overFooter)
+
+    // A sentinel element would stretch short pages, so read the scroll position instead.
+    let ticking = false
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return
+        ticking = true
+        requestAnimationFrame(() => {
+          ticking = false
+          pastFold = window.scrollY > window.innerHeight * 1.5
+          update()
+        })
+      },
+      { passive: true },
+    )
+    if (footer) {
+      new IntersectionObserver(([entry]) => {
+        overFooter = entry.isIntersecting
+        update()
+      }).observe(footer)
+    }
+
+    button.addEventListener('click', () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
+      // Keyboard users carry on from the top of the page.
+      const main = document.getElementById('main')
+      if (main) {
+        main.setAttribute('tabindex', '-1')
+        main.focus({ preventScroll: true })
+      }
+    })
+  }
+
+  document.addEventListener('astro:page-load', initBackToTop)
+</script>

@@ -63,7 +63,19 @@ const facts = [work.role, work.year?.toString()].filter(Boolean).join(' · ')
       {work.description}
     </p>
     <ul class="mt-2 flex flex-wrap gap-1.5">
-      {work.tags.map((tag) => <li class="chip">{tag}</li>)}
+      {
+        work.tags.map((tag, i) => (
+          <li class={cn('chip', !full && i >= 3 && 'hidden sm:inline-flex')}>{tag}</li>
+        ))
+      }
+      {
+        !full && work.tags.length > 3 && (
+          <li class="chip sm:hidden">
+            +{work.tags.length - 3}
+            <span class="sr-only"> more tags</span>
+          </li>
+        )
+      }
     </ul>
   </div>
 </a>

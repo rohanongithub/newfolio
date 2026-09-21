@@ -29,7 +29,7 @@ const isShareCard = image.startsWith('/static/')
 ---
 
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <meta name="generator" content={Astro.generator} />
 
 <link rel="canonical" href={canonicalURL} />
@@ -102,6 +102,15 @@ const isShareCard = image.startsWith('/static/')
 
 <script is:inline>
   // Runs before first paint (and on every view-transition swap) so the page never flashes the wrong theme.
+  // The two theme-color tags are keyed to the OS setting; pin the one that matches the site's theme.
+  function syncThemeColor(doc, dark) {
+    var tags = doc.querySelectorAll('meta[name="theme-color"]')
+    if (tags.length < 2) return
+    tags[0].setAttribute('media', dark ? 'not all' : 'all')
+    tags[1].setAttribute('media', dark ? 'all' : 'not all')
+  }
+  window.syncThemeColor = syncThemeColor
+
   function applyTheme(doc) {
     var stored = null
     try {
@@ -112,6 +121,7 @@ const isShareCard = image.startsWith('/static/')
       (stored !== 'light' &&
         window.matchMedia('(prefers-color-scheme: dark)').matches)
     doc.documentElement.classList.toggle('dark', dark)
+    syncThemeColor(doc, dark)
   }
   applyTheme(document)
   document.addEventListener('astro:before-swap', function (event) {

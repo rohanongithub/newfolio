@@ -8,4 +8,9 @@ interface Props {
 const { class: className } = Astro.props
 ---
 
-<div class={cn('mx-auto w-full max-w-6xl px-4 sm:px-6', className)}><slot /></div>
+<div class={cn(
+      'mx-auto w-full max-w-6xl px-4 sm:px-6',
+      // Landscape phones: keep content clear of the notch (viewport-fit=cover).
+      '[padding-left:max(1rem,env(safe-area-inset-left))] [padding-right:max(1rem,env(safe-area-inset-right))] sm:[padding-left:max(1.5rem,env(safe-area-inset-left))] sm:[padding-right:max(1.5rem,env(safe-area-inset-right))]',
+      className,
+    )}><slot /></div>
