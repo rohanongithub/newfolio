@@ -1,0 +1,58 @@
+---
+import Container from '@/components/Container.astro'
+import { Icon } from 'astro-icon/components'
+
+export interface Crumb {
+  label: string
+  href?: string
+}
+
+interface Props {
+  title: string
+  crumbs?: Crumb[]
+  description?: string
+}
+
+const { title, crumbs = [], description } = Astro.props
+const trail: Crumb[] = [{ label: 'Rohan', href: '/' }, ...crumbs]
+---
+
+<section class="bg-band text-white">
+  <Container class="pb-6 pt-6 sm:pb-8 sm:pt-7">
+    <nav aria-label="Breadcrumb">
+      <ol class="meta flex flex-wrap items-center gap-1.5 !text-band-mute">
+        {
+          trail.map((crumb, i) => (
+            <li class="flex items-center gap-1.5">
+              {i > 0 && (
+                <Icon name="lucide:chevron-right" class="size-3" aria-hidden="true" />
+              )}
+              {crumb.href && i < trail.length - 1 ? (
+                <a href={crumb.href} class="-my-1.5 inline-flex items-center py-1.5 underline decoration-white/30 hover:decoration-white">
+                  {crumb.label}
+                </a>
+              ) : (
+                <span aria-current={i === trail.length - 1 ? 'page' : undefined}>
+                  {crumb.label}
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <h1
+      class="mt-3 max-w-4xl text-balance font-display text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl"
+    >
+      {title}
+    </h1>
+    {
+      description && (
+        <p class="mt-3 max-w-2xl text-base text-band-mute sm:text-lg">
+          {description}
+        </p>
+      )
+    }
+    <slot />
+  </Container>
+</section>

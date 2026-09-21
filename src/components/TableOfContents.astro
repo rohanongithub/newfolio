@@ -39,10 +39,10 @@ function buildToc(headings: Heading[]): Heading[] {
 
 <details
   open
-  class="group col-start-2 mx-4 block rounded-xl border p-4 xl:hidden"
+  class="panel group col-start-2 mx-4 block p-4 xl:hidden"
 >
   <summary
-    class="flex cursor-pointer items-center justify-between text-xl font-semibold group-open:pb-4"
+    class="panel-title flex cursor-pointer items-center justify-between group-open:pb-4"
   >
     Table of Contents
     <Icon
@@ -72,7 +72,7 @@ function buildToc(headings: Heading[]): Heading[] {
         id="toc-container"
       >
         <li>
-          <h2 class="mb-2 text-lg font-semibold">Table of Contents</h2>
+          <h2 class="panel-title mb-2">On this page</h2>
         </li>
         {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
       </ul>

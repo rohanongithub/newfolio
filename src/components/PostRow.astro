@@ -1,0 +1,44 @@
+---
+import { formatDate, readingTime } from '@/lib/utils'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  entry: CollectionEntry<'blog'>
+}
+
+const { entry } = Astro.props
+const date = entry.data.date
+const iso = date.toISOString().slice(0, 10)
+---
+
+<a href={`/blog/${entry.id}`} class="row-link group no-underline">
+  <time
+    datetime={iso}
+    class="meta hidden w-32 flex-shrink-0 pt-1.5 sm:block"
+  >
+    {formatDate(date)}
+  </time>
+  <div class="min-w-0 flex-1">
+    <h3
+      class="font-display text-lg font-semibold tracking-tight transition-colors group-hover:text-primary"
+    >
+      {entry.data.title}
+    </h3>
+    <p class="mt-1 max-w-[68ch] text-sm text-muted-foreground">
+      {entry.data.description}
+    </p>
+    <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+      <time datetime={iso} class="meta sm:hidden">{formatDate(date)}</time>
+      <span class="meta">{readingTime(entry.body!)}</span>
+      {
+        entry.data.tags && (
+          <ul class="flex flex-wrap gap-1.5">
+            {entry.data.tags.map((tag) => (
+              <li class="chip">{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</a>

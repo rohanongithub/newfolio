@@ -1,8 +1,8 @@
 ---
 import AuthorCard from '@/components/AuthorCard.astro'
-import BlogCard from '@/components/BlogCard.astro'
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
+import PageBand from '@/components/PageBand.astro'
+import PostRow from '@/components/PostRow.astro'
 import Layout from '@/layouts/Layout.astro'
 import { type CollectionEntry, getCollection } from 'astro:content'
 
@@ -32,30 +32,32 @@ const authorPosts = allPosts
   title={`${author.data.name} (Author)`}
   description={author.data.bio || `Profile of ${author.data.name}.`}
 >
-  <Container class="flex flex-col gap-y-6">
-    <Breadcrumbs
-      items={[
-        { href: '/authors', label: 'Authors', icon: 'lucide:users' },
-        { label: author.data.name, icon: 'lucide:user' },
-      ]}
-    />
-
+  <PageBand
+    title={author.data.name}
+    crumbs={[{ label: 'Authors', href: '/authors' }, { label: author.data.name }]}
+  />
+  <Container class="flex flex-col gap-8 pt-8 sm:pt-10">
     <section>
       <AuthorCard author={author} linkDisabled />
     </section>
-    <section class="flex flex-col gap-y-4">
-      <h2 class="text-2xl font-semibold">Posts by {author.data.name}</h2>
+
+    <section class="panel overflow-hidden" aria-labelledby="author-posts">
+      <header class="border-b px-4 py-4 sm:px-5">
+        <h2 id="author-posts" class="panel-title">
+          Posts by {author.data.name}
+        </h2>
+      </header>
       {
         authorPosts.length > 0 ? (
-          <ul class="not-prose flex flex-col gap-4">
+          <ul class="divide-y">
             {authorPosts.map((post) => (
               <li>
-                <BlogCard entry={post} />
+                <PostRow entry={post} />
               </li>
             ))}
           </ul>
         ) : (
-          <p class="text-muted-foreground">
+          <p class="px-4 py-6 text-muted-foreground sm:px-5">
             No posts available from this author.
           </p>
         )

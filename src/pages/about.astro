@@ -1,38 +1,50 @@
 ---
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
-import Link from '@/components/Link.astro'
-import ProjectCard from '@/components/ProjectCard.astro'
-import { SITE } from '@/consts'
+import PageBand from '@/components/PageBand.astro'
+import WorkRow from '@/components/WorkRow.astro'
 import Layout from '@/layouts/Layout.astro'
-import { getCollection } from 'astro:content'
+import { getWorks } from '@/lib/works'
 
-const projects = await getCollection('projects')
+const works = await getWorks()
 ---
 
-<Layout title="About" description={SITE.DESCRIPTION}>
-  <Container class="flex flex-col gap-y-6">
-    <Breadcrumbs items={[{ label: 'Works', icon: 'lucide:info' }]} />
+<Layout
+  title="Works"
+  description="Selected work by Rohan, SWE at TechCrafter."
+>
+  <PageBand title="Works" crumbs={[{ label: 'Works' }]} />
 
-    <section>
-      <div class="min-w-full">
-        <div class="prose prose-neutral mb-8 dark:prose-invert">
-          <p class="mb-4">
-          Its always been a little spark in me to get something done with the road I intend to go.
-          So I chose to recreate my portfolio from an older version that was intuitively boring to bring in fresh look.
-          Without further yapping, dig into my few works 👀
-          </p>
-          <p>
-            Below are the listings of some of the works that I loved working with and which 
-            have helped me learn so much all along the journey of full-stack 📚
-          </p>
-        </div>
+  <Container class="flex flex-col gap-8 pt-8 sm:pt-10">
+    <div class="flex max-w-[65ch] flex-col gap-4 text-lg leading-relaxed">
+      <p>
+        Its always been a little spark in me to get something done with the road
+        I intend to go. So I chose to recreate my portfolio from an older
+        version that was intuitively boring to bring in fresh look. Without
+        further yapping, dig into my few works.
+      </p>
+      <p class="text-muted-foreground">
+        Below are the listings of some of the works that I loved working with
+        and which have helped me learn so much all along the journey of
+        full-stack.
+      </p>
+    </div>
 
-        <h2 class="mb-4 text-2xl font-semibold">My works</h2>
-        <div class="flex flex-col gap-4">
-          {projects.map((project) => <ProjectCard project={project} />)}
-        </div>
-      </div>
+    <section class="panel overflow-hidden" aria-labelledby="all-works">
+      <header
+        class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
+      >
+        <h2 id="all-works" class="panel-title">All works</h2>
+        <span class="meta">{works.length} items</span>
+      </header>
+      <ul class="divide-y">
+        {
+          works.map((work) => (
+            <li>
+              <WorkRow work={work} full />
+            </li>
+          ))
+        }
+      </ul>
     </section>
   </Container>
 </Layout>

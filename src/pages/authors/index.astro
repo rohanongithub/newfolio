@@ -1,7 +1,7 @@
 ---
 import AuthorCard from '@/components/AuthorCard.astro'
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
+import PageBand from '@/components/PageBand.astro'
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 
@@ -9,8 +9,11 @@ const authors = await getCollection('authors')
 ---
 
 <Layout title="Authors" description="A list of authors on this site.">
-  <Container class="flex flex-col gap-y-6">
-    <Breadcrumbs items={[{ label: 'Authors', icon: 'lucide:users' }]} />
+  <PageBand
+    title="Authors"
+    crumbs={[{ label: 'Blog', href: '/blog' }, { label: 'Authors' }]}
+  />
+  <Container class="pt-8 sm:pt-10">
     {
       authors.length > 0 ? (
         <ul class="not-prose flex flex-col gap-4">
@@ -21,7 +24,7 @@ const authors = await getCollection('authors')
           ))}
         </ul>
       ) : (
-        <p class="text-center text-muted-foreground">No authors found.</p>
+        <p class="text-muted-foreground">No authors found.</p>
       )
     }
   </Container>

@@ -1,35 +1,185 @@
 ---
-import BlogCard from '@/components/BlogCard.astro'
+import CandidateBand from '@/components/CandidateBand.astro'
 import Container from '@/components/Container.astro'
-import Link from '@/components/Link.astro'
-import { buttonVariants } from '@/components/ui/button'
-import Bento from '@/components/Bento.astro'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { SITE } from '@/consts'
+import Github from '@/components/Github.astro'
+import Music from '@/components/Music.tsx'
+import PostRow from '@/components/PostRow.astro'
+import WorkRow from '@/components/WorkRow.astro'
+import { PROFILE, SITE, SOCIAL_LINKS } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
+import { getWorks } from '@/lib/works'
+import { Icon } from 'astro-icon/components'
 import { getCollection } from 'astro:content'
 
-const blog = (await getCollection('blog'))
+const works = await getWorks()
+
+const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE)
 
+const github = SOCIAL_LINKS.find((l) => l.label === 'GitHub')!.href
+const twitter = SOCIAL_LINKS.find((l) => l.label === 'Twitter')!.href
+
+const details: { label: string; value: string; href?: string; chip?: boolean }[] =
+  [
+    { label: 'Role', value: PROFILE.role },
+    { label: 'Education', value: PROFILE.education },
+    { label: 'Location', value: PROFILE.location },
+    { label: 'Status', value: PROFILE.status, chip: true },
+    { label: 'Email', value: SITE.EMAIL, href: `mailto:${SITE.EMAIL}` },
+    { label: 'GitHub', value: 'rohanongithub', href: github },
+    { label: 'Twitter', value: '@rohxnp', href: twitter },
+  ]
+
+const stack = [
+  { name: 'JavaScript', icon: 'javascript' },
+  { name: 'Node.js', icon: 'nodedotjs' },
+  { name: 'Express', icon: 'express' },
+  { name: 'PostgreSQL', icon: 'postgresql' },
+  { name: 'Python', icon: 'python' },
+  { name: 'Tailwind CSS', icon: 'tailwindcss' },
+  { name: 'Axios', icon: 'axios' },
+  { name: 'Git', icon: 'git' },
+  { name: 'Cursor', icon: 'cursor' },
+]
 ---
 
+<Layout title="Overview" description={SITE.DESCRIPTION}>
+  <CandidateBand />
 
-<Layout title="Home" description={SITE.DESCRIPTION}>
-  <Container class="flex flex-col gap-y-6">
-   
-    <Bento />
-    
-    
+  <Container
+    class="grid grid-cols-[minmax(0,1fr)] gap-8 pt-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start"
+  >
+    <div class="flex flex-col gap-8">
+      <section class="panel overflow-hidden" aria-labelledby="works-title">
+        <header
+          class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
+        >
+          <h2 id="works-title" class="panel-title">Work samples</h2>
+          <a
+            href="/about"
+            class="group -my-1.5 flex items-center gap-1 py-1.5 text-sm font-semibold text-primary no-underline"
+          >
+            All works
+            <Icon
+              name="lucide:arrow-right"
+              class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+            />
+          </a>
+        </header>
+        <ul class="divide-y">
+          {
+            works.map((work) => (
+              <li>
+                <WorkRow work={work} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
+      {
+        posts.length > 0 && (
+          <section class="panel overflow-hidden" aria-labelledby="writing-title">
+            <header
+              class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
+            >
+              <h2 id="writing-title" class="panel-title">
+                Writing
+              </h2>
+              <a
+                href="/blog"
+                class="group -my-1.5 flex items-center gap-1 py-1.5 text-sm font-semibold text-primary no-underline"
+              >
+                All posts
+                <Icon
+                  name="lucide:arrow-right"
+                  class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </a>
+            </header>
+            <ul class="divide-y">
+              {posts.map((post) => (
+                <li>
+                  <PostRow entry={post} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <Github />
+    </div>
+
+    <aside aria-label="Candidate details" class="flex flex-col gap-8">
+      <section class="panel p-4 sm:p-5" aria-labelledby="details-title">
+        <h2 id="details-title" class="panel-title">Details</h2>
+        <dl class="mt-2 divide-y text-sm">
+          {
+            details.map((item) => (
+              <div class="flex items-baseline justify-between gap-4 py-3">
+                <dt class="flex-shrink-0 text-muted-foreground">{item.label}</dt>
+                <dd class="min-w-0 break-words text-right font-medium">
+                  {item.chip ? (
+                    <span class="chip chip-amber">{item.value}</span>
+                  ) : item.href ? (
+                    <a
+                      href={item.href}
+                      target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+                      rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                      class="text-primary underline decoration-primary/30 hover:decoration-primary"
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    item.value
+                  )}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <a
+          href={PROFILE.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group mt-2 flex items-center gap-3 rounded-md border p-3 no-underline transition-colors duration-200 hover:border-primary hover:bg-accent"
+        >
+          <span
+            class="grid size-10 flex-shrink-0 place-items-center rounded-md bg-accent text-primary"
+          >
+            <Icon name="lucide:file-text" class="size-5" />
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-sm font-semibold">Resume</span>
+            <span class="block text-xs text-muted-foreground">Opens on Google Drive</span>
+          </span>
+          <Icon
+            name="lucide:arrow-up-right"
+            class="size-4 text-muted-foreground transition-colors group-hover:text-primary"
+          />
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </section>
+
+      <section class="panel p-4 sm:p-5" aria-labelledby="stack-title">
+        <h2 id="stack-title" class="panel-title">Stack</h2>
+        <ul class="mt-4 grid grid-cols-3 gap-2">
+          {
+            stack.map((tool) => (
+              <li class="flex flex-col items-center justify-center gap-2.5 rounded-md border bg-background px-1 py-3.5 text-center">
+                <Icon name={`simple-icons:${tool.icon}`} class="size-6" />
+                <span class="text-xs font-medium leading-none">{tool.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <Music client:load />
+
+    </aside>
   </Container>
 </Layout>
-

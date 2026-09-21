@@ -7,16 +7,46 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Geist', ...defaultTheme.fontFamily.sans],
-        mono: ['Geist Mono', ...defaultTheme.fontFamily.mono],
-        offbit: ['/fonts/Offbit-101.woff2','sans'],
-        offbitBold : ['/fonts/Offibt-101Bold.woff2','sans'],
-        stopwatch : ['/fonts/Stopwatch.woff2','sans']
-        
+        sans: ['Hanken Grotesk', ...defaultTheme.fontFamily.sans],
+        display: ['Bricolage Grotesque', ...defaultTheme.fontFamily.sans],
+        mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': 'hsl(var(--foreground))',
+            '--tw-prose-headings': 'hsl(var(--foreground))',
+            '--tw-prose-lead': 'hsl(var(--muted-foreground))',
+            '--tw-prose-links': 'hsl(var(--primary))',
+            '--tw-prose-bold': 'hsl(var(--foreground))',
+            '--tw-prose-counters': 'hsl(var(--muted-foreground))',
+            '--tw-prose-bullets': 'hsl(var(--input))',
+            '--tw-prose-hr': 'hsl(var(--border))',
+            '--tw-prose-quotes': 'hsl(var(--foreground))',
+            '--tw-prose-quote-borders': 'hsl(var(--input))',
+            '--tw-prose-captions': 'hsl(var(--muted-foreground))',
+            '--tw-prose-code': 'hsl(var(--foreground))',
+            '--tw-prose-pre-code': 'hsl(var(--foreground))',
+            '--tw-prose-pre-bg': 'hsl(var(--card))',
+            '--tw-prose-th-borders': 'hsl(var(--input))',
+            '--tw-prose-td-borders': 'hsl(var(--border))',
+            maxWidth: 'none',
+            blockquote: {
+              borderInlineStartWidth: '1px',
+              paddingInlineStart: '1.25rem',
+            },
+            'code::before': { content: '""' },
+            'code::after': { content: '""' },
+          },
+        },
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
@@ -42,7 +72,12 @@ const config: Config = {
           foreground: 'hsl(var(--destructive-foreground))',
         },
         border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        band: {
+          DEFAULT: 'hsl(var(--band))',
+          mute: 'hsl(var(--band-mute))',
+        },
       },
     },
   },

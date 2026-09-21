@@ -1,41 +1,72 @@
 ---
 import Container from '@/components/Container.astro'
-import Link from '@/components/Link.astro'
-import MobileMenu from '@/components/ui/mobile-menu'
-import { ModeToggle } from '@/components/ui/mode-toggle'
+import ThemeToggle from '@/components/ThemeToggle.astro'
 import { NAV_LINKS, SITE } from '@/consts'
-import { Image } from 'astro:assets'
-import logo from '../../public/static/logo.svg'
+import { getWorks } from '@/lib/works'
+import { getCollection } from 'astro:content'
+
+const path = Astro.url.pathname
+
+const counts: Record<string, number> = {
+  '/about': (await getWorks()).length,
+  '/blog': (await getCollection('blog', ({ data }) => !data.draft)).length,
+}
+
+const isActive = (href: string) => {
+  if (href === '/') return path === '/'
+  if (href === '/about') return path.startsWith('/about') || path.startsWith('/projects')
+  if (href === '/blog')
+    return (
+      path.startsWith('/blog') ||
+      path.startsWith('/tags') ||
+      path.startsWith('/authors')
+    )
+  return false
+}
 ---
 
-<header
-  class="sticky top-0 z-10 bg-background/50 backdrop-blur-md"
-  transition:persist
->
+<header class="sticky top-0 z-20 border-b bg-card">
   <Container>
-    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
-      <Link
+    <div class="flex h-14 items-center justify-between gap-2 sm:gap-4">
+      <a
         href="/"
-        class="flex flex-shrink-0 items-center gap-2 text-xl font-semibold transition-colors duration-300 hover:text-primary"
+        class="flex-shrink-0 font-display text-xl font-bold tracking-tight no-underline max-[359px]:text-base"
       >
-        <Image src={logo} alt="Logo" class="size-8" />
         {SITE.TITLE}
-      </Link>
-      <div class="flex items-center gap-2 md:gap-4 font-[offbit]">
-        <nav class="hidden items-center gap-4 text-xl sm:gap-6 md:flex">
+      </a>
+
+      <div class="flex items-center gap-1 sm:gap-3">
+      <nav aria-label="Primary">
+        <ul class="flex items-stretch">
           {
-            NAV_LINKS.map((item) => (
-              <Link
-                href={item.href}
-                class="capitalize text-foreground/60 transition-colors hover:text-foreground/80"
-              >
-                {item.label}
-              </Link>
-            ))
+            NAV_LINKS.map((item) => {
+              const active = isActive(item.href)
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    class:list={[
+                      'relative flex h-14 items-center gap-2 px-2.5 text-sm font-semibold capitalize no-underline transition-colors duration-200 max-[359px]:px-1.5 sm:px-4',
+                      active
+                        ? 'text-primary after:absolute after:inset-x-2.5 after:bottom-0 after:h-0.5 after:bg-primary max-[359px]:after:inset-x-1.5 sm:after:inset-x-4'
+                        : 'text-muted-foreground hover:text-foreground',
+                    ]}
+                  >
+                    {item.label}
+                    {counts[item.href] !== undefined && (
+                      <span class="meta hidden rounded bg-secondary px-1.5 py-px text-foreground sm:inline">
+                        {counts[item.href]}
+                      </span>
+                    )}
+                  </a>
+                </li>
+              )
+            })
           }
-        </nav>
-        <MobileMenu client:load transition:persist />
-        <!-- <ModeToggle client:load transition:persist /> -->
+        </ul>
+      </nav>
+      <ThemeToggle />
       </div>
     </div>
   </Container>

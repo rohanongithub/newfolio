@@ -1,56 +1,53 @@
 ---
 import Link from '@/components/Link.astro'
-import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 
 const { prevPost, nextPost } = Astro.props
 ---
 
-<div class="col-start-2 flex flex-col gap-4 sm:flex-row">
+<nav
+  aria-label="More posts"
+  class="col-start-2 flex flex-col gap-4 border-t pt-6 sm:flex-row"
+>
   <Link
     href={nextPost ? `/blog/${nextPost.id}` : '#'}
     class={cn(
-      buttonVariants({ variant: 'outline' }),
-      'rounded-xl group flex items-center justify-start w-full sm:w-1/2 h-fit',
-      !nextPost && 'pointer-events-none opacity-50 cursor-not-allowed',
+      'btn btn-outline group h-auto w-full justify-start gap-3 py-3 no-underline sm:w-1/2',
+      !nextPost && 'pointer-events-none opacity-50',
     )}
     aria-disabled={!nextPost}
+    tabindex={nextPost ? undefined : -1}
   >
-    <div class="mr-2 flex-shrink-0">
-      <Icon
-        name="lucide:arrow-left"
-        class="size-4 transition-transform group-hover:-translate-x-1"
-      />
-    </div>
-    <div class="flex flex-col items-start overflow-hidden">
-      <span class="text-left text-xs text-muted-foreground">Next Post</span>
-      <span class="w-full truncate text-left text-sm"
-        >{nextPost?.data.title || 'Latest post!'}</span
+    <Icon
+      name="lucide:arrow-left"
+      class="size-4 flex-shrink-0 transition-transform duration-200 group-hover:-translate-x-1"
+    />
+    <span class="flex min-w-0 flex-col items-start text-left">
+      <span class="meta">Newer post</span>
+      <span class="w-full truncate text-sm font-semibold"
+        >{nextPost?.data.title || 'You are on the latest post'}</span
       >
-    </div>
+    </span>
   </Link>
   <Link
     href={prevPost ? `/blog/${prevPost.id}` : '#'}
     class={cn(
-      buttonVariants({ variant: 'outline' }),
-      'rounded-xl group flex items-center justify-end w-full sm:w-1/2 h-fit',
-      !prevPost && 'pointer-events-none opacity-50 cursor-not-allowed',
+      'btn btn-outline group h-auto w-full justify-end gap-3 py-3 no-underline sm:w-1/2',
+      !prevPost && 'pointer-events-none opacity-50',
     )}
     aria-disabled={!prevPost}
+    tabindex={prevPost ? undefined : -1}
   >
-    <div class="flex flex-col items-end overflow-hidden">
-      <span class="text-right text-xs text-muted-foreground">Previous Post</span
+    <span class="flex min-w-0 flex-col items-end text-right">
+      <span class="meta">Older post</span>
+      <span class="w-full truncate text-sm font-semibold"
+        >{prevPost?.data.title || 'This is the first post'}</span
       >
-      <span class="w-full truncate text-right text-sm"
-        >{prevPost?.data.title || 'Last post!'}</span
-      >
-    </div>
-    <div class="ml-2 flex-shrink-0">
-      <Icon
-        name="lucide:arrow-right"
-        class="size-4 transition-transform group-hover:translate-x-1"
-      />
-    </div>
+    </span>
+    <Icon
+      name="lucide:arrow-right"
+      class="size-4 flex-shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+    />
   </Link>
-</div>
+</nav>

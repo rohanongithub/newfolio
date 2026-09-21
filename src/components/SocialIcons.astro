@@ -1,6 +1,5 @@
 ---
 import Link from '@/components/Link.astro'
-import { buttonVariants } from '@/components/ui/button'
 import type { Link as SocialLink } from '@/consts'
 import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
@@ -18,7 +17,6 @@ const iconMap = {
   LinkedIn: 'lucide:linkedin',
   Twitter: 'lucide:twitter',
   Email: 'lucide:mail',
-  
 }
 
 const getSocialLink = ({ href, label }: SocialLink) => ({
@@ -39,8 +37,8 @@ const getSocialLink = ({ href, label }: SocialLink) => ({
             href={href}
             aria-label={ariaLabel}
             title={ariaLabel}
-            class={buttonVariants({ variant: 'outline', size: 'icon' })}
-            external
+            class="btn btn-outline inline-flex size-10 !px-0"
+            external={!href.startsWith('mailto:')}
           >
             <Icon name={iconName} class="size-4" />
           </Link>

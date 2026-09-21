@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-21T12:00:00Z",
+  "title": "Design System: rohandev",
+  "extensions": {
+    "colorMeta": {
+      "cobalt-band": { "role": "primary", "displayName": "Cobalt Band", "canonical": "hsl(232 91% 55%)", "hex": "#2440F5", "tonalRamp": ["#030D49", "#06157A", "#081EAA", "#0A26DB", "#2440F5", "#556AF7", "#9EAAFA", "#E7EAFE"] },
+      "cobalt-link": { "role": "primary", "displayName": "Cobalt Link (light text/selected state)", "canonical": "hsl(232 91% 55%)", "hex": "#2440F5", "tonalRamp": ["#030D49", "#06157A", "#081EAA", "#0A26DB", "#2440F5", "#556AF7", "#9EAAFA", "#E7EAFE"] },
+      "periwinkle-link": { "role": "primary", "displayName": "Periwinkle Link (dark text/selected state)", "canonical": "hsl(231 100% 76%)", "hex": "#8597FF", "tonalRamp": ["#000B4D", "#001380", "#001BB3", "#0022E6", "#1A3CFF", "#4D67FF", "#99A8FF", "#E5E9FF"] },
+      "night-band": { "role": "primary", "displayName": "Night Band (dark band)", "canonical": "hsl(232 76% 41%)", "hex": "#192EB8" },
+      "cobalt-mute": { "role": "primary", "displayName": "Cobalt Mute", "canonical": "hsl(232 100% 92%)", "hex": "#D6DCFF" },
+      "cobalt-wash": { "role": "primary", "displayName": "Cobalt Wash", "canonical": "hsl(232 100% 96%)", "hex": "#EBEDFF" },
+      "advance-green": { "role": "secondary", "displayName": "Advance Green", "canonical": "hsl(158 84% 26%)", "hex": "#0B7A51", "tonalRamp": ["#06462F", "#0A754E", "#0EA46D", "#12D38C", "#2CEDA6", "#5BF1BA", "#A1F7D7", "#E8FDF5"] },
+      "stage-amber": { "role": "tertiary", "displayName": "Stage Amber", "canonical": "hsl(44 100% 82%)", "hex": "#FFE7A3", "tonalRamp": ["#4D3800", "#805E00", "#B38300", "#E6A800", "#FFC21A", "#FFCF4D", "#FFE499", "#FFF8E5"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "hsl(222 43% 97%)", "hex": "#F4F6FB", "tonalRamp": ["#162037", "#24355B", "#334A80", "#415FA4", "#5B79BE", "#7F96CC", "#B6C3E2", "#EDF0F8"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "hsl(228 40% 9%)", "hex": "#0E1120", "tonalRamp": ["#171D36", "#263059", "#36447D", "#4557A1", "#5E71BA", "#8290C9", "#B8C0E0", "#EDEFF7"] },
+      "night-ground": { "role": "neutral", "displayName": "Night Ground", "canonical": "hsl(228 32% 7%)", "hex": "#0C0E18", "tonalRamp": ["#1A1F32", "#2B3454", "#3D4876", "#4E5D97", "#6876B1", "#8995C2", "#BCC2DC", "#EEF0F6"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "hsl(222 26% 86%)", "hex": "#D2D8E5" }
+    },
+    "typographyMeta": {
+      "display-name": { "displayName": "Display name", "purpose": "The candidate name in the profile band only; 3.75rem below sm, 6rem from sm." },
+      "page-title": { "displayName": "Page title", "purpose": "H1 on the band of Works, blog and taxonomy pages; 2.25rem then 3rem." },
+      "wordmark": { "displayName": "Wordmark", "purpose": "rohandev in the header; no logo mark." },
+      "panel-title": { "displayName": "Panel and row title", "purpose": "Panel headings and Work/Post row titles, Bricolage 600." },
+      "body": { "displayName": "Body", "purpose": "Descriptions, details values, footer; max 68ch." },
+      "lead": { "displayName": "Lead", "purpose": "Intro copy on Works; max 65ch." },
+      "label": { "displayName": "Label", "purpose": "Chips and tags, no uppercase." },
+      "button": { "displayName": "Button", "purpose": "All buttons, 14px semibold (16px on the band)." },
+      "meta": { "displayName": "Meta", "purpose": "Dates, counts, repository addresses, breadcrumbs; JetBrains Mono, tabular numerals. Plain captions (Opens on Google Drive) are sans xs muted, not mono." }
+    },
+    "shadows": [
+      { "name": "panel-shadow (light)", "value": "0 1px 0 hsl(222 30% 80% / 0.35), 0 8px 24px -16px hsl(228 40% 20% / 0.18)", "purpose": "Hairline lip plus soft negative-spread drop on every .panel in light theme (--panel-shadow in :root)." },
+      { "name": "panel-shadow (dark)", "value": "0 1px 0 hsl(0 0% 100% / 0.03), 0 10px 28px -18px hsl(0 0% 0% / 0.75)", "purpose": "Same role in dark theme (--panel-shadow in .dark)." },
+      { "name": "advance-ring", "value": "0 0 0 1px rgb(255 255 255 / 0.28), 0 6px 16px -8px hsl(158 84% 12% / 0.7)", "purpose": "The .btn-advance ring: the one lifted control, on the cobalt band." },
+      { "name": "stage-halo", "value": "0 0 0 5px rgb(255 255 255 / 0.18)", "purpose": "Ring around the current-stage dot on the rail." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Authored motion: rail fill (720ms), rail fill-in on load (1100ms, 150ms delay), current dot scale (500ms), stage dot fill/border and stage label colour/padding changes (300ms)." },
+      { "name": "check-fade", "value": "opacity 200ms ease-out", "purpose": "Check icon fading in on completed stage dots." },
+      { "name": "row-transition", "value": "200ms (transition-colors)", "purpose": "Row hover fill, button colour changes, Link and AuthorCard avatar-ring hovers, arrow translate-x 2px on hover." },
+      { "name": "press", "value": "translateY(1px) on :active", "purpose": "Button press nudge (.btn)." },
+      { "name": "advance-sequence", "value": "setStage(2), then mailto after 900ms (immediate under reduced motion); reset to Screening on window focus or after 7000ms", "purpose": "The one authored moment: Advance to interview." },
+      { "name": "reduced-motion", "value": "animation-duration and transition-duration 0.01ms !important; scroll-behavior auto", "purpose": "Global prefers-reduced-motion clamp; .stage-fill draw-in animation also disabled." },
+      { "name": "theme-flip", "value": ".disable-transitions on <html> for two animation frames", "purpose": "Suppresses per-element transitions so the whole page flips theme together." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ],
+    "focus": {
+      "global": ":focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; border-radius: 4px; }",
+      "on-band": ".bg-band :focus-visible { outline-color: #fff; } (the ring equals the band colour, so focus inside the band is white)",
+      "ring": "--ring is cobalt (232 91% 55%) in light and periwinkle (231 100% 76%) in dark",
+      "shadcn-buttons": "ui/button and ui/badge use focus-visible:ring-2 ring-ring (button adds ring-offset-2)"
+    },
+    "themes": {
+      "mechanism": "Tailwind darkMode: selector; .dark on <html>. Inline script in Head.astro applies stored 'theme' (localStorage) or prefers-color-scheme before paint and on astro:before-swap. ThemeToggle sets aria-pressed and persists the choice.",
+      "mapping": {
+        "background": { "light": "paper hsl(222 43% 97%)", "dark": "night-ground hsl(228 32% 7%)" },
+        "foreground": { "light": "ink hsl(228 40% 9%)", "dark": "night-ink hsl(222 30% 94%)" },
+        "card": { "light": "hsl(0 0% 100%)", "dark": "hsl(228 28% 10.5%)" },
+        "band": { "light": "hsl(232 91% 55%)", "dark": "hsl(232 76% 41%)" },
+        "band-mute": { "light": "hsl(232 100% 92%)", "dark": "hsl(232 100% 90%)" },
+        "primary (text/selected)": { "light": "hsl(232 91% 55%)", "dark": "hsl(231 100% 76%)" },
+        "primary-foreground": { "light": "white", "dark": "hsl(228 40% 9%)" },
+        "stage / stage-foreground": { "light": "hsl(44 100% 82%) / hsl(36 100% 16%)", "dark": "unchanged (theme-invariant, lives on the band)" },
+        "amber chip": { "light": "hsl(44 100% 82%) on hsl(36 100% 16%)", "dark": "hsl(38 55% 20%) with hsl(44 100% 82%) text" },
+        "additive": { "light": "hsl(158 84% 26%)", "dark": "hsl(158 72% 28%)" },
+        "secondary": { "light": "hsl(222 33% 92%)", "dark": "hsl(228 22% 17%)" },
+        "muted": { "light": "hsl(222 33% 94%)", "dark": "hsl(228 22% 14%)" },
+        "muted-foreground": { "light": "hsl(226 22% 32%)", "dark": "hsl(224 16% 68%)" },
+        "accent": { "light": "hsl(232 100% 96%)", "dark": "hsl(230 34% 19%)" },
+        "accent-foreground": { "light": "hsl(232 80% 36%)", "dark": "hsl(230 100% 84%)" },
+        "destructive": { "light": "hsl(0 72% 42%)", "dark": "hsl(0 72% 55%)" },
+        "border": { "light": "hsl(222 26% 86%)", "dark": "hsl(228 20% 20%)" },
+        "input": { "light": "hsl(222 16% 58%)", "dark": "hsl(228 14% 45%)" },
+        "ring": { "light": "hsl(232 91% 55%)", "dark": "hsl(231 100% 76%)" }
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Stage Rail",
+      "kind": "custom",
+      "refersTo": "candidate-band",
+      "description": "The signature: four-stage hiring rail on the cobalt band. Screening is current.",
+      "html": "<div class=\"ds-band\"><div class=\"ds-rail\"><div class=\"ds-track\"><div class=\"ds-fill\"></div></div><div class=\"ds-stage ds-done\" style=\"left:0\"><span class=\"ds-dot\"></span><span class=\"ds-label\">Applied</span></div><div class=\"ds-stage ds-current\" style=\"left:calc((100% - 20px) * 0.3333)\"><span class=\"ds-dot\"></span><span class=\"ds-label\">Screening</span></div><div class=\"ds-stage\" style=\"left:calc((100% - 20px) * 0.6667)\"><span class=\"ds-dot\"></span><span class=\"ds-label\">Interview</span></div><div class=\"ds-stage\" style=\"left:calc(100% - 20px)\"><span class=\"ds-dot\"></span><span class=\"ds-label ds-end\">Offer</span></div></div></div>",
+      "css": ".ds-band { background: hsl(232 91% 55%); color: #fff; padding: 24px 24px 40px; font-family: 'Hanken Grotesk', sans-serif; } .ds-rail { position: relative; height: 56px; } .ds-track { position: absolute; top: 9px; left: 10px; right: 10px; height: 2px; background: rgb(255 255 255 / 0.5); } .ds-fill { position: absolute; inset: 0; background: #fff; transform-origin: left center; transform: scaleX(0.3333); transition: transform 720ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-stage { position: absolute; top: 0; width: 20px; } .ds-dot { position: relative; z-index: 1; display: block; width: 20px; height: 20px; box-sizing: border-box; border-radius: 999px; border: 2px solid rgb(255 255 255 / 0.55); background: hsl(232 91% 55%); transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-label { position: absolute; top: 30px; left: 0; white-space: nowrap; font-size: 14px; line-height: 20px; font-weight: 500; color: hsl(232 100% 92%); padding: 1px 0; border-radius: 4px; transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1), color 300ms cubic-bezier(0.16, 1, 0.3, 1), padding 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-end { left: auto; right: 0; } .ds-done .ds-dot { background: #fff; border-color: #fff; } .ds-done .ds-label { color: #fff; } .ds-current .ds-dot { background: hsl(44 100% 82%); border-color: hsl(44 100% 82%); transform: scale(1.2); box-shadow: 0 0 0 5px rgb(255 255 255 / 0.18); } .ds-current .ds-label { background: hsl(44 100% 82%); color: hsl(36 100% 16%); font-weight: 700; padding: 1px 8px; margin-left: -2px; }"
+    },
+    {
+      "name": "Advance Button",
+      "kind": "button",
+      "refersTo": "button-advance",
+      "description": "The one lifted control; green fill with the advance ring, on the band.",
+      "html": "<div class=\"ds-onband\"><button class=\"ds-btn-advance\">Advance to interview</button></div>",
+      "css": ".ds-onband { background: hsl(232 91% 55%); padding: 24px; } .ds-btn-advance { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 20px; border: 0; border-radius: 6px; background: hsl(158 84% 26%); color: #fff; font: 600 16px 'Hanken Grotesk', sans-serif; white-space: nowrap; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.28), 0 6px 16px -8px hsl(158 84% 12% / 0.7); transition: background-color 200ms, transform 200ms, box-shadow 200ms; cursor: pointer; } .ds-btn-advance:hover { background: hsl(158 84% 22%); } .ds-btn-advance:active { transform: translateY(1px); } .ds-btn-advance:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }"
+    },
+    {
+      "name": "Resume Button",
+      "kind": "button",
+      "refersTo": "button-light",
+      "description": "White button used only on the band.",
+      "html": "<div class=\"ds-onband\"><button class=\"ds-btn-light\">Resume</button></div>",
+      "css": ".ds-onband { background: hsl(232 91% 55%); padding: 24px; } .ds-btn-light { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 20px; border: 0; border-radius: 6px; background: #fff; color: hsl(232 91% 55%); font: 600 16px 'Hanken Grotesk', sans-serif; white-space: nowrap; transition: background-color 200ms, transform 200ms; cursor: pointer; } .ds-btn-light:hover { background: hsl(232 100% 92%); } .ds-btn-light:active { transform: translateY(1px); } .ds-btn-light:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Neutral control on paper. Icon-only variant (theme toggle, social icons) is a 40px square; the theme toggle is 36px below sm.",
+      "html": "<button class=\"ds-btn-outline\">Outline</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid hsl(222 16% 58%); border-radius: 6px; background: #fff; color: hsl(228 40% 9%); font: 600 14px 'Hanken Grotesk', sans-serif; transition: background-color 200ms, border-color 200ms; cursor: pointer; } .ds-btn-outline:hover { background: hsl(232 100% 96%); border-color: hsl(232 91% 55%); } .ds-btn-outline:active { transform: translateY(1px); } .ds-btn-outline:focus-visible { outline: 2px solid hsl(232 91% 55%); outline-offset: 2px; border-radius: 4px; }"
+    },
+    {
+      "name": "Status Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Default, amber (status/current stage), cobalt and green (live) chips.",
+      "html": "<span class=\"ds-chip\">TypeScript</span> <span class=\"ds-chip ds-amber\">Open to projects</span> <span class=\"ds-chip ds-cobalt\">Cobalt</span> <span class=\"ds-chip ds-green\">Now playing</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; background: hsl(222 33% 92%); color: hsl(228 40% 9%); font: 500 12px/20px 'Hanken Grotesk', sans-serif; } .ds-amber { background: hsl(44 100% 82%); color: hsl(36 100% 16%); } .ds-cobalt { background: hsl(232 100% 96%); color: hsl(232 80% 36%); } .ds-green { background: hsl(158 84% 26%); color: #fff; }"
+    },
+    {
+      "name": "Panel with Work Row",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Hairline panel with a header row and a dense, whole-row link.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2 class=\"ds-panel-title\">Work samples</h2><a class=\"ds-all\" href=\"#\">All works</a></header><a class=\"ds-row\" href=\"#\"><div class=\"ds-thumb\">T</div><div><h3 class=\"ds-row-title\">Tremis</h3><p class=\"ds-row-desc\">An in-memory database.</p><ul class=\"ds-tags\"><li class=\"ds-chip\">Database</li></ul></div></a></section>",
+      "css": ".ds-panel { background: #fff; border: 1px solid hsl(222 26% 86%); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 0 hsl(222 30% 80% / 0.35), 0 8px 24px -16px hsl(228 40% 20% / 0.18); font-family: 'Hanken Grotesk', sans-serif; color: hsl(228 40% 9%); max-width: 640px; } .ds-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid hsl(222 26% 86%); } .ds-panel-title { margin: 0; font: 600 18px/1.25 'Bricolage Grotesque', sans-serif; letter-spacing: -0.025em; } .ds-all { font-size: 14px; font-weight: 600; color: hsl(232 91% 55%); text-decoration: none; } .ds-row { display: flex; gap: 16px; padding: 16px; text-decoration: none; color: inherit; transition: background-color 200ms; } .ds-row:hover { background: hsl(232 100% 96%); } .ds-row:hover .ds-row-title { color: hsl(232 91% 55%); } .ds-row:focus-visible { outline: 2px solid hsl(232 91% 55%); outline-offset: 2px; } .ds-thumb { flex: none; width: 56px; height: 56px; display: grid; place-items: center; border: 1px solid hsl(222 26% 86%); border-radius: 6px; background: hsl(232 91% 55%); color: #fff; font: 700 24px 'Bricolage Grotesque', sans-serif; } .ds-row-title { margin: 0; font: 600 18px 'Bricolage Grotesque', sans-serif; letter-spacing: -0.025em; transition: color 200ms; } .ds-row-desc { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: hsl(226 22% 32%); } .ds-tags { display: flex; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; } .ds-chip { display: inline-flex; padding: 2px 8px; border-radius: 4px; background: hsl(222 33% 92%); font: 500 12px/20px 'Hanken Grotesk', sans-serif; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "header",
+      "description": "Sticky white bar: wordmark left, tabs with mono counts, theme toggle.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-wordmark\" href=\"#\">rohandev</a><nav class=\"ds-tabs\"><a class=\"ds-tab ds-active\" href=\"#\">Overview</a><a class=\"ds-tab\" href=\"#\">Works <span class=\"ds-count\">4</span></a><a class=\"ds-tab\" href=\"#\">Blog <span class=\"ds-count\">1</span></a></nav></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 24px; background: #fff; border-bottom: 1px solid hsl(222 26% 86%); font-family: 'Hanken Grotesk', sans-serif; } .ds-wordmark { font: 700 20px 'Bricolage Grotesque', sans-serif; letter-spacing: -0.025em; color: hsl(228 40% 9%); text-decoration: none; } .ds-tabs { display: flex; } .ds-tab { position: relative; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 16px; font-size: 14px; font-weight: 600; color: hsl(226 22% 32%); text-decoration: none; transition: color 200ms; } .ds-tab:hover { color: hsl(228 40% 9%); } .ds-tab:focus-visible { outline: 2px solid hsl(232 91% 55%); outline-offset: 2px; border-radius: 4px; } .ds-active { color: hsl(232 91% 55%); } .ds-active::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 0; height: 2px; background: hsl(232 91% 55%); } .ds-count { padding: 1px 6px; border-radius: 4px; background: hsl(222 33% 92%); color: hsl(228 40% 9%); font: 400 12px 'JetBrains Mono', monospace; }"
+    },
+    {
+      "name": "Name Block",
+      "kind": "custom",
+      "refersTo": "monogram-tile",
+      "description": "Signature of the profile band at sm and up: the R tile stretches to the height of the name and subtitle. Top of the tile matches the top of the name ink; bottom sits on the subtitle baseline.",
+      "html": "<div class=\"ds-onband\"><div class=\"ds-name-block\"><div class=\"ds-r\">R</div><div><h1 class=\"ds-name\">Rohan</h1><p class=\"ds-sub\">SWE at TechCrafter <span aria-hidden=\"true\">&middot;</span> BTech CSE, JSSATE</p></div></div></div>",
+      "css": ".ds-onband { background: hsl(232 91% 55%); padding: 24px; color: #fff; font-family: 'Hanken Grotesk', sans-serif; } .ds-name-block { display: flex; align-items: stretch; gap: 24px; } .ds-r { flex: none; width: 116px; display: grid; place-items: center; border-radius: 8px; background: #fff; color: hsl(232 91% 55%); font: 800 72px 'Bricolage Grotesque', sans-serif; } .ds-name { margin: -0.128em 0 0; font: 800 96px/0.9 'Bricolage Grotesque', sans-serif; letter-spacing: -0.025em; } .ds-sub { margin: 12px 0 -0.41em; font-size: 18px; line-height: 28px; color: hsl(232 100% 92%); }"
+    },
+    {
+      "name": "Stack Tile",
+      "kind": "custom",
+      "refersTo": "stack-tile",
+      "description": "Uniform monochrome tile; a 3x3 grid of these forms the Stack panel.",
+      "html": "<div class=\"ds-tile\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg><span>Node.js</span></div>",
+      "css": ".ds-tile { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 88px; padding: 14px 4px; border: 1px solid hsl(222 26% 86%); border-radius: 6px; background: hsl(222 43% 97%); color: hsl(228 40% 9%); font: 500 12px/1 'Hanken Grotesk', sans-serif; text-align: center; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Candidate Record",
+    "overview": "The site is Rohan's profile inside a recruiter's own applicant-tracking tool: a cobalt band carrying the name and the pipeline rail, then hairline-bordered panels of dense rows and key-value data on cool paper. It reads as working software, not a brochure. Panels, rows, chips and a stage stepper do the work that hero art and card grids do elsewhere. The one authored moment is the rail: \"Advance to interview\" slides the stage marker from Screening to Interview, then opens a prefilled email.\n\nDensity is moderate and data-first. Structure comes from 1px hairlines and background tone, not from shadow or decoration. Colour is disciplined: cobalt owns the band and the stage rail, signal green means advance, amber means the current stage or a status, and everything else is paper and ink. Two themes ship (light and dark) and follow the same anatomy; dark is an ink-navy ground tinted toward the cobalt hue, never pure black.",
+    "keyCharacteristics": [
+      "Full-width cobalt band on every page (profile band on the home page, a shorter page band with breadcrumb elsewhere) above a paper ground.",
+      "Hairline-bordered panels with a barely-there shadow; rows separated by dividers, not cards inside cards.",
+      "Bricolage Grotesque for the name and headings, Hanken Grotesk for UI, JetBrains Mono only for dates, counts and addresses.",
+      "One signature component (the four-stage rail) and one authored motion moment.",
+      "Monochrome icons throughout; the Stack grid uses currentColor glyphs, never brand colours.",
+      "Identity is a name, not a logo: the header carries only the \"rohandev\" wordmark. The one mark is a white \"R\" tile beside the name in the profile band, echoed as the favicon and on the share cards."
+    ],
+    "rules": [
+      { "name": "The Band Stays Cobalt Rule", "body": "The band and everything sitting on it (stage rail, amber stage marker, white Resume button) do not change hue between themes. Only the cobalt used as text or selected state lifts to periwinkle in dark.", "section": "colors" },
+      { "name": "The Signal Rule", "body": "Green means advance or live; amber means the current stage or a status. Neither is decoration. Do not introduce a fourth signal colour.", "section": "colors" },
+      { "name": "The Tinted Night Rule", "body": "Dark surfaces are tinted toward hue 228-232. Pure black and pure white are not used for ground or text in dark.", "section": "colors" },
+      { "name": "The Data Is Mono Rule", "body": "Only dates, IDs, counts, addresses and breadcrumbs use the mono face. Names, titles and sentences never do.", "section": "typography" },
+      { "name": "The Two-Voice Rule", "body": "Bricolage is for names and headings, Hanken for everything else. No third proportional face.", "section": "typography" },
+      { "name": "The Hairline First Rule", "body": "Separate with a 1px border or divider before reaching for a shadow. New surfaces use the panel shadow or none; do not invent a second panel elevation.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do anchor every page with a full-width cobalt band, and let the band's contents (rail, Resume, Advance) stay theme-invariant.",
+      "Do use hairline borders and dividers for structure; reserve the panel shadow for panels and the Advance ring for the one action button.",
+      "Do set dates, counts, IDs, URLs and breadcrumbs in JetBrains Mono with tabular numerals.",
+      "Do keep icons monochrome (currentColor), including tech-stack glyphs.",
+      "Do use the ease-out exponential curve cubic-bezier(0.16, 1, 0.3, 1) for authored motion, and honour prefers-reduced-motion.",
+      "Do write the theme choice to localStorage under \"theme\" and apply it before paint; follow the system until the visitor chooses.",
+      "Do lift cobalt text to periwinkle in dark and keep cobalt as a fill only on the band.",
+      "Do draw focus outlines in white inside the cobalt band and in `--ring` everywhere else; keep control borders at the `--input` hairline so they hold 3:1."
+    ],
+    "donts": [
+      "Don't open a page with a hero-plus-project-card-grid, or restyle the site as a dark bento.",
+      "Don't add a logo mark to the header or next to the wordmark; the \"R\" tile belongs to the profile band's name block.",
+      "Don't colour tech-stack icons in their brand hues.",
+      "Don't introduce a fourth signal colour or use green and amber decoratively.",
+      "Don't use pure black or pure white for dark-theme ground and text.",
+      "Don't stack bordered panels inside panels, or add a second shadow level.",
+      "Don't set body copy or headings in mono, or add a third proportional typeface.",
+      "Don't hide or delay content behind entrance animation beyond the rail's own draw-in."
+    ]
+  }
+}

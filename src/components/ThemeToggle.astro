@@ -1,0 +1,55 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="btn btn-outline inline-flex size-9 flex-shrink-0 !px-0 sm:size-10"
+  aria-label="Switch to dark theme"
+  aria-pressed="false"
+  title="Toggle theme"
+>
+  <Icon name="lucide:moon" class="size-4 dark:hidden" />
+  <Icon name="lucide:sun" class="hidden size-4 dark:block" />
+</button>
+
+<script>
+  function initThemeToggle() {
+    const button = document.querySelector<HTMLButtonElement>(
+      '[data-theme-toggle]',
+    )
+    if (!button) return
+    const root = document.documentElement
+
+    const sync = () => {
+      const dark = root.classList.contains('dark')
+      button.setAttribute('aria-pressed', String(dark))
+      button.setAttribute(
+        'aria-label',
+        dark ? 'Switch to light theme' : 'Switch to dark theme',
+      )
+    }
+    sync()
+
+    button.addEventListener('click', () => {
+      // Suppress per-element transitions for one frame so the whole page flips together.
+      root.classList.add('disable-transitions')
+      const dark = !root.classList.contains('dark')
+      root.classList.toggle('dark', dark)
+      try {
+        localStorage.setItem('theme', dark ? 'dark' : 'light')
+      } catch {
+        // Private mode or blocked storage: the choice just won't persist.
+      }
+      sync()
+      window.requestAnimationFrame(() =>
+        window.requestAnimationFrame(() =>
+          root.classList.remove('disable-transitions'),
+        ),
+      )
+    })
+  }
+
+  document.addEventListener('astro:page-load', initThemeToggle)
+</script>

@@ -3,69 +3,108 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Geist';
-  src: url('/fonts/GeistVF.woff2') format('woff2');
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/Bricolage-Grotesque-Variable.woff2') format('woff2');
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('/fonts/Hanken-Grotesk-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMonoVF.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrains-Mono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
-}
-@font-face{
-  font-family: 'offbit';
-  src: url('/fonts/OffBit-101.woff2') format('woff2');
-}
-@font-face{
-  font-family: 'offbit-bold';
-  src: url('/fonts/Offbit-101Bold.woff2') format('woff2');
-}
-@font-face{
-  font-family: 'stopwatch';
-  src: url('/fonts/Stopwatch.woff2') format('woff2');
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 80.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 80.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 80.1%;
-    --accent-foreground: 0 0% 9%;
-    --additive: 112 50% 36%;
-    --additive-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    /* Ground and ink */
+    --background: 222 43% 97%;
+    --foreground: 228 40% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 228 40% 9%;
+
+    /* Cobalt owns the profile band; primary is the same hue as text/selected state */
+    --band: 232 91% 55%;
+    --band-mute: 232 100% 92%;
+    --primary: 232 91% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* The "current stage" chip lives on the band, so it never changes with theme */
+    --stage: 44 100% 82%;
+    --stage-foreground: 36 100% 16%;
+
+    --panel-shadow:
+      0 1px 0 hsl(222 30% 80% / 0.35), 0 8px 24px -16px hsl(228 40% 20% / 0.18);
+
+    --secondary: 222 33% 92%;
+    --secondary-foreground: 228 40% 9%;
+    --muted: 222 33% 94%;
+    --muted-foreground: 226 22% 32%;
+    --accent: 232 100% 96%;
+    --accent-foreground: 232 80% 36%;
+
+    /* Advance / offer */
+    --additive: 158 84% 26%;
+    --additive-foreground: 0 0% 100%;
+
+    /* Screening chip */
+    --amber: 44 100% 82%;
+    --amber-foreground: 36 100% 16%;
+
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 26% 86%;
+    --input: 222 16% 58%;
+    --ring: 232 91% 55%;
   }
+
+  /* Dark: ink-navy ground tinted toward the cobalt hue, never pure black */
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --additive: 112 50% 36%;
-    --additive-foreground: 0 0% 9%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --background: 228 32% 7%;
+    --foreground: 222 30% 94%;
+    --card: 228 28% 10.5%;
+    --card-foreground: 222 30% 94%;
+
+    --band: 232 76% 41%;
+    --band-mute: 232 100% 90%;
+    --primary: 231 100% 76%;
+    --primary-foreground: 228 40% 9%;
+
+    --secondary: 228 22% 17%;
+    --secondary-foreground: 222 30% 94%;
+    --muted: 228 22% 14%;
+    --muted-foreground: 224 16% 68%;
+    --accent: 230 34% 19%;
+    --accent-foreground: 230 100% 84%;
+
+    --additive: 158 72% 28%;
+    --additive-foreground: 0 0% 100%;
+
+    --amber: 38 55% 20%;
+    --amber-foreground: 44 100% 82%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 228 20% 20%;
+    --input: 228 14% 45%;
+    --ring: 231 100% 76%;
+
+    --panel-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.03), 0 10px 28px -18px hsl(0 0% 0% / 0.75);
   }
 
   *,
@@ -77,25 +116,158 @@
   html {
     color-scheme: light;
     @apply bg-background text-foreground;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
 
     &.dark {
       color-scheme: dark;
     }
+  }
 
-    ::-webkit-scrollbar-corner {
-      @apply bg-transparent;
-    }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    caret-color: hsl(var(--primary));
+  }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* The band is the same cobalt as the ring, so focus inside it is drawn in white. */
+  .bg-band :focus-visible {
+    outline-color: #fff;
+  }
+
+  a {
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Tabular figures for dates, counts and other data */
+  time,
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Themed scrollbars */
+  * {
+    scrollbar-color: hsl(var(--input)) transparent;
+    scrollbar-width: thin;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--input));
+    border-radius: 999px;
+    border: 2px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
   .disable-transitions,
   .disable-transitions * {
     @apply !transition-none;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
+  /* Record vocabulary: the shared parts of the candidate-record UI */
+  .panel {
+    @apply rounded-lg border bg-card;
+    box-shadow: var(--panel-shadow);
+  }
+
+  .panel-title {
+    @apply font-display text-lg font-semibold leading-tight tracking-tight;
+  }
+
+  .row-link {
+    @apply relative flex gap-4 px-4 py-4 transition-colors duration-200;
+  }
+  .row-link:hover {
+    background: hsl(var(--accent));
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs font-medium leading-5;
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+  .chip-amber {
+    background: hsl(var(--amber));
+    color: hsl(var(--amber-foreground));
+  }
+  .chip-cobalt {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+  .chip-green {
+    background: hsl(var(--additive));
+    color: hsl(var(--additive-foreground));
+  }
+
+  .meta {
+    @apply font-mono text-xs text-muted-foreground;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Buttons of the record */
+  .btn {
+    @apply inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 text-sm font-semibold transition-[background-color,transform,box-shadow] duration-200;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-light {
+    background: #fff;
+    color: hsl(var(--band));
+  }
+  .btn-light:hover {
+    background: hsl(var(--band-mute));
+  }
+  .btn-advance {
+    background: hsl(var(--additive));
+    color: hsl(var(--additive-foreground));
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.28),
+      0 6px 16px -8px hsl(158 84% 12% / 0.7);
+  }
+  .btn-advance:hover {
+    background: hsl(158 84% 22%);
+  }
+  .btn-outline {
+    @apply border bg-card;
+    border-color: hsl(var(--input));
+  }
+  .btn-outline:hover {
+    background: hsl(var(--accent));
+    border-color: hsl(var(--primary));
+  }
+
   article {
-    @apply prose-headings:scroll-mt-20 prose-headings:break-words first:prose-headings:mt-0 prose-p:break-words prose-a:!break-words prose-a:!decoration-muted-foreground prose-a:underline-offset-[3px] prose-a:transition-colors hover:prose-a:!decoration-foreground prose-pre:!px-0 prose-img:mx-auto;
+    @apply prose-headings:scroll-mt-20 prose-headings:break-words prose-headings:font-display prose-headings:tracking-tight first:prose-headings:mt-0 prose-p:break-words prose-a:!break-words prose-a:!text-primary prose-a:!decoration-primary/40 prose-a:underline-offset-[3px] prose-a:transition-colors hover:prose-a:!decoration-primary prose-pre:!px-0 prose-img:mx-auto;
 
     .katex-display {
       @apply overflow-x-auto overflow-y-hidden py-4;
@@ -119,24 +291,21 @@
 
     /* Inline code */
     :not(pre) > code {
-      @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium;
+      @apply relative rounded bg-secondary px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium;
     }
 
     /* Code blocks */
     figure[data-rehype-pretty-code-figure] {
       @apply relative;
 
-      /* Code block titles */
       [data-rehype-pretty-code-title] {
-        @apply break-words rounded-t-xl border-x border-t px-4 py-2 text-sm font-medium text-foreground;
+        @apply break-words rounded-t-lg border-x border-t px-4 py-2 text-sm font-medium text-foreground;
 
-        /* Remove top margin from code block if a title is present */
         & + pre {
           @apply mt-0 rounded-t-none;
         }
       }
 
-      /* Shadcn-like scrollbar */
       pre::-webkit-scrollbar {
         @apply h-2.5 w-2.5;
       }
@@ -149,16 +318,13 @@
         @apply rounded-full bg-border bg-clip-padding p-px;
       }
 
-      /* Code block styles */
       pre {
-        @apply static max-h-[600px] overflow-auto rounded-xl border bg-secondary/20 py-4 text-sm leading-loose;
+        @apply static max-h-[600px] overflow-auto rounded-lg border bg-card py-4 text-sm leading-loose;
 
-        /* Code block content */
         > code {
           @apply whitespace-pre-wrap;
           counter-reset: line;
 
-          /* For code blocks with line numbers */
           &[data-line-numbers] {
             > [data-line]::before {
               counter-increment: line;
@@ -167,22 +333,18 @@
             }
           }
 
-          /* For each line in the code block */
           > [data-line] {
             @apply px-4;
           }
 
-          /* Highlighted lines */
           [data-highlighted-line] {
-            @apply bg-foreground/10;
+            @apply bg-primary/10;
           }
 
-          /* Highlighted characters */
           [data-highlighted-chars] > span {
-            @apply bg-muted-foreground/40 py-[7px];
+            @apply bg-primary/20 py-[7px];
           }
 
-          /* Diff lines */
           .diff {
             &.add {
               @apply bg-additive/15;
@@ -192,7 +354,6 @@
             }
           }
 
-          /* Copy button */
           > button:has(> span) {
             @apply right-0.5 top-[3px] m-0 size-8 rounded-md bg-background p-1 backdrop-blur-none transition-all;
           }

@@ -1,7 +1,7 @@
 ---
-import BlogCard from '@/components/BlogCard.astro'
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
+import PageBand from '@/components/PageBand.astro'
+import PostRow from '@/components/PostRow.astro'
 import PaginationComponent from '@/components/ui/pagination'
 import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
@@ -32,33 +32,39 @@ const postsByYear = page.data.reduce(
 )
 
 const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
+
+const crumbs = [
+  { label: 'Blog', href: page.currentPage > 1 ? '/blog' : undefined },
+  ...(page.currentPage > 1 ? [{ label: `Page ${page.currentPage}` }] : []),
+]
 ---
 
-<Layout title="Blog" description="Blog">
-  <Container class="flex grow flex-col gap-y-6">
-    <Breadcrumbs
-      items={[
-        { label: 'Blog', href: '/blog', icon: 'lucide:archive' },
-        { label: `Page ${page.currentPage}`, icon: 'lucide:folder-open' },
-      ]}
-    />
+<Layout title="Blog" description="Notes and write-ups by Rohan.">
+  <PageBand
+    title="Blog"
+    crumbs={crumbs}
+    description="Notes and write-ups on what I build and learn."
+  />
 
-    <div class="flex min-h-[calc(100vh-18rem)] flex-col gap-y-8">
-      {
-        years.map((year) => (
-          <section class="flex flex-col gap-y-4">
-            <div class="font-semibold">{year}</div>
-            <ul class="not-prose flex flex-col gap-4">
-              {postsByYear[year].map((post) => (
-                <li>
-                  <BlogCard entry={post} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
-      }
-    </div>
+  <Container class="flex flex-col gap-8 pt-8 sm:pt-10">
+    {
+      years.map((year) => (
+        <section class="panel overflow-hidden" aria-labelledby={`year-${year}`}>
+          <header class="border-b px-4 py-4 sm:px-5">
+            <h2 id={`year-${year}`} class="panel-title tnum">
+              {year}
+            </h2>
+          </header>
+          <ul class="divide-y">
+            {postsByYear[year].map((post) => (
+              <li>
+                <PostRow entry={post} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
 
     <PaginationComponent
       currentPage={page.currentPage}

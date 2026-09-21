@@ -1,92 +1,106 @@
 ---
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
 import Link from '@/components/Link.astro'
-import { buttonVariants } from '@/components/ui/button'
+import PageBand from '@/components/PageBand.astro'
 import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
-import { cn } from '@/lib/utils'
 ---
 
 <Layout title="Tremis" description={SITE.DESCRIPTION}>
-  <Container class="flex grow flex-col gap-y-6">
-    <Breadcrumbs items={[{ label: '???', icon: 'lucide:circle-help' }]} />
+  <PageBand
+    title="Tremis"
+    crumbs={[{ label: 'Works', href: '/about' }, { label: 'Tremis' }]}
+    description="An in-memory database"
+  />
 
-    <section
-      class="flex flex-col items-center justify-center text-center"
-    >
-      <div class="max-w-md">
-        <h1 class="mb-4 text-3xl font-bold">Tremis</h1>
-        <p>An in-memory database </p>
-    </div>
-    </section>
-
-    
-    <div class="max-w-full">
-      <h1 class="mb-4 text-3xl font-bold">Introduction</h1>
+  <Container class="pt-8 sm:pt-10">
+    <article class="prose max-w-[68ch]">
+      <h2>Introduction</h2>
       <p>
-        Tremis is an in-memory database that is used in modern database management system for small scale projects like a leaderboard system, a mini chat application, a user details storage system. 
-        Well, for those who are new to databases and are ready to get their hands dirty, let us dive a little deeper on what is an in-memory database, what, why and how Tremis ?
-    </p>
-  </div>
+        Tremis is an in-memory database that is used in modern database
+        management system for small scale projects like a leaderboard system, a
+        mini chat application, a user details storage system. Well, for those
+        who are new to databases and are ready to get their hands dirty, let us
+        dive a little deeper on what is an in-memory database, what, why and how
+        Tremis ?
+      </p>
 
-  <div class="max-w-full">
-    <h1 class="mb-4 text-3xl font-bold">In memory database</h1>
-    <p>
-      <em>
-        An <strong>in-memory database</strong>(IMDb, or main memory database system (MMDB) or memory resident database) is a database management system that primarily relies on main memory for computer data storage.
-      </em>
-    </p>
-</div>
+      <h2>In memory database</h2>
+      <p>
+        <em>
+          An <strong>in-memory database</strong>(IMDb, or main memory database
+          system (MMDB) or memory resident database) is a database management
+          system that primarily relies on main memory for computer data storage.
+        </em>
+      </p>
 
-<div class = "max-w-full"> 
-  <h1 class="mb-4 text-3xl font-bold">Tremis</h1>
-  <p class="mb-4">
-    Well, tremis follows similar ideologies of Redis and the best part is that Tremis is open-source. Tremis was created for many reasons one of which was to bring back the gist to people of an in-memory database since the market for it is quite unknown and can be used for small-scale projects. 
-  </p>
-  <p>
-    Thus, Tremis is an in memory database system that uses RAM to store data unlike the relational databases that stores in the disk. Tremis was created keeping in mind the well known REDIS database and I wanted to build something of my own .
-  </p> 
-  <p>
-    Since Redis is no more open-source my sole aim was to make Tremis open source and also add in functionalities that Redis doesn't have. Overall Tremis can be indeed used for setting up small databases and can be much efficient since that is what is in-memory databases are known for.
-  </p>
-</div>
+      <h2>Tremis</h2>
+      <p>
+        Well, tremis follows similar ideologies of Redis and the best part is
+        that Tremis is open-source. Tremis was created for many reasons one of
+        which was to bring back the gist to people of an in-memory database
+        since the market for it is quite unknown and can be used for small-scale
+        projects.
+      </p>
+      <p>
+        Thus, Tremis is an in memory database system that uses RAM to store data
+        unlike the relational databases that stores in the disk. Tremis was
+        created keeping in mind the well known REDIS database and I wanted to
+        build something of my own .
+      </p>
+      <p>
+        Since Redis is no more open-source my sole aim was to make Tremis open
+        source and also add in functionalities that Redis doesn't have. Overall
+        Tremis can be indeed used for setting up small databases and can be much
+        efficient since that is what is in-memory databases are known for.
+      </p>
 
-<div class="max-w-full">
-  <h1 class="mb-4 text-3xl font-bold">What does Tremis do ? </h1>
-  <p>Well, when it comes to the functionalities of tremis and what does it put on the table it is quite the operations that Redis offered.</p>
-  
-  <ol class="list-disc">
-    <li>Basic operations (SET,GET,DEL)</li>
-    <li>Increment and Decrement operation</li>
-    <li>Data structures(List and Sets)</li>
-    <li>Publish and Subscribe functionality</li>
-  </ol>
-</div>
+      <h2>What does Tremis do ?</h2>
+      <p>
+        Well, when it comes to the functionalities of tremis and what does it
+        put on the table it is quite the operations that Redis offered.
+      </p>
+      <ul>
+        <li>Basic operations (SET,GET,DEL)</li>
+        <li>Increment and Decrement operation</li>
+        <li>Data structures(List and Sets)</li>
+        <li>Publish and Subscribe functionality</li>
+      </ul>
 
-<div class="max-w-full">
-  <h1 class="mb-4 text-3xl font-bold">How did I build tremis ?</h1>
-  <p>
-    To build Tremis, the initial step was to choose a decent programming language to get kick started with. 
-    I surfed the internet and all I heard was GoLang everywhere I looked since Redis and goLang go better together. 
-    This was justified in this <Link href="https://abhishek1987.medium.com/go-and-redis-better-together-cbcd1f94ac31">blog</Link>.
-    With All the facts that the blog presented i was convinced to go ahead and get started with goLang to create Tremis. 
-  </p>
-</div>
+      <h2>How did I build tremis ?</h2>
+      <p>
+        To build Tremis, the initial step was to choose a decent programming
+        language to get kick started with. I surfed the internet and all I heard
+        was GoLang everywhere I looked since Redis and goLang go better
+        together. This was justified in this <Link
+          href="https://abhishek1987.medium.com/go-and-redis-better-together-cbcd1f94ac31"
+          external
+          underline
+          class="text-primary">blog</Link
+        >. With All the facts that the blog presented i was convinced to go
+        ahead and get started with goLang to create Tremis.
+      </p>
 
-<div class="max-w-full">
-  <h1 class="mb-4 text-3xl font-bold">The basic operation</h1>
-  <p class="mb-4">
-    Tremis has three basic operations which are the sole of any database. Think of a database as an excel sheet, you add items, you retrieve values or you delete them. Well, that's what Tremis does to. 
-    To add items into the database, there is <strong>SET</strong> commands available, to retrieve values there is <strong>GET</strong> command and to delete there is  the <strong>DEL</strong> command. 
-    The working of these three is quite easy to understand and quite overwhelming if you're aware of objects. 
-  </p>
-
-  <p>
-    Objects, dictionary(in python) store values in a the form of key-value pairs. That is all you need to know about how the basic operations were designed. To set a value you give a key and a value associated to it for quicker retrieval of value when you use the <strong>GET</strong> command. 
-    So when you try to retrieve a value you just have to specify the key associated to the value and there you are, your value will be presented within no time. Similarly, to delete a value you just delete the key and the value associated to it is also erased.
-  </p> 
-</div>
-
+      <h2>The basic operation</h2>
+      <p>
+        Tremis has three basic operations which are the sole of any database.
+        Think of a database as an excel sheet, you add items, you retrieve
+        values or you delete them. Well, that's what Tremis does to. To add
+        items into the database, there is <strong>SET</strong> commands available,
+        to retrieve values there is <strong>GET</strong> command and to delete there
+        is the <strong>DEL</strong> command. The working of these three is quite
+        easy to understand and quite overwhelming if you're aware of objects.
+      </p>
+      <p>
+        Objects, dictionary(in python) store values in a the form of key-value
+        pairs. That is all you need to know about how the basic operations were
+        designed. To set a value you give a key and a value associated to it for
+        quicker retrieval of value when you use the <strong>GET</strong> command.
+        So when you try to retrieve a value you just have to specify the key associated
+        to the value and there you are, your value will be presented within no time.
+        Similarly, to delete a value you just delete the key and the value associated
+        to it is also erased.
+      </p>
+    </article>
   </Container>
 </Layout>

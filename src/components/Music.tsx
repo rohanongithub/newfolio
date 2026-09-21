@@ -1,73 +1,75 @@
-import React, { useEffect, useState } from 'react'
+import { Music as MusicIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { fetchLatestSong, type Track } from '../lib/music'
 
 export default function Music() {
   const [track, setTrack] = useState<Track | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    let active = true
     fetchLatestSong()
-      .then((data) => setTrack(data))
-      .catch(() => setTrack(null))
-      .finally(() => setLoading(false))
+      .then((data) => active && setTrack(data))
+      .catch(() => active && setTrack(null))
+    return () => {
+      active = false
+    }
   }, [])
 
-  if (loading) {
-    return <p>Loading music...</p>
-  }
+  // Third-party data: render nothing rather than an error a recruiter would see.
+  if (!track) return null
 
-  if (!track) {
-    return <p>Something absolutely horrible has gone wrong</p>
-  }
+  // last.fm serves a grey star as its "no artwork" placeholder; treat it as missing.
+  const art = track.image
+    ?.map((img) => img['#text'])
+    .reverse()
+    .find((src) => src && !src.includes('2a96cbd8b46e442fc41c2b86b821562f'))
+  const nowPlaying = track['@attr']?.nowplaying === 'true'
 
   return (
-    <div className="relative font-[offbit] flex h-full w-full flex-col items-start justify-between gap-4 p-2 md:flex-row md:items-center">
-      <div className="relative flex h-full w-full flex-row items-start justify-between gap-4">
-        <img
-          src={track.image[3]['#text']}
-          alt="Album art"
-          width={64}
-          height={64}
-          className="mb-2 w-20 max-w-20 rounded-xl border border-border grayscale md:w-full"
-        />
-        <div className="flex min-w-0 flex-1 flex-col justify-end overflow-hidden">
-          <div className="flex flex-col">
-            <span className="mb-2 flex gap-2">
-              <span className="text-sm text-primary">
-                {track['@attr']?.nowplaying === 'true' ? 'Now playing...' : 'Last played...'}
-              </span>
-            </span>
-            <span className="mb-2 truncate text-lg font-bold leading-none">{track.name}</span>
-            <span className="w-[85%] truncate text-sm text-muted-foreground">
-              <span className="font-semibold text-secondary-foreground">by</span> {track.artist['#text']}
-            </span>
-            <span className="w-[85%] truncate text-sm text-muted-foreground">
-              <span className="font-semibold text-secondary-foreground">on</span> {track.album['#text']}
-            </span>
-          </div>
-        </div>
+    <section className="panel p-4 sm:p-5" aria-labelledby="listening-title">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 id="listening-title" className="panel-title">
+          Listening
+        </h2>
+        <span className={nowPlaying ? 'chip chip-green' : 'chip'}>
+          {nowPlaying ? 'Now playing' : 'Last played'}
+        </span>
       </div>
       <a
         href={track.url}
-        aria-label="View on last.fm"
-        title="View on last.fm"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-0 right-0 m-0 flex w-fit items-end rounded-full border bg-secondary/50 p-3 text-primary transition-all duration-300 hover:rotate-12 hover:ring-1 hover:ring-primary"
+        className="group mt-4 flex items-center gap-3 no-underline"
       >
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 19 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M18.9995 2.03029C19.0163 1.47826 18.5823 1.01719 18.0303 1.00046L9.03442 0.727856C8.48239 0.711128 8.02132 1.14508 8.00459 1.69711C7.98786 2.24914 8.42181 2.71021 8.97384 2.72694L16.9702 2.96925L16.7279 10.9656C16.7111 11.5176 17.1451 11.9787 17.6971 11.9954C18.2491 12.0121 18.7102 11.5782 18.7269 11.0262L18.9995 2.03029ZM1.68536 18.7282L18.6854 2.7282L17.3146 1.2718L0.314635 17.2718L1.68536 18.7282Z"
-            fill="white"
+        {art ? (
+          <img
+            src={art}
+            alt=""
+            width={56}
+            height={56}
+            className="size-14 flex-shrink-0 rounded-md border object-cover"
           />
-        </svg>
+        ) : (
+          <div
+            className="grid size-14 flex-shrink-0 place-items-center rounded-md bg-secondary font-display text-xl font-bold text-primary"
+            aria-hidden="true"
+          >
+            <MusicIcon className="size-6" />
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className="truncate font-display text-base font-semibold tracking-tight transition-colors group-hover:text-primary">
+            {track.name}
+          </p>
+          <p className="truncate text-sm text-muted-foreground">
+            {track.artist['#text']}
+          </p>
+          <p className="truncate text-sm text-muted-foreground">
+            {track.album['#text']}
+          </p>
+        </div>
+        <span className="sr-only">(opens on last.fm in a new tab)</span>
       </a>
-    </div>
+    </section>
   )
 }
