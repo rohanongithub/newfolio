@@ -4,6 +4,7 @@ import ThemeToggle from '@/components/ThemeToggle.astro'
 import { NAV_LINKS, SITE } from '@/consts'
 import { getWorks } from '@/lib/works'
 import { getCollection } from 'astro:content'
+import { Icon } from 'astro-icon/components'
 
 const path = Astro.url.pathname
 
@@ -36,7 +37,7 @@ const isActive = (href: string) => {
       </a>
 
       <div class="flex items-center gap-1 sm:gap-3">
-      <nav aria-label="Primary">
+      <nav aria-label="Primary" class="hidden sm:block">
         <ul class="relative flex items-stretch" data-nav-list>
           {
             NAV_LINKS.map((item) => {
@@ -72,9 +73,57 @@ const isActive = (href: string) => {
         </ul>
       </nav>
       <ThemeToggle />
+      <button
+        type="button"
+        data-nav-toggle
+        class="btn btn-outline inline-flex size-9 flex-shrink-0 !px-0 sm:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav-panel"
+      >
+        <Icon name="lucide:menu" class="size-4" data-icon="open" />
+        <Icon name="lucide:x" class="hidden size-4" data-icon="close" />
+      </button>
       </div>
     </div>
   </Container>
+
+  <div id="mobile-nav-panel" data-mobile-nav class="mobile-nav-panel sm:hidden" hidden>
+    <div class="mobile-nav-panel-inner">
+    <Container>
+      <nav aria-label="Mobile">
+        <ul class="divide-y divide-border py-2">
+          {
+            NAV_LINKS.map((item) => {
+              const active = isActive(item.href)
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    class:list={[
+                      'row-link items-center justify-between !px-1 !py-3 text-sm font-semibold capitalize no-underline',
+                      active
+                        ? 'text-primary'
+                        : 'text-muted-foreground hover:text-foreground',
+                    ]}
+                  >
+                    <span>{item.label}</span>
+                    {counts[item.href] !== undefined && (
+                      <span class="meta rounded bg-secondary px-1.5 py-px text-foreground">
+                        {counts[item.href]}
+                      </span>
+                    )}
+                  </a>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </nav>
+    </Container>
+    </div>
+  </div>
 </header>
 
 <noscript>
@@ -90,6 +139,14 @@ const isActive = (href: string) => {
       a[aria-current='page']::after {
         inset-inline: 1rem;
       }
+    }
+    /* No JS to open the panel, so fall back to the always-visible horizontal nav. */
+    [data-nav-toggle],
+    #mobile-nav-panel {
+      display: none !important;
+    }
+    nav[aria-label='Primary'] {
+      display: block !important;
     }
   </style>
 </noscript>
@@ -191,4 +248,72 @@ const isActive = (href: string) => {
     if (list && el && link) settle(el, measure(list, link))
   })
   document.addEventListener('astro:page-load', initNavIndicator)
+
+  // Mobile hamburger: a small dropdown panel below the header, closed by
+  // default on every navigation. Elements are re-queried per call rather than
+  // captured in a closure, since the header (and its button/panel) is
+  // replaced on each Astro navigation but this module only loads once.
+  function findMobileNav() {
+    const button = document.querySelector<HTMLButtonElement>('[data-nav-toggle]')
+    const panel = document.querySelector<HTMLElement>('[data-mobile-nav]')
+    return { button, panel }
+  }
+
+  function isMobileNavOpen() {
+    return findMobileNav().button?.getAttribute('aria-expanded') === 'true'
+  }
+
+  function setMobileNavOpen(open: boolean) {
+    const { button, panel } = findMobileNav()
+    if (!button || !panel) return
+    button.setAttribute('aria-expanded', String(open))
+    button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
+    panel.hidden = !open
+    button.querySelector('[data-icon="open"]')?.classList.toggle('hidden', open)
+    button.querySelector('[data-icon="close"]')?.classList.toggle('hidden', !open)
+  }
+
+  function initMobileNav() {
+    const { button, panel } = findMobileNav()
+    if (!button || !panel) return
+    setMobileNavOpen(false)
+    button.addEventListener('click', () => setMobileNavOpen(!isMobileNavOpen()))
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setMobileNavOpen(false)
+    })
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !isMobileNavOpen()) return
+    setMobileNavOpen(false)
+    findMobileNav().button?.focus()
+  })
+
+  document.addEventListener('click', (event) => {
+    if (!isMobileNavOpen()) return
+    const { button, panel } = findMobileNav()
+    const target = event.target as Node
+    // The theme toggle sits beside the hamburger; switching theme with the
+    // dropdown open shouldn't close it, so the reveal plays with the menu
+    // still in place instead of the menu vanishing first.
+    const themeToggle = document.querySelector('[data-theme-toggle]')
+    if (
+      button?.contains(target) ||
+      panel?.contains(target) ||
+      themeToggle?.contains(target)
+    ) {
+      return
+    }
+    setMobileNavOpen(false)
+  })
+
+  // A rotate or resize past the breakpoint reveals the horizontal nav; don't
+  // leave the dropdown open underneath it.
+  window
+    .matchMedia('(min-width: 640px)')
+    .addEventListener('change', (event) => {
+      if (event.matches) setMobileNavOpen(false)
+    })
+
+  document.addEventListener('astro:page-load', initMobileNav)
 </script>

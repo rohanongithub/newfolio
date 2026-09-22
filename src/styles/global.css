@@ -52,6 +52,8 @@
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     /* Gentler start than out-expo, so a full-screen reveal reads as a spread, not a flash */
     --ease-reveal: cubic-bezier(0.4, 0, 0.2, 1);
+    /* Overshoots past rest before settling, for the one place something should feel pulled and let go (the mobile nav panel and its rows) */
+    --ease-spring-out: cubic-bezier(0.3, 2.2, 0.6, 1);
     --dur-fast: 150ms;
     --dur-base: 250ms;
     --dur-reveal: 650ms;
@@ -278,6 +280,66 @@
     .row-link:hover {
       background: hsl(var(--accent));
     }
+  }
+
+  /* Pulled open and let go: the panel's content travels past rest, catches,
+     and springs back, instead of arriving flat. The outer frame itself never
+     moves and clips its content (overflow: hidden), so the bounce's overshoot
+     stays inside the card and never uncovers whatever sits behind the header
+     (the cobalt band on the home page) at the seam above it. The
+     reduced-motion blanket above clamps every duration here to 0.01ms, so
+     this collapses to an instant snap rather than a visible bounce. */
+  @keyframes mobile-nav-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes mobile-nav-in {
+    from {
+      transform: translateY(-32px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes mobile-nav-item-in {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .mobile-nav-panel {
+    @apply absolute inset-x-0 top-full overflow-hidden border-b bg-card;
+    box-shadow: var(--panel-shadow);
+    animation: mobile-nav-fade var(--dur-fast) var(--ease-out-expo);
+  }
+  .mobile-nav-panel-inner {
+    animation: mobile-nav-in 520ms var(--ease-spring-out);
+  }
+  .mobile-nav-panel ul > li {
+    animation: mobile-nav-item-in 480ms var(--ease-spring-out) backwards;
+  }
+  .mobile-nav-panel ul > li:nth-child(1) {
+    animation-delay: 70ms;
+  }
+  .mobile-nav-panel ul > li:nth-child(2) {
+    animation-delay: 150ms;
+  }
+  .mobile-nav-panel ul > li:nth-child(3) {
+    animation-delay: 230ms;
+  }
+  .mobile-nav-panel ul > li:nth-child(4) {
+    animation-delay: 310ms;
+  }
+  .mobile-nav-panel ul > li:nth-child(5) {
+    animation-delay: 390ms;
   }
 
   /* Activity cells: the cursor trail sets --heat (0 to 1) from the Github script. */

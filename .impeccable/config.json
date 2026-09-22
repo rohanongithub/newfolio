@@ -1,3 +1,27 @@
 {
-  "buildPath": "code"
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "var(--ease-spring-out)",
+        "createdAt": "2026-09-22T16:59:37.855Z",
+        "reason": "user confirmed: explicitly requested a bounce/spring pulled-and-let-go entrance for the mobile nav dropdown panel and its rows"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "createdAt": "2026-09-22T16:59:37.881Z",
+        "reason": "user confirmed: same mobile-nav bounce request, this is the --ease-spring-out token definition itself"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.3, 2.2, 0.6, 1)",
+        "createdAt": "2026-09-22T17:02:14.616Z",
+        "reason": "user confirmed: strengthened the mobile-nav bounce curve overshoot amplitude on request"
+      }
+    ]
+  }
 }
