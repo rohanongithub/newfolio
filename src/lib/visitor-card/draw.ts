@@ -192,7 +192,7 @@ function drawFoot(ctx: Ctx, palette: Palette) {
   spaced(ctx, 'DOWNLOADED FROM', MARGIN, base - 50, 3)
   ctx.fillStyle = css(palette.ink)
   ctx.font = `700 40px ${MONO}`
-  spaced(ctx, 'rohandev.vercel.app', MARGIN, base - 2, 0)
+  spaced(ctx, 'rohandev.online', MARGIN, base - 2, 0)
 
   const x = W - MARGIN - FOOT.tile
   ctx.beginPath()

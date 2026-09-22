@@ -22,7 +22,7 @@ The site is a working developer's own site, not a template. It carries real proj
 
 ## Operating Context
 
-- Static site deployed to Vercel (`rohandev.vercel.app`).
+- Static site deployed to Vercel, served at `rohandev.online` (project still named `rohandev` on Vercel).
 - Content lives in Astro content collections: `blog`, `authors`, `projects`.
 - The resume lives on Google Drive only (`PROFILE.resume` in `src/consts.ts`); the repo holds no resume PDFs.
 
@@ -32,7 +32,7 @@ The site is a working developer's own site, not a template. It carries real proj
 - Routes that exist and must keep working: `/`, `/about` (labelled "works" in the nav), `/blog` (paginated), `/blog/[id]`, `/authors`, `/authors/[id]`, `/tags`, `/tags/[id]`, `/projects/[id]`, `/404`, `/rss.xml`, `/robots.txt`.
 - Build is `astro check && astro build`; it must pass.
 - The GitHub contribution tile needs `ACCESS_TOKEN` in `.env` at build time.
-- Decided by the owner: the production domain is `https://rohandev.vercel.app`, and the Google Drive link is the canonical resume. The projects section is going to be replaced by the owner later; treat it as placeholder content and do not edit it.
+- Decided by the owner: the production domain is `https://rohandev.online` (a GoDaddy domain, DNS pointed at Vercel; the `rohandev.vercel.app` Vercel subdomain still works and redirects), and the Google Drive link is the canonical resume. The projects section is going to be replaced by the owner later; treat it as placeholder content and do not edit it.
 
 ## Brand Commitments
 

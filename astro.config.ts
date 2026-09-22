@@ -21,7 +21,7 @@ import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://rohandev.vercel.app',
+  site: 'https://rohandev.online',
   integrations: [
     tailwind({
       applyBaseStyles: false,

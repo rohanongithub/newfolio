@@ -22,7 +22,7 @@ export const SITE: Site = {
   NUM_WORKS_ON_HOMEPAGE: 2,
   NUM_POSTS_ON_HOMEPAGE: 1,
   POSTS_PER_PAGE: 3,
-  SITEURL: 'https://rohandev.vercel.app/',
+  SITEURL: 'https://rohandev.online/',
 }
 
 export const PROFILE = {

@@ -35,7 +35,7 @@ Personal portfolio for Rohan (`rohandev`). Astro 5 (static) + React 18 islands +
 - The stage rail intro plays on a fresh load and reload but not on a client-side return to Home (`html[data-rail-seen]`).
 - `src/styles/katex.css` imports a stylesheet from a third-party CDN on every page although no page contains math; load it only where math appears if this is cleaned up.
 - `.env` (git-ignored) needs `ACCESS_TOKEN` for the GitHub contribution tile; without it the Activity panel is simply omitted (the build logs a GitHub API error, which is expected).
-- `astro.config.ts` `site` was changed from the template's `astro-erudite.vercel.app` to `https://rohandev.vercel.app` (matching `SITE.SITEURL`). Confirmed by the owner as the production domain.
+- `astro.config.ts` `site` and `SITE.SITEURL` are `https://rohandev.online` (a GoDaddy domain pointed at the Vercel deployment; the project's `rohandev.vercel.app` Vercel subdomain still resolves and Vercel redirects it to the custom domain). Confirmed by the owner as the production domain.
 - The Works intro copy (`about.astro`) and the author bio are the owner's own words; do not rewrite without asking.
 - Share images (`public/static/twitter-card.png` for the homepage default, `public/static/1200x630.png` for posts without an image) are generated from HTML with the site fonts; regenerate them if the role, status or brand colour changes.
 - Favicons (`public/favicon.svg`, `.ico`, PNG sizes, `safari-pinned-tab.svg`, manifest colours) are the cobalt tile with the white Bricolage "R"; keep the tile colour equal to the band colour (`hsl(232 91% 55%)`, `#2440F5`).

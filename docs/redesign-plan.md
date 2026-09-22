@@ -27,12 +27,12 @@ All resolved in the redesign, except where noted.
 - `Head.astro` favicon links used `32X32` / `16X16` (files are lowercase `x`): fixed.
 - `Github.astro` loaded `/scripts/github.ts`, which is not in `public/`: script tag removed.
 - `tailwind.config.ts` font entries used file paths and misspelled filenames: replaced with family names.
-- `astro.config.ts` `site` disagreed with `SITE.SITEURL`: set to `https://rohandev.vercel.app`; confirm this is the real domain.
+- `astro.config.ts` `site` disagreed with `SITE.SITEURL`; both resolved.
 - Not a bug: `SocialIcons` already prepends `mailto:` for the Email link.
 
 ## Open questions
 
-- (Resolved) Production domain: https://rohandev.vercel.app.
+- (Resolved) Production domain: https://rohandev.online (GoDaddy domain, DNS pointed at Vercel; the Vercel subdomain still resolves).
 - (Resolved: the old template projects, including Tremis which was not the owner's, were replaced by AEGIS.)
 - (Resolved) Canonical resume link: Google Drive; repo PDFs removed.
 
