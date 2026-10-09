@@ -1,0 +1,127 @@
+---
+// A small pixel crab that roams the home page. Decorative: the layer is hidden from assistive
+// tech and the toggle is the only control. See src/lib/crab/.
+---
+
+<div class="crab-layer" data-crab-layer aria-hidden="true" hidden>
+  <div class="crab-rope" data-crab-rope></div>
+  <div class="crab-knot" data-crab-knot></div>
+  <div class="crab" data-crab>
+    <div class="crab-body" data-crab-body></div>
+  </div>
+</div>
+
+<button
+  type="button"
+  class="crab-toggle btn btn-outline fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-10 !size-10 !px-0 sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:left-[max(1.5rem,env(safe-area-inset-left))]"
+  aria-label="Crab companion"
+  aria-pressed="true"
+  data-crab-toggle
+  hidden
+>
+  <span class="grid place-items-center" data-crab-icon></span>
+</button>
+
+<style is:global>
+  .crab-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 15;
+    pointer-events: none;
+  }
+  .crab,
+  .crab-rope,
+  .crab-knot {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .crab {
+    pointer-events: none;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .crab-body {
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 100%;
+  }
+  .crab-body svg {
+    display: block;
+    pointer-events: none;
+    overflow: visible;
+  }
+  /* Only the painted pixels take a poke, so the empty parts of the box never block a tap. */
+  .crab rect {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .cb-o {
+    fill: hsl(var(--crab));
+  }
+  .cb-s {
+    fill: hsl(var(--crab-shade));
+  }
+  .cb-k {
+    fill: hsl(var(--crab-ink));
+  }
+  .cb-w {
+    fill: #fff;
+  }
+  .crab-rope {
+    width: 2px;
+    height: 1px;
+    background: hsl(var(--crab-rope));
+    transform-origin: 50% 0;
+    visibility: hidden;
+    will-change: transform;
+  }
+  .crab-knot {
+    width: 8px;
+    height: 5px;
+    border-radius: 4px;
+    background: hsl(var(--crab-shade));
+    visibility: hidden;
+  }
+  /* Same quiet outline button as Back to top; off just dims the icon. */
+  .crab-toggle {
+    transition:
+      opacity var(--dur-base) var(--ease-out-expo),
+      transform var(--dur-base) var(--ease-out-expo),
+      visibility 0s,
+      background-color 200ms;
+  }
+  /* Steps aside over the footer, like Back to top, so it never covers the footer text. */
+  .crab-toggle[data-over-footer] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition-delay: 0s, 0s, var(--dur-base), 0s;
+  }
+  .crab-toggle svg {
+    transition: opacity var(--dur-base) var(--ease-out-expo);
+  }
+  .crab-toggle[aria-pressed='false'] svg {
+    opacity: 0.45;
+  }
+</style>
+
+<script>
+  import { initCrab } from '@/lib/crab'
+
+  let destroy: (() => void) | null = null
+  document.addEventListener('astro:page-load', () => {
+    destroy?.()
+    destroy = initCrab()
+  })
+  document.addEventListener('astro:before-swap', () => {
+    destroy?.()
+    destroy = null
+  })
+</script>

@@ -12,6 +12,7 @@ const current = 1
     <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="flex items-start gap-4 sm:items-stretch sm:gap-6">
         <div
+          data-crab-perch="hop"
           class="grid size-20 flex-shrink-0 place-items-center rounded-lg bg-white font-display text-5xl font-extrabold text-band sm:h-auto sm:w-[7.25rem] sm:text-7xl"
           aria-hidden="true"
         >
@@ -20,6 +21,8 @@ const current = 1
         <div class="min-w-0">
           <h1
             id="candidate-name"
+            data-crab-perch="hop"
+            data-crab-text
             class="-mt-[0.075em] font-display text-6xl font-extrabold leading-[0.9] tracking-tight sm:-mt-[0.128em] sm:text-8xl"
           >
             {PROFILE.name}
@@ -38,6 +41,7 @@ const current = 1
           href={PROFILE.resume}
           target="_blank"
           rel="noopener noreferrer"
+          data-crab-perch
           class="btn btn-light h-12 flex-1 px-3 text-sm sm:flex-none sm:px-5 sm:text-base"
         >
           <Icon name="lucide:file-text" class="size-4 sm:size-5" />
@@ -46,6 +50,7 @@ const current = 1
         </a>
         <a
           id="advance"
+          data-crab-perch
           href={INTERVIEW_MAILTO}
           class="btn btn-advance h-12 flex-1 px-3 text-sm sm:flex-none sm:px-5 sm:text-base"
         >
@@ -54,40 +59,27 @@ const current = 1
       </div>
     </div>
 
-    <p
-      class="mt-6 inline-flex items-center gap-2 rounded bg-white/15 px-3 py-1.5 text-sm font-medium"
-    >
-      <span class="size-2 rounded-full bg-[#5EEAA8]" aria-hidden="true"></span>
-      {PROFILE.status}
-    </p>
-
     <div
-      class="stage-rail mt-8 pb-8"
+      class="stage-rail mt-8 pb-8 sm:mt-10 sm:pb-10"
       data-stage-rail
       data-stage={current}
-      style={`--p:${current / (stages.length - 1)}`}
     >
-      <ol class="relative h-14" aria-label="Hiring pipeline stage">
-        <div class="stage-track" aria-hidden="true">
-          <div class="stage-fill"></div>
-        </div>
+      <ol
+        class="grid grid-cols-4 gap-1.5 sm:gap-2"
+        aria-label="Hiring pipeline stage"
+        data-crab-perch
+      >
         {
           stages.map((name, i) => (
             <li
               data-stage-item
               data-state={i < current ? 'done' : i === current ? 'current' : 'todo'}
               aria-current={i === current ? 'step' : undefined}
-              class="stage-item"
-              style={`left: calc((100% - 20px) * ${i / (stages.length - 1)})`}
             >
-              <span class="stage-dot">
-                <Icon name="lucide:check" class="stage-check size-3" />
+              <span class="stage-seg" aria-hidden="true">
+                <span class="stage-fill" style={`--i:${i}`}></span>
               </span>
-              <span
-                class:list={['stage-label', i === stages.length - 1 && 'stage-label-end']}
-              >
-                {name}
-              </span>
+              <span class="stage-label">{name}</span>
             </li>
           ))
         }
@@ -98,22 +90,38 @@ const current = 1
 </section>
 
 <style>
-  .stage-track {
-    position: absolute;
-    top: 9px;
-    left: 10px;
-    right: 10px;
-    height: 2px;
-    background: rgb(255 255 255 / 0.5);
+  /* One thin segment per stage: done is full white, current is half-filled amber (in progress). */
+  .stage-seg {
+    position: relative;
+    display: block;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 0.22);
   }
   .stage-fill {
     position: absolute;
     inset: 0;
     background: #fff;
     transform-origin: left center;
-    transform: scaleX(var(--p, 0.3333));
-    transition: transform 720ms var(--ease-out-expo);
-    animation: stage-fill-in 1100ms var(--ease-out-expo) 150ms both;
+    transform: scaleX(0);
+    transition:
+      transform 600ms var(--ease-out-expo),
+      background-color 300ms var(--ease-out-expo);
+  }
+  [data-state='done'] .stage-fill {
+    transform: scaleX(1);
+  }
+  [data-state='current'] .stage-fill {
+    transform: scaleX(0.5);
+    background: hsl(var(--stage));
+  }
+  /* Intro: the reached segments fill in one after another. Dropped once the rail moves,
+     so a stage change eases through the transition instead of replaying the intro. */
+  .stage-rail:not([data-settled]) [data-state='done'] .stage-fill,
+  .stage-rail:not([data-settled]) [data-state='current'] .stage-fill {
+    animation: stage-fill-in 700ms var(--ease-out-expo) calc(150ms + var(--i) * 180ms)
+      both;
   }
   @keyframes stage-fill-in {
     from {
@@ -121,74 +129,26 @@ const current = 1
     }
   }
 
-  .stage-dot {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 999px;
-    border: 2px solid rgb(255 255 255 / 0.55);
-    background: hsl(var(--band));
-    color: hsl(var(--band));
-    transition:
-      background-color 300ms var(--ease-out-expo),
-      border-color 300ms var(--ease-out-expo),
-      transform 500ms var(--ease-out-expo);
-  }
-  .stage-check {
-    opacity: 0;
-    transition: opacity 200ms ease-out;
-  }
-  .stage-item[data-state='done'] .stage-dot {
-    background: #fff;
-    border-color: #fff;
-  }
-  .stage-item[data-state='done'] .stage-check {
-    opacity: 1;
-  }
-  .stage-item[data-state='current'] .stage-dot {
-    background: hsl(var(--stage));
-    border-color: hsl(var(--stage));
-    transform: scale(1.2);
-    box-shadow: 0 0 0 5px rgb(255 255 255 / 0.18);
-  }
-
-  .stage-item {
-    position: absolute;
-    top: 0;
-    width: 20px;
-  }
   .stage-label {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    white-space: nowrap;
-    font-size: 0.875rem;
+    display: block;
+    margin-top: 0.625rem;
+    font-size: 0.75rem;
     line-height: 1.25rem;
     font-weight: 500;
     color: hsl(var(--band-mute));
-    padding: 1px 0;
-    border-radius: 4px;
-    transition:
-      background-color 300ms var(--ease-out-expo),
-      color 300ms var(--ease-out-expo),
-      padding 300ms var(--ease-out-expo);
+    transition: color 300ms var(--ease-out-expo);
   }
-  .stage-label-end {
-    left: auto;
-    right: 0;
-  }
-  .stage-item[data-state='done'] .stage-label {
+  [data-state='done'] .stage-label {
     color: #fff;
   }
-  .stage-item[data-state='current'] .stage-label {
-    background: hsl(var(--stage));
-    color: hsl(var(--stage-foreground));
+  [data-state='current'] .stage-label {
+    color: hsl(var(--stage));
     font-weight: 700;
-    padding: 1px 8px;
-    margin-left: -2px;
+  }
+  @media (min-width: 640px) {
+    .stage-label {
+      font-size: 0.875rem;
+    }
   }
 
   /* Returning to Home in the same session: show the rail already settled. */
@@ -219,7 +179,7 @@ const current = 1
 
     const setStage = (index: number) => {
       root.dataset.stage = String(index)
-      root.style.setProperty('--p', String(index / (items.length - 1)))
+      root.dataset.settled = ''
       items.forEach((el, i) => {
         el.dataset.state = i < index ? 'done' : i === index ? 'current' : 'todo'
         if (i === index) el.setAttribute('aria-current', 'step')

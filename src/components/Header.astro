@@ -55,7 +55,7 @@ const isActive = (href: string) => {
                     ]}
                   >
                     {item.label}
-                    {counts[item.href] !== undefined && (
+                    {!!counts[item.href] && (
                       <span class="meta hidden rounded bg-secondary px-1.5 py-px text-foreground sm:inline">
                         {counts[item.href]}
                       </span>
@@ -109,7 +109,7 @@ const isActive = (href: string) => {
                     ]}
                   >
                     <span>{item.label}</span>
-                    {counts[item.href] !== undefined && (
+                    {!!counts[item.href] && (
                       <span class="meta rounded bg-secondary px-1.5 py-px text-foreground">
                         {counts[item.href]}
                       </span>

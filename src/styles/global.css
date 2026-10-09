@@ -45,6 +45,13 @@
     --stage: 44 100% 82%;
     --stage-foreground: 36 100% 16%;
 
+    /* The roaming crab mascot (illustration, not a status signal). It walks over the band, paper and
+       dark ground alike, so the body, shade and rope hold contrast on all three. */
+    --crab: 15 70% 58%;
+    --crab-shade: 12 58% 38%;
+    --crab-ink: 228 40% 9%;
+    --crab-rope: 34 50% 74%;
+
     --panel-shadow:
       0 1px 0 hsl(222 30% 80% / 0.35), 0 8px 24px -16px hsl(228 40% 20% / 0.18);
 
@@ -112,6 +119,10 @@
     --border: 228 20% 20%;
     --input: 228 14% 45%;
     --ring: 231 100% 76%;
+
+    --crab: 15 74% 62%;
+    --crab-shade: 12 60% 42%;
+    --crab-rope: 34 40% 66%;
 
     --panel-shadow:
       0 1px 0 hsl(0 0% 100% / 0.03), 0 10px 28px -18px hsl(0 0% 0% / 0.75);
