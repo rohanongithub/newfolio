@@ -2,6 +2,7 @@
 import CandidateBand from '@/components/CandidateBand.astro'
 import ClaimCard from '@/components/ClaimCard.astro'
 import Container from '@/components/Container.astro'
+import Crab from '@/components/Crab.astro'
 import CopyEmail from '@/components/CopyEmail.astro'
 import Github from '@/components/Github.astro'
 import PostRow from '@/components/PostRow.astro'
@@ -63,8 +64,8 @@ const stack = [
   <Container
     class="grid grid-cols-[minmax(0,1fr)] gap-8 pt-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_20rem]"
   >
-    <div class="flex flex-col gap-8 lg:[&>:last-child]:flex-1">
-      <section class="panel overflow-hidden" aria-labelledby="works-title">
+    <div class="flex flex-col gap-8 lg:[&>section:last-of-type]:flex-1">
+      <section class="panel overflow-hidden" aria-labelledby="works-title" data-crab-perch>
         <header
           class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
         >
@@ -91,15 +92,13 @@ const stack = [
         </ul>
       </section>
 
-      {
-        posts.length > 0 && (
-          <section class="panel overflow-hidden" aria-labelledby="writing-title">
-            <header
-              class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
-            >
-              <h2 id="writing-title" class="panel-title">
-                Writing
-              </h2>
+      <section class="panel overflow-hidden" aria-labelledby="writing-title" data-crab-perch>
+        <header
+          class="flex items-baseline justify-between gap-4 border-b px-4 py-4 sm:px-5"
+        >
+          <h2 id="writing-title" class="panel-title">Writing</h2>
+          {
+            posts.length > 0 && (
               <a
                 href="/blog"
                 class="group -my-1.5 flex items-center gap-1 py-1.5 text-sm font-semibold text-primary no-underline"
@@ -110,7 +109,11 @@ const stack = [
                   class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
                 />
               </a>
-            </header>
+            )
+          }
+        </header>
+        {
+          posts.length > 0 ? (
             <ul class="divide-y">
               {posts.map((post) => (
                 <li>
@@ -118,18 +121,22 @@ const stack = [
                 </li>
               ))}
             </ul>
-          </section>
-        )
-      }
+          ) : (
+            <p class="flex min-h-[7.25rem] items-center px-4 text-sm text-muted-foreground sm:px-5">
+              Blogs will be written soon.
+            </p>
+          )
+        }
+      </section>
 
       <Github />
     </div>
 
     <aside
       aria-label="Candidate details"
-      class="flex flex-col gap-8 lg:[&>:last-child]:flex-1"
+      class="flex flex-col gap-8 lg:[&>section:last-of-type]:flex-1"
     >
-      <section class="panel p-4 sm:p-5" aria-labelledby="details-title">
+      <section class="panel p-4 sm:p-5" aria-labelledby="details-title" data-crab-perch>
         <h2 id="details-title" class="panel-title">Details</h2>
         <dl class="mt-2 divide-y text-sm">
           {
@@ -182,7 +189,7 @@ const stack = [
         </a>
       </section>
 
-      <section class="panel p-4 sm:p-5" aria-labelledby="stack-title">
+      <section class="panel p-4 sm:p-5" aria-labelledby="stack-title" data-crab-perch>
         <h2 id="stack-title" class="panel-title">Stack</h2>
         <ul class="mt-4 grid grid-cols-3 gap-2">
           {
@@ -199,4 +206,6 @@ const stack = [
       <ClaimCard />
     </aside>
   </Container>
+
+  <Crab />
 </Layout>

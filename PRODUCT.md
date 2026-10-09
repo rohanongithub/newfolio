@@ -43,7 +43,7 @@ The site is a working developer's own site, not a template. It carries real proj
 
 ## Evidence on Hand
 
-- One blog post: "My portfolio Journey" (2025-01-31), with screenshots.
+- No blog posts yet (the one old post was removed on request). The Blog page and the home Writing panel say "Blogs will be written soon."
 - Two projects so far: AEGIS (`src/content/projects/aegis.md`, industrial safety platform, solo, 2026, in progress) and AuthScale (`src/content/projects/authscale.mdx`, AWS authentication platform, solo, 2026, completed). Neither cover image has been supplied yet, so both show a two-letter placeholder tile. Project rows on Home and Works are tiles that open a dedicated page at `/projects/[id]` with the full write-up; there are no external project links (the owner does not share them).
 - Branded share images (`public/static/twitter-card.png`, `1200x630.png`) and an avatar (`public/avatar.svg`).
 - Absent, so must not be fabricated: testimonials, customer or employer names, metrics, awards, analytics, and any project claims not in the content files.
