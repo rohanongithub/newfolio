@@ -82,12 +82,6 @@ const isShareCard = image.startsWith('/static/')
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 <meta property="twitter:image:alt" content={imageAlt} />
 
-<link
-  rel="alternate"
-  type="application/rss+xml"
-  title={`${SITE.TITLE} blog`}
-  href="/rss.xml"
-/>
 {
   jsonLd && (
     <script

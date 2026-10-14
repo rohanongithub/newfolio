@@ -37,6 +37,11 @@
 
     /* Cobalt owns the profile band; primary is the same hue as text/selected state */
     --band: 232 91% 55%;
+    --room-shade: 240 20% 5%;
+    --room: 40 16% 95%;
+    --room-ink: 240 12% 10%;
+    --room-mute: 240 6% 36%;
+    --room-line: 40 10% 84%;
     --band-mute: 232 100% 92%;
     --primary: 232 91% 55%;
     --primary-foreground: 0 0% 100%;
@@ -96,6 +101,10 @@
     --card-foreground: 222 30% 94%;
 
     --band: 232 76% 41%;
+    --room: 240 8% 6%;
+    --room-ink: 240 10% 92%;
+    --room-mute: 240 5% 64%;
+    --room-line: 240 6% 20%;
     --band-mute: 232 100% 90%;
     --primary: 231 100% 76%;
     --primary-foreground: 228 40% 9%;

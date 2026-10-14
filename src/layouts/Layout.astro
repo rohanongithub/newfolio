@@ -11,9 +11,11 @@ type Props = {
   image?: string
   imageAlt?: string
   jsonLd?: Record<string, unknown>
+  /** The Easel ends on its last piece on desktop, so it drops the back-to-top button and shows the footer on phones only. */
+  bare?: boolean
 }
 
-const { title, description, image, imageAlt, jsonLd } = Astro.props
+const { title, description, image, imageAlt, jsonLd, bare = false } = Astro.props
 ---
 
 <!doctype html>
@@ -44,8 +46,8 @@ const { title, description, image, imageAlt, jsonLd } = Astro.props
       <main id="main" class="flex-grow">
         <slot />
       </main>
-      <Footer />
+      {bare ? <div class="easel-footer md:hidden"><Footer /></div> : <Footer />}
     </div>
-    <BackToTop />
+    {!bare && <BackToTop />}
   </body>
 </html>

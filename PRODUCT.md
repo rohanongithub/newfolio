@@ -10,7 +10,7 @@ web
 
 Primary: recruiters and hiring managers, plus anyone with a project to hand him. Rohan is currently employed as SWE at TechCrafter and is open to projects (owner's update, 2026-09-21); the site's hiring-pipeline wording ("Advance to interview") was deliberately kept by the owner. They skim fast, judge in seconds, and want to reach the resume or make contact.
 
-Secondary (unconfirmed, do not design for first): engineers and peers who read the blog and projects in depth.
+Secondary (unconfirmed, do not design for first): engineers and peers who read the projects in depth.
 
 ## Product Purpose
 
@@ -18,18 +18,18 @@ A personal portfolio for Rohan, SWE at TechCrafter (BTech CSE, JSSATE, Bengaluru
 
 ## Positioning
 
-The site is a working developer's own site, not a template. It carries real projects, a blog, and a live signal of activity (GitHub contributions). Which of these signals survive is a design decision, not a product commitment.
+The site is a working developer's own site, not a template. It carries real projects, art, and a live signal of activity (GitHub contributions). Which of these signals survive is a design decision, not a product commitment.
 
 ## Operating Context
 
 - Static site deployed to Vercel, served at `rohandev.online` (project still named `rohandev` on Vercel).
-- Content lives in Astro content collections: `blog`, `authors`, `projects`.
+- Content lives in Astro content collections: `authors`, `projects`, `art`.
 - The resume lives on Google Drive only (`PROFILE.resume` in `src/consts.ts`); the repo holds no resume PDFs.
 
 ## Capabilities and Constraints
 
 - Stack: Astro 5 (static output), React 18 islands, Tailwind 3, shadcn/ui (Radix). Stays as is.
-- Routes that exist and must keep working: `/`, `/about` (labelled "works" in the nav), `/blog` (paginated), `/blog/[id]`, `/authors`, `/authors/[id]`, `/tags`, `/tags/[id]`, `/projects/[id]`, `/404`, `/rss.xml`, `/robots.txt`.
+- Routes that exist and must keep working: `/`, `/about` (labelled "works" in the nav), `/easel`, `/projects/[id]`, `/404`, `/robots.txt`.
 - Build is `astro check && astro build`; it must pass.
 - The GitHub contribution tile needs `ACCESS_TOKEN` in `.env` at build time.
 - Decided by the owner: the production domain is `https://rohandev.online` (a GoDaddy domain, DNS pointed at Vercel; the `rohandev.vercel.app` Vercel subdomain still works and redirects), and the Google Drive link is the canonical resume. The projects section is going to be replaced by the owner later; treat it as placeholder content and do not edit it.
@@ -43,7 +43,7 @@ The site is a working developer's own site, not a template. It carries real proj
 
 ## Evidence on Hand
 
-- No blog posts yet (the one old post was removed on request). The Blog page and the home Writing panel say "Blogs will be written soon."
+- No blog: it was removed entirely (routes, tags, authors, RSS) at the owner's request. Rohan's Procreate drawings live on the Easel (`/easel`), a dark walkthrough gallery. The nine current pieces are the owner's real drawings.
 - Two projects so far: AEGIS (`src/content/projects/aegis.md`, industrial safety platform, solo, 2026, in progress) and AuthScale (`src/content/projects/authscale.mdx`, AWS authentication platform, solo, 2026, completed). Neither cover image has been supplied yet, so both show a two-letter placeholder tile. Project rows on Home and Works are tiles that open a dedicated page at `/projects/[id]` with the full write-up; there are no external project links (the owner does not share them).
 - Branded share images (`public/static/twitter-card.png`, `1200x630.png`) and an avatar (`public/avatar.svg`).
 - Absent, so must not be fabricated: testimonials, customer or employer names, metrics, awards, analytics, and any project claims not in the content files.

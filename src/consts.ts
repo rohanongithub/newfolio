@@ -3,7 +3,6 @@ export type Site = {
   DESCRIPTION: string
   EMAIL: string
   NUM_WORKS_ON_HOMEPAGE: number
-  NUM_POSTS_ON_HOMEPAGE: number
   POSTS_PER_PAGE: number
   SITEURL: string
 }
@@ -18,9 +17,8 @@ export const SITE: Site = {
   DESCRIPTION:
     'Rohan, SWE at TechCrafter, open to projects. Selected work, writing and resume.',
   EMAIL: 'rohanwith1011@gmail.com',
-  // Homepage rules: at most 2 works and 1 recent post. The full lists live on /about and /blog.
+  // Homepage rules: at most 2 works. The full list lives on /about.
   NUM_WORKS_ON_HOMEPAGE: 2,
-  NUM_POSTS_ON_HOMEPAGE: 1,
   POSTS_PER_PAGE: 3,
   SITEURL: 'https://rohandev.online/',
 }
@@ -45,7 +43,7 @@ export const INTERVIEW_MAILTO = `mailto:${SITE.EMAIL}?subject=${encodeURICompone
 export const NAV_LINKS: Link[] = [
   { href: '/', label: 'overview' },
   { href: '/about', label: 'works' },
-  { href: '/blog', label: 'blog' },
+  { href: '/easel', label: 'easel' },
 ]
 
 export const SOCIAL_LINKS: Link[] = [

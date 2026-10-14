@@ -384,3 +384,7 @@ The activity panel is a 26-week contribution grid of 3px-gapped square cells ste
 ## Not canonized (build carries, not rules)
 
 - Two focus treatments coexist: the global outline and the shadcn `ui/button` ring with offset. Prefer the global outline for new controls.
+
+## Easel (art gallery)
+
+The one deliberate break from the paper-and-cobalt system, scoped to `/easel`: a gallery room that follows the site theme (`--room`, `--room-ink`, `--room-mute`, `--room-line`: warm off-white in light, near-black in dark). The interface recedes: pieces hang at one eye line in thin frames with a Hanken placard (title, then year and medium in muted text). On desktop the room pins under the header and vertical scroll pans the wall sideways (GSAP ScrollTrigger, `ease: none`, light scrub); the nearest piece is lit and scaled slightly while others dim, the pieces drift in parallax, and a hairline progress bar and mono counter sit at the edges. The entry is one dim-up. On phones the wall becomes one piece per screen, top to bottom. The lightbox grows from the thumbnail with an expo ease, supports wheel and pinch zoom, double-tap, drag pan, swipe, arrow keys and Esc, and loads the full-resolution file only when zoomed. Reduced motion gets a plain scrolling wall and an instant viewer. The Home tile stays inside the system: a normal panel with a four-thumbnail strip and an "Open gallery" arrow link.

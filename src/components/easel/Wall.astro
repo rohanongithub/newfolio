@@ -1,0 +1,455 @@
+---
+import Lightbox from '@/components/easel/Lightbox.astro'
+import type { Piece } from '@/lib/art'
+import { getImage } from 'astro:assets'
+import { Picture } from 'astro:assets'
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  art: Piece[]
+}
+
+const { art } = Astro.props
+
+const pieces = await Promise.all(
+  art.map(async (piece) => {
+    const large = await getImage({
+      src: piece.image,
+      width: Math.min(piece.image.width, 2400),
+      format: 'webp',
+    })
+    const full = await getImage({
+      src: piece.image,
+      width: Math.min(piece.image.width, 4800),
+      format: 'webp',
+    })
+    return { ...piece, large: large.src, full: full.src }
+  }),
+)
+const meta = (p: { year?: number }) => (p.year ? String(p.year) : '')
+const pad = (n: number) => String(n).padStart(2, '0')
+---
+
+<section class="room" data-easel aria-label="Easel gallery">
+  <div class="room-pin" data-room-pin>
+    <div class="room-top">
+      <a href="/" class="room-back">
+        <Icon name="lucide:arrow-left" class="size-4" aria-hidden="true" />
+        Back to the site
+      </a>
+      <p class="room-hint">Scroll or swipe sideways. Arrow keys work too.</p>
+      <div class="room-step">
+        <button type="button" data-step="-1" aria-label="Previous piece">
+          <Icon name="lucide:chevron-left" class="size-5" aria-hidden="true" />
+        </button>
+        <p class="room-count" aria-live="polite">
+          <span data-room-current>01</span> / {pad(pieces.length)}
+        </p>
+        <button type="button" data-step="1" aria-label="Next piece">
+          <Icon name="lucide:chevron-right" class="size-5" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    <div class="intro" data-intro>
+      <h1 class="intro-title font-display font-extrabold" data-intro-part>Side<br />quests</h1>
+      <p class="intro-sub" data-intro-part>No AI was used in making these &lt;3</p>
+    </div>
+
+    <div class="wall" data-wall>
+      <ol class="track" data-track>
+        <li class="intro-gap" aria-hidden="true" data-gap></li>
+        {
+          pieces.map((piece, i) => (
+            <li
+              class="piece"
+              data-piece
+              data-index={i}
+              style={`--lift:${[0, 3, -2, 4, -3][i % 5]}%`}
+            >
+              <button
+                type="button"
+                class="frame"
+                data-open
+                data-large={piece.large}
+                data-full={piece.full}
+                data-title={piece.title}
+                data-meta={meta(piece)}
+                data-alt={piece.alt}
+                style={`aspect-ratio:${piece.image.width}/${piece.image.height};--ar:${(piece.image.width / piece.image.height).toFixed(4)}`}
+                aria-label={`Open ${piece.title}`}
+              >
+                <Picture
+                  src={piece.image}
+                  alt={piece.alt}
+                  formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+                  widths={[600, 1000, 1600]}
+                  sizes="(min-width: 768px) 50vh, 90vw"
+                  loading={i < 12 ? 'eager' : 'lazy'}
+                  class="art-img"
+                  data-parallax
+                />
+              </button>
+              <p class="placard">
+                <span class="placard-title">{piece.title}</span>
+                {meta(piece) && <span class="placard-meta">{meta(piece)}</span>}
+              </p>
+            </li>
+          ))
+        }
+        <li class="outro-gap" aria-hidden="true"></li>
+      </ol>
+    </div>
+
+    <div class="outro" data-outro>
+      <p class="outro-title font-display font-extrabold" data-outro-part>More<br />soon.</p>
+      <p class="intro-sub" data-outro-part>Thanks for walking through.</p>
+    </div>
+
+    <div class="room-progress" aria-hidden="true">
+      <span class="room-progress-bar" data-progress></span>
+    </div>
+    <div class="room-dim" data-dim aria-hidden="true"></div>
+  </div>
+  <Lightbox />
+</section>
+
+<style>
+  .room {
+    --piece-h: min(62svh, 34rem);
+    background: hsl(var(--room));
+    color: hsl(var(--room-ink));
+  }
+  .room-pin {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100svh - 3.5rem);
+    min-height: 32rem;
+    overflow: hidden;
+  }
+  .room-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem max(1.25rem, 4vw) 0;
+    font-size: 0.875rem;
+    color: hsl(var(--room-mute));
+  }
+  .room-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0;
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--dur-base) var(--ease-out-expo);
+  }
+  .room-back:focus-visible {
+    outline: 2px solid hsl(var(--room-ink));
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  @media (hover: hover) {
+    .room-back:hover {
+      color: hsl(var(--room-ink));
+    }
+  }
+  .room-hint {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+  .room-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .room-step button {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid hsl(var(--room-line));
+    border-radius: 0.5rem;
+    background: transparent;
+    color: hsl(var(--room-ink));
+    cursor: pointer;
+    transition: background-color var(--dur-base) var(--ease-out-expo);
+  }
+  .room-step button:focus-visible {
+    outline: 2px solid hsl(var(--room-ink));
+    outline-offset: 2px;
+  }
+  @media (hover: hover) {
+    .room-step button:hover {
+      background: hsl(var(--room-line));
+    }
+  }
+  .room-count {
+    margin: 0;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .wall {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--room-line)) transparent;
+  }
+  .track {
+    display: flex;
+    align-items: center;
+    gap: clamp(2.5rem, 8vw, 7rem);
+    margin: 0;
+    padding: 0 max(8vw, 2rem);
+    list-style: none;
+    width: max-content;
+  }
+  /* The title is fixed to the room; the paintings slide over it and it sinks underneath. */
+  .intro {
+    --cover: 0;
+    position: absolute;
+    z-index: 0;
+    left: max(2rem, 7vw);
+    top: 50%;
+    translate: 0 -50%;
+    opacity: calc(1 - var(--cover));
+    filter: brightness(calc(1 - var(--cover) * 0.5));
+    pointer-events: none;
+  }
+  .intro-gap {
+    flex: none;
+    width: var(--intro-w, 45vw);
+  }
+  /* The closing title sits behind the wall on the right and is uncovered as the last
+     painting slides away from it. */
+  .outro {
+    --cover: 1;
+    position: absolute;
+    z-index: 0;
+    right: max(2rem, 7vw);
+    top: 50%;
+    translate: 0 -50%;
+    opacity: calc(1 - var(--cover));
+    filter: brightness(calc(1 - var(--cover) * 0.5));
+    pointer-events: none;
+  }
+  .outro-gap {
+    flex: none;
+    width: var(--outro-w, 40vw);
+  }
+  .outro-title {
+    margin: 0;
+    font-size: clamp(5rem, 13vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    color: hsl(var(--room-ink));
+  }
+  .intro-title {
+    margin: 0;
+    font-size: clamp(5rem, 13vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    color: hsl(var(--room-ink));
+  }
+  .intro-sub {
+    margin: 1.5rem 0 0;
+    max-width: 18rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: hsl(var(--room-mute));
+  }
+  .piece {
+    flex: none;
+    scroll-snap-align: center;
+    transform: translateY(var(--lift));
+    opacity: 0.9;
+    transition:
+      opacity 500ms var(--ease-out-expo),
+      scale 700ms var(--ease-out-expo);
+  }
+  .frame {
+    display: block;
+    height: min(var(--piece-h), calc(80vw / var(--ar)));
+    padding: 0;
+    border: 0;
+    background: hsl(var(--room-line));
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: zoom-in;
+    box-shadow:
+      -2rem 0 3.5rem -1.25rem hsl(var(--room-shade) / 0.55),
+      0 1.5rem 3rem -1rem hsl(var(--room-shade) / 0.4);
+  }
+  .frame:focus-visible {
+    outline: 2px solid hsl(var(--room-ink));
+    outline-offset: 6px;
+  }
+  .frame :global(.art-img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .placard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin: 1rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .placard-title {
+    color: hsl(var(--room-ink));
+    font-weight: 600;
+  }
+  .placard-meta {
+    color: hsl(var(--room-mute));
+    font-size: 0.75rem;
+  }
+
+  .room-progress {
+    height: 2px;
+    margin: 0 max(1.25rem, 4vw) 1.5rem;
+    background: hsl(var(--room-line));
+  }
+  .room-progress-bar {
+    display: block;
+    height: 100%;
+    background: hsl(var(--room-ink));
+    transform-origin: left center;
+    transform: scaleX(0.02);
+  }
+  .room-dim {
+    position: absolute;
+    inset: 0;
+    background: hsl(var(--room));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Driven by the pinned pan: the wall is moved by GSAP, so native scroll is off. */
+  .room[data-pinned] .wall {
+    touch-action: pan-y;
+    cursor: grab;
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+  .room[data-pinned] .piece {
+    opacity: 0.3;
+  }
+  .room[data-pinned] .piece.is-lit {
+    opacity: 1;
+    scale: 1.04;
+  }
+
+  /* Phones: one piece per screen, top to bottom. */
+  @media (max-width: 767px) {
+    .room-pin {
+      height: auto;
+      min-height: 0;
+      overflow: clip;
+      padding-bottom: 1.5rem;
+    }
+    .room-progress,
+    .room-hint,
+    .room-step button {
+      display: none;
+    }
+    .wall {
+      display: block;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+    .track {
+      flex-direction: column;
+      gap: 3.5rem;
+      width: auto;
+      padding: 2rem 1.25rem 1rem;
+    }
+    .frame {
+      height: auto;
+      width: min(100%, calc(72svh * var(--ar)));
+      margin-inline: auto;
+    }
+    .intro-gap,
+    .outro-gap {
+      display: none;
+    }
+    .outro {
+      position: static;
+      translate: none;
+      opacity: 1;
+      filter: none;
+      padding: 2rem 1.25rem 0;
+      min-height: 46svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-snap-align: center;
+    }
+    .outro-title {
+      font-size: clamp(4.5rem, 24vw, 7rem);
+    }
+    /* The title stays put under the header while the first paintings slide up over it. */
+    .intro {
+      position: sticky;
+      top: 3.5rem;
+      left: auto;
+      translate: none;
+      pointer-events: none;
+      padding: 2rem 1.25rem 0;
+      min-height: 52svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .room-top {
+      scroll-snap-align: start;
+    }
+    .frame {
+      box-shadow:
+        0 -1.75rem 3rem -1rem hsl(var(--room-shade) / 0.55),
+        0 1.5rem 3rem -1rem hsl(var(--room-shade) / 0.4);
+    }
+    .intro-title {
+      font-size: clamp(4.5rem, 24vw, 7rem);
+    }
+    .piece {
+      width: 100%;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
+    /* Flip through the prints: each piece settles in the middle of the visible area,
+       and the one at rest is lit while its neighbours sit back. */
+    :global(html:has([data-easel])) {
+      scroll-snap-type: y mandatory;
+      scroll-padding-top: 3.5rem;
+    }
+    :global(.easel-footer) {
+      scroll-snap-align: end;
+    }
+    .room[data-snap] .piece {
+      opacity: 0.45;
+    }
+    .room[data-snap] .piece.is-lit {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { initEasel } from '@/lib/easel'
+  initEasel()
+</script>

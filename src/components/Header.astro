@@ -10,18 +10,13 @@ const path = Astro.url.pathname
 
 const counts: Record<string, number> = {
   '/about': (await getWorks()).length,
-  '/blog': (await getCollection('blog', ({ data }) => !data.draft)).length,
+  '/easel': (await getCollection('art')).length,
 }
 
 const isActive = (href: string) => {
   if (href === '/') return path === '/'
   if (href === '/about') return path.startsWith('/about') || path.startsWith('/projects')
-  if (href === '/blog')
-    return (
-      path.startsWith('/blog') ||
-      path.startsWith('/tags') ||
-      path.startsWith('/authors')
-    )
+  if (href === '/easel') return path.startsWith('/easel')
   return false
 }
 ---

@@ -1,0 +1,23 @@
+---
+import Wall from '@/components/easel/Wall.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getArt } from '@/lib/art'
+
+const art = await getArt()
+---
+
+<Layout
+  bare
+  title="Easel"
+  description="Procreate drawings by Rohan, hung in a small gallery you can walk through."
+>
+  {
+    art.length > 0 ? (
+      <Wall art={art} />
+    ) : (
+      <p class="px-4 py-24 text-center text-muted-foreground">
+        Drawings are coming soon.
+      </p>
+    )
+  }
+</Layout>
