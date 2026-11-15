@@ -64,7 +64,7 @@ export function makeSpec(
 
 type Ctx = CanvasRenderingContext2D
 
-const DISPLAY = '"Bricolage Grotesque", "Hanken Grotesk", sans-serif'
+const DISPLAY = '"Instrument Sans", "Hanken Grotesk", sans-serif'
 const MONO = '"JetBrains Mono", ui-monospace, monospace'
 
 function spaced(
@@ -278,7 +278,7 @@ function drawFoil(ctx: Ctx, spec: CardSpec) {
 
 export async function loadFonts() {
   await Promise.all([
-    document.fonts.load('800 100px "Bricolage Grotesque"'),
+    document.fonts.load('800 100px "Instrument Sans"'),
     document.fonts.load('600 30px "JetBrains Mono"'),
     document.fonts.load('700 30px "JetBrains Mono"'),
   ])

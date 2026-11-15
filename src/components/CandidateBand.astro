@@ -105,8 +105,9 @@ const current = 1
     background: #fff;
     transform-origin: left center;
     transform: scaleX(0);
+    /* Linear and half-segment sized, so a move reads as one bar travelling along the rail. */
     transition:
-      transform 600ms var(--ease-out-expo),
+      transform 300ms linear,
       background-color 300ms var(--ease-out-expo);
   }
   [data-state='done'] .stage-fill {
@@ -115,13 +116,18 @@ const current = 1
   [data-state='current'] .stage-fill {
     transform: scaleX(0.5);
     background: hsl(var(--stage));
+    /* Wait for the neighbouring segment to finish first (forward or back), so the two
+       parts run one after another instead of side by side. */
+    transition-delay: 300ms, 0ms;
   }
-  /* Intro: the reached segments fill in one after another. Dropped once the rail moves,
-     so a stage change eases through the transition instead of replaying the intro. */
-  .stage-rail:not([data-settled]) [data-state='done'] .stage-fill,
+  /* Intro: one continuous run. Each segment starts the moment the previous one ends, at the
+     same linear speed (520ms per full segment), so it reads as a single bar loading. Dropped
+     once the rail moves, so a stage change eases through the transition instead of replaying. */
+  .stage-rail:not([data-settled]) [data-state='done'] .stage-fill {
+    animation: stage-fill-in 520ms linear calc(150ms + var(--i) * 520ms) both;
+  }
   .stage-rail:not([data-settled]) [data-state='current'] .stage-fill {
-    animation: stage-fill-in 700ms var(--ease-out-expo) calc(150ms + var(--i) * 180ms)
-      both;
+    animation: stage-fill-in 260ms linear calc(150ms + var(--i) * 520ms) both;
   }
   @keyframes stage-fill-in {
     from {

@@ -13,13 +13,15 @@
 
 <button
   type="button"
+  role="switch"
   class="crab-toggle btn btn-outline fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-10 !size-10 !px-0 sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:left-[max(1.5rem,env(safe-area-inset-left))]"
   aria-label="Crab companion"
-  aria-pressed="true"
+  aria-checked="true"
+  title="Crab companion: on"
   data-crab-toggle
   hidden
 >
-  <span class="grid place-items-center" data-crab-icon></span>
+  <span class="crab-toggle-icon grid place-items-center" data-crab-icon></span>
 </button>
 
 <style is:global>
@@ -89,7 +91,7 @@
     background: hsl(var(--crab-shade));
     visibility: hidden;
   }
-  /* Same quiet outline button as Back to top; off just dims the icon. */
+  /* One crab icon: orange when the companion is on, grey and dimmed when it is off. */
   .crab-toggle {
     transition:
       opacity var(--dur-base) var(--ease-out-expo),
@@ -104,11 +106,13 @@
     transform: translateY(6px);
     transition-delay: 0s, 0s, var(--dur-base), 0s;
   }
-  .crab-toggle svg {
-    transition: opacity var(--dur-base) var(--ease-out-expo);
+  .crab-toggle-icon {
+    color: hsl(var(--crab));
+    transition: color 200ms var(--ease-out-expo);
   }
-  .crab-toggle[aria-pressed='false'] svg {
-    opacity: 0.45;
+  .crab-toggle[aria-checked='false'] .crab-toggle-icon {
+    color: hsl(var(--muted-foreground));
+    opacity: 0.6;
   }
 </style>
 

@@ -37,25 +37,25 @@ colors:
   night-error-red: "hsl(0 72% 55%)"
 typography:
   display-name:
-    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Instrument Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "6rem"
     fontWeight: 800
     lineHeight: 0.9
     letterSpacing: "-0.025em"
   page-title:
-    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Instrument Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "3rem"
     fontWeight: 800
     lineHeight: 1.02
     letterSpacing: "-0.025em"
   wordmark:
-    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Instrument Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 700
     lineHeight: 1.75rem
     letterSpacing: "-0.025em"
   panel-title:
-    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Instrument Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1.25
@@ -203,7 +203,7 @@ Density is moderate and data-first. Structure comes from 1px hairlines and backg
 **Key Characteristics:**
 - Full-width cobalt band on every page (profile band on the home page, a shorter page band with breadcrumb elsewhere) above a paper ground.
 - Hairline-bordered panels with a barely-there shadow; rows separated by dividers, not cards inside cards.
-- Bricolage Grotesque for the name and headings, Hanken Grotesk for UI, JetBrains Mono only for dates, counts and addresses.
+- Instrument Sans for the name and headings, Hanken Grotesk for UI, JetBrains Mono only for dates, counts and addresses.
 - One signature component (the four-stage rail) and two authored motion moments: the rail, and the theme reveal from the toggle. Everything else that moves is small feedback.
 - Monochrome icons throughout; the Stack grid uses currentColor glyphs, never brand colours.
 - Identity is a name, not a logo: the header carries only the "rohandev" wordmark. The one mark is a white "R" tile beside the name in the profile band, echoed as the favicon and on the share cards.
@@ -240,23 +240,23 @@ A cool paper-and-ink palette with one saturated cobalt, one signal green and one
 
 ## Typography
 
-**Display Font:** Bricolage Grotesque (variable, 200-800, with system sans fallback)
+**Display Font:** Instrument Sans (variable, 400-700, with system sans fallback)
 **Body Font:** Hanken Grotesk (variable, 100-900, stylistic sets ss01 and cv11 on)
 **Label/Mono Font:** JetBrains Mono (variable), with tabular figures
 
-**Character:** Bricolage brings a slightly quirky, heavy grotesque voice to the name and headings; Hanken keeps UI text neutral and legible; the mono is reserved for the record's data.
+**Character:** Instrument Sans gives the name and headings a clean, refined grotesque voice; Hanken keeps UI text neutral and legible; the mono is reserved for the record's data.
 
 ### Hierarchy
 - **Display name** (800, 3.75rem below sm, 6rem from sm, line-height 0.9, tracking -0.025em): the candidate name in the profile band only.
 - **Page title** (800, 2.25rem then 3rem, line-height 1.02, balanced wrap): the h1 in the page band on Works, blog and taxonomy pages. Sits on the band in white.
 - **Wordmark** (700, 1.25rem): "rohandev" in the header.
-- **Panel title / row title** (600, 1.125rem, tight leading, tracking -0.025em): panel headings and each row's title, in Bricolage. Row titles turn cobalt-link on hover.
+- **Panel title / row title** (600, 1.125rem, tight leading, tracking -0.025em): panel headings and each row's title, in Instrument Sans. Row titles turn cobalt-link on hover.
 - **Lead** (400, 1.125rem, 1.625 line-height, max 65ch): the intro copy on Works.
 - **Body** (400, 0.875rem/1.25rem): row descriptions (max 68ch), details values, footer text. Slate Text for secondary copy.
 - **Label** (500, 0.75rem/1.25rem): chips and tags. Title case as authored, no uppercase, no letter-spacing.
 - **Meta** (mono, 0.75rem, tabular numerals): dates, reading time, counts, repository addresses, breadcrumbs, "N items".
 - **Caption** (Hanken 400, 0.75rem, Slate Text): plain-language notes such as "Opens on Google Drive" and "Read the write-up on this site". Sans, not mono; mono is for data.
-- **Article prose**: Tailwind Typography with all prose colours mapped to the theme tokens. Blog posts use `prose-lg` (18px body) in a centred column of `min(40rem, 100%)`, which sets about 77 characters per line; project write-ups on the Works page use default `prose` capped at 68ch inside the project panel. Headings in Bricolage, links in the link hue with a 40%-opacity underline that firms on hover.
+- **Article prose**: Tailwind Typography with all prose colours mapped to the theme tokens. Blog posts use `prose-lg` (18px body) in a centred column of `min(40rem, 100%)`, which sets about 77 characters per line; project write-ups on the Works page use default `prose` capped at 68ch inside the project panel. Headings in Instrument Sans, links in the link hue with a 40%-opacity underline that firms on hover.
 
 ### Named Rules
 
@@ -264,7 +264,7 @@ A cool paper-and-ink palette with one saturated cobalt, one signal green and one
 
 **The Data Is Mono Rule.** Only dates, IDs, counts, addresses and breadcrumbs use the mono face. Names, titles and sentences never do.
 
-**The Two-Voice Rule.** Bricolage is for names and headings, Hanken for everything else. No third proportional face.
+**The Two-Voice Rule.** Instrument Sans is for names and headings, Hanken for everything else. No third proportional face.
 
 ## Layout
 
@@ -294,7 +294,7 @@ Small, practical radii: 8px on panels and code blocks, 6px on buttons, tiles and
 - **Resume (light):** white fill with deep-cobalt text, on the band only. Hover fills with Cobalt Mute.
 - **Advance:** Advance Green fill, white text, arrow icon, with the Advance ring. Hover deepens to hsl(158 84% 22%).
 - **Outline:** card fill, 1px strong hairline. Hover gets a Cobalt Wash fill and a cobalt-link border. Used for the theme toggle and social icon buttons: 40px square, icon-only (the theme toggle is 36px below sm, 40px from sm). Control borders use the strengthened `--input` hairline.
-- **Primary (`.btn-primary`):** link-hue fill with white text (dark text on periwinkle in dark), used for Claim, Get card and Download PNG. Hover softens to 88% opacity.
+- **Primary (`.btn-primary`):** link-hue fill with white text (dark text on periwinkle in dark), used for Claim, Get card and Download PNG. While Get card waits for the visitor counter it shows a plain spinner and a cheeky verb that changes every 1.6s ("Cooking…", "Simmering…", "Sharpening pencils…"); reduced motion keeps the verbs and stops the spin. Hover softens to 88% opacity.
 - **Primary / secondary / ghost / link (shadcn variants):** used inside blog post navigation, pagination and tags. Primary is the cobalt-link fill with white text (dark text on periwinkle in dark).
 - **Focus:** global `:focus-visible` is a 2px outline in `--ring` (cobalt in light, periwinkle in dark) with 2px offset and a 4px radius. Inside `.bg-band` the outline is white (#fff), because the ring equals the band colour. The shadcn `ui/button` variants use their own 2px ring with a 2px background-coloured offset instead of the outline.
 
@@ -307,7 +307,7 @@ Small, practical radii: 8px on panels and code blocks, 6px on buttons, tiles and
 - Never nest a bordered panel inside a panel; inside, use dividers and rows.
 
 ### Rows (Work and Post)
-Dense rows. Work rows are whole-row links to the project's own page (`/projects/[id]`), with a small arrow after the title that shifts 2px right on hover: square thumbnail (56-64px, 80-112px on the Works page; a cobalt letter tile when no cover image exists), Bricolage title with an optional status chip, an optional mono role and year line on the Works page, description, chips. The home page clamps descriptions to three lines; the Works page shows them in full inside one "All works" panel. The project page uses the blog reading layout: the band carries the title, description, status chip, role and year and tags; the body is `prose-lg` in a 40rem column with the sticky "On this page" rail on wide screens, and previous and next project links at the end. Post row: mono date column (128px, hidden below sm and moved under the title), title, description, reading time, chips. On rows (work and post), hover fills the row with Cobalt Wash and turns the title cobalt-link.
+Dense rows. Work rows are whole-row links to the project's own page (`/projects/[id]`), with a small arrow after the title that shifts 2px right on hover: square thumbnail (56-64px, 80-112px on the Works page; a cobalt letter tile when no cover image exists), Instrument Sans title with an optional status chip, an optional mono role and year line on the Works page, description, chips. The home page clamps descriptions to three lines; the Works page shows them in full inside one "All works" panel. The project page uses the blog reading layout: the band carries the title, description, status chip, role and year and tags; the body is `prose-lg` in a 40rem column with the sticky "On this page" rail on wide screens, and previous and next project links at the end. Post row: mono date column (128px, hidden below sm and moved under the title), title, description, reading time, chips. On rows (work and post), hover fills the row with Cobalt Wash and turns the title cobalt-link.
 
 ### Architecture Diagram
 Inline SVG figure for project write-ups (`src/components/diagrams/`), drawn on a narrow 300-unit canvas so its 12px labels stay legible on phones (about 15px on desktop, at most 380px wide). Every colour is a theme token, so it follows light and dark: key nodes use Cobalt Wash fill with the link-hue stroke and Wash Ink text, plain nodes the page ground with the strong hairline, flow arrows the link hue at 1.5px, monitoring a dotted muted line, and grouping boundaries dashed strong hairlines with muted labels. It sits directly on the panel (no card around it), carries an `aria-labelledby` title and description, and a caption that explains the line styles in theme-neutral words.
@@ -329,25 +329,25 @@ A 40px outline icon button (6px radius, up arrow) fixed bottom-right (16px mobil
 One field, in the Claim Yours dialog: "Good Name", a 44px-tall text input (16px text so phones do not zoom), 6px radius, the strong `--input` hairline, page-ground fill; invalid state is a destructive border with a message below, and the error clears on typing. Contact elsewhere is a mailto action.
 
 ### Navigation
-Sticky white header, 56px, hairline bottom. Wordmark left (Bricolage bold, no mark). Tabs (Overview, Works, Blog) sit right in 14px semibold with a mono count chip (hidden below sm). Active tab is cobalt-link with a 2px underline flush to the header's bottom edge, which springs between tabs (see Motion); inactive is Slate Text, going to ink on hover. Theme toggle is an outline icon button, 36px below sm and 40px from sm (moon in light, sun in dark). Sub-pages show a mono breadcrumb on the band. There is no hamburger; the three tabs fit on mobile.
+Sticky white header, 56px, hairline bottom. Wordmark left (Instrument Sans bold, no mark). Tabs (Overview, Works, Blog) sit right in 14px semibold with a mono count chip (hidden below sm). Active tab is cobalt-link with a 2px underline flush to the header's bottom edge, which springs between tabs (see Motion); inactive is Slate Text, going to ink on hover. Theme toggle is an outline icon button, 36px below sm and 40px from sm (moon in light, sun in dark). Sub-pages show a mono breadcrumb on the band. There is no hamburger; the three tabs fit on mobile.
 
 ### Stage Rail (signature)
 Four equal segments in a row along the band's bottom edge, 4px tall with a 4px radius (rounded ends) and a 6px gap (8px from sm), one per stage: Applied, Screening, Interview, Offer, each with its label below (12px label style, 14px from sm). There are no dots, halo or label pill, so the rail stays light on a phone. Completed stages fill their segment white and set the label in white; the current stage half-fills its segment in Stage Amber (in progress) and sets its label in Stage Amber, bold; future segments are 22% white with Cobalt Mute labels. Home loads at Screening (index 1), the reached segments filling in from the left one after another (180ms stagger). "Advance to interview" moves the rail to Interview, then after 900ms opens the prefilled mailto (immediately under reduced motion). The rail returns to Screening on window focus or after 7 seconds, because the email may never be sent. Segment fills ease over 600ms and label colour over 300ms on the expo-out curve; once the rail has moved, the intro animation is dropped (`data-settled`) so stage changes run through the transition. It announces stage changes through a polite live region. The fill-in intro plays on a fresh load or reload; on a client-side return to Home it arrives already settled (`html[data-rail-seen]`, set before paint).
 
 ### Name Block (signature)
-The profile band opens with a white "R" tile in band-coloured Bricolage 800, 8px radius, beside the name. Below sm the tile is 80px square and top-aligned with the name. From sm the row stretches (`items-stretch`): the tile is 116px wide (7.25rem) and fills the row height, the h1 is trimmed with negative em margins (-0.128em at sm, -0.075em below) and the subtitle carries -0.41em below, so the tile's top matches the top of the "Rohan" ink and its bottom sits on the subtitle baseline. The subtitle ("SWE at TechCrafter · BTech CSE, JSSATE") stacks role and education on two lines below sm and shows the "·" separator only from sm. Keep the tile, name and subtitle as one unit; do not re-space them independently.
+The profile band opens with a white "R" tile in band-coloured Instrument Sans 800, 8px radius, beside the name. Below sm the tile is 80px square and top-aligned with the name. From sm the row stretches (`items-stretch`): the tile is 116px wide (7.25rem) and fills the row height, the h1 is trimmed with negative em margins (-0.128em at sm, -0.075em below) and the subtitle carries -0.41em below, so the tile's top matches the top of the "Rohan" ink and its bottom sits on the subtitle baseline. The subtitle ("SWE at TechCrafter · BTech CSE, JSSATE") stacks role and education on two lines below sm and shows the "·" separator only from sm. Keep the tile, name and subtitle as one unit; do not re-space them independently.
 
 ### Identity Assets
-The favicon set (favicon.svg, favicon.ico, 16/32 PNG, apple-touch-icon, android icons, mstile, safari-pinned-tab.svg) is a cobalt (#2440F5) tile with a white Bricolage Grotesque "R". The share images (`twitter-card.png` for home, `1200x630.png` for posts) are cobalt cards carrying the tile, name and (home only) the segmented stage rail. The `theme-color` meta follows the site's theme, not just the OS: #2440F5 in light, #192EB8 in dark, switched by `syncThemeColor` (Head.astro) on load, navigation and every toggle. Project share cards (`public/static/og/<id>.png`, from `npm run og`) use the same cobalt style with the tile, wordmark, project name, role, year, status chip and up to five tags.
+The favicon set (favicon.svg, favicon.ico, 16/32 PNG, apple-touch-icon, android icons, mstile, safari-pinned-tab.svg) is a cobalt (#2440F5) tile with a white "R" (outlined from the earlier display face). The share images (`twitter-card.png` for home, `1200x630.png` for posts) are cobalt cards carrying the tile, name and (home only) the segmented stage rail. The `theme-color` meta follows the site's theme, not just the OS: #2440F5 in light, #192EB8 in dark, switched by `syncThemeColor` (Head.astro) on load, navigation and every toggle. Project share cards (`public/static/og/<id>.png`, from `npm run og`) use the same cobalt style with the tile, wordmark, project name, role, year, status chip and up to five tags.
 
 ### Crab Companion
-A small pixel crab (15x12 grid, drawn in code as SVG rects, 4px per pixel from sm and 3px on phones) that roams the home page on its own. It stands on the top edges of marked blocks (`data-crab-perch`: the name, the R tile, Resume, Interview me?, the rail, each panel, the footer), hops between near ledges, walks along them, naps, and uses a rope to go up or down to far ledges. The name and R tile are hop-only (`data-crab-perch="hop"`) so no rope hangs across the text. It arrives on a rope from above 0.7s after load. Colour comes from `--crab`, `--crab-shade`, `--crab-ink` and `--crab-rope` (the one illustrative exception to the signal-colour rule; ink eyes, white for the "!" and "z" marks). Touching it (pointerdown) triggers a random reaction: a startled jump with a "!" and a run away from the pointer, a claw wave, or a spinning hop; three pokes in a few seconds make it run farther. Mid-air or on a rope it can only gasp. Only painted pixels take a poke, so the empty parts of its box never block a tap. A small toggle turns it off: the same 40px outline icon button as Back to top, bottom-left, with a one-colour (`currentColor`) crab glyph that dims when off, and it fades away over the footer like Back to top (`aria-pressed`) and the choice is kept in `localStorage` key `crab`. It is home-only, decorative (`aria-hidden`), paused while the tab is hidden, and not rendered at all under `prefers-reduced-motion` (the toggle is hidden too). Layer is `z-index` 15: above panels, under the sticky header.
+A small pixel crab (12x12 grid: a wide block body with a square arm each side, square eyes and four short legs; drawn in code as SVG rects, 4px per pixel from sm and 3px on phones) that roams the home page on its own. It stands on the top edges of marked blocks (`data-crab-perch`: the name, the R tile, Resume, Interview me?, the rail, each panel, the footer), hops between near ledges, walks along them, naps, and uses a rope to go up or down to far ledges. The name and R tile are hop-only (`data-crab-perch="hop"`) so no rope hangs across the text. It arrives on a rope from above 0.7s after load. Colour comes from `--crab`, `--crab-shade`, `--crab-ink` and `--crab-rope` (the one illustrative exception to the signal-colour rule; ink eyes, white for the "!" and "z" marks). Touching it (pointerdown) triggers a random reaction: a startled jump with a "!" and a run away from the pointer, a claw wave, or a spinning hop; three pokes in a few seconds make it run farther. Mid-air or on a rope it can only gasp. Only painted pixels take a poke, so the empty parts of its box never block a tap. A small toggle turns it off: the same 40px outline icon button as Back to top, bottom-left, showing only the crab glyph: crab-orange when on, grey and dimmed when off (`role="switch"`, `aria-checked`, and a tooltip saying what a click does). It fades away over the footer like Back to top and the choice is kept in `localStorage` key `crab`. It is home-only, decorative (`aria-hidden`), paused while the tab is hidden, and not rendered at all under `prefers-reduced-motion` (the toggle is hidden too). Layer is `z-index` 15: above panels, under the sticky header.
 ### Stack Tiles
 One row of three identical tiles (Docker, AWS, Node.js), 8px gaps: 1px hairline, 6px radius, paper fill, a 24px monochrome simple-icons glyph in currentColor above a 12px medium label. No brand colours, so every tile is theme-safe and equal in weight.
 
 ### Claim Yours and the Visitor Card
 A panel at the foot of the aside: title, two lines of text and one Claim button, nothing else. Claim opens a centred native `<dialog>` (26rem max, 8px radius, cobalt-tinted shadow, dimmed backdrop, focus trapped, Esc and backdrop click close, focus returns to Claim). Step one asks for the Good Name; step two shows the card with Shuffle, Download PNG and Change name. The name is cleaned (control characters and repeated spaces removed, 24 characters) and never leaves the browser.
-- **Card.** Drawn on a 1200x1800 canvas (2:3) with 36px corners left transparent in the PNG. A large art block (one of horizon, orbit rings, layered ridges, dome), the name in Bricolage 800 (shrinks, or wraps to two lines), a mono caption ("CALM EXPLORER"), an outlined info strip (Earth, hatched cell, date and time in IST), "DOWNLOADED FROM rohandev.online" with the R tile, and two or three round worn-ink stamps in random places, never over the name. The pill on the art shows "VISITOR No. N" from the counter, or "CARD ID xxxx" when the counter is unreachable (no invented rank).
+- **Card.** Drawn on a 1200x1800 canvas (2:3) with 36px corners left transparent in the PNG. A large art block (one of horizon, orbit rings, layered ridges, dome), the name in Instrument Sans 800 (shrinks, or wraps to two lines), a mono caption ("CALM EXPLORER"), an outlined info strip (Earth, hatched cell, date and time in IST), "DOWNLOADED FROM rohandev.online" with the R tile, and two or three round worn-ink stamps in random places, never over the name. The pill on the art shows "VISITOR No. N" from the counter, or "CARD ID xxxx" when the counter is unreachable (no invented rank).
 - **Colour.** Every card draws a new base hue kept at least 24 degrees from the last six (stored in `localStorage`), one of five schemes, a tinted paper ground (about one in seven is deep), and ink chosen for at least 4.5:1 (the name is above 11:1). The card is a generated artifact, so it does not follow the site theme.
 - **Holo.** About one card in four gets baked-in rainbow foil, micro-lines and glints over the art and frame. The preview also tilts up to 5 degrees with a moving sheen on desktop pointers; touch and reduced motion get a still card.
 - **Download.** PNG named `rohandev-card-<name>.png`; on phones the share sheet is used when available so "Save Image" works.

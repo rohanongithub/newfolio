@@ -1,9 +1,10 @@
-/** The crab: a 15x12 pixel sprite composed from small layers, rendered as SVG rects. Browser only. */
+/** The crab: a 12x12 pixel sprite composed from small layers, rendered as SVG rects. Browser only.
+ *  Shape: a wide block body with a square arm on each side, square eyes and four short legs. */
 
-export const COLS = 15
+export const COLS = 12
 export const ROWS = 12
-/** Row of the shell's top edge. Rows above it are for raised claws and the "!" and "z" marks. */
-export const T = 5
+/** Row of the shell's top edge. Rows above it are for raised arms and the "!" and "z" marks. */
+export const T = 4
 
 export type FrameName =
   | 'idle'
@@ -56,59 +57,57 @@ function mirror(pts: [number, number][]): [number, number][] {
   return pts.map(([c, r]) => [COLS - 1 - c, r])
 }
 
+/** One square arm per side (2 wide), written for the left side and mirrored. */
 const CLAWS: Record<Claws, [number, number][]> = {
-  low: [[0, T], [2, T], [0, T + 1], [1, T + 1], [2, T + 1], [2, T + 2]],
-  out: [
-    [0, T - 1], [2, T - 1], [0, T], [1, T], [2, T], [2, T + 1],
-  ],
-  up: [
-    [0, T - 4], [2, T - 4], [0, T - 3], [1, T - 3], [2, T - 3],
-    [1, T - 2], [2, T - 1], [2, T], [2, T + 1],
-  ],
+  low: block(0, T + 2, 2, 2),
+  out: block(0, T + 1, 2, 2),
+  // Raised: the arm stands up on the side of the body.
+  up: block(0, T - 2, 2, 6),
 }
 
+function block(c: number, r: number, w: number, h: number): [number, number][] {
+  const pts: [number, number][] = []
+  for (let y = r; y < r + h; y++) for (let x = c; x < c + w; x++) pts.push([x, y])
+  return pts
+}
+
+/** Legs sit under the body at columns 2, 4, 7 and 9, two rows tall. Spread splays them outward. */
 const FEET: Record<Legs, number[][]> = {
-  stand: [[4, 6, 8, 10], [4, 6, 8, 10]],
-  spread: [[4, 6, 8, 10], [3, 5, 9, 11]],
-  tuck: [[4, 6, 8, 10], []],
+  stand: [[2, 4, 7, 9], [2, 4, 7, 9]],
+  spread: [[2, 4, 7, 9], [1, 5, 6, 10]],
+  tuck: [[2, 4, 7, 9], []],
 }
 
 function compose(look: Look): Grid {
   const g: Grid = Array.from({ length: ROWS }, () => Array(COLS).fill('.'))
 
-  // Shell
-  for (let c = 4; c <= 10; c++) put(g, c, T, 'o')
-  for (let r = T + 1; r <= T + 3; r++) for (let c = 3; c <= 11; c++) put(g, c, r, 'o')
-  for (let c = 4; c <= 10; c++) put(g, c, T + 4, 's')
-  putAll(g, [[3, T + 3], [11, T + 3]], 's')
+  // Body: one 8x6 block
+  putAll(g, block(2, T, 8, 6), 'o')
 
-  // Claws (left, then mirrored)
+  // Arms (left, then mirrored)
   const claw = CLAWS[look.claws]
   putAll(g, claw, 'o')
   putAll(g, mirror(claw), 'o')
 
   // Legs
-  FEET[look.legs].forEach((cols, i) => cols.forEach((c) => put(g, c, T + 5 + i, 's')))
+  FEET[look.legs].forEach((cols, i) => cols.forEach((c) => put(g, c, T + 6 + i, 'o')))
 
-  // Eyes
+  // Eyes: single squares, set in from each side
   const eyes: Record<Eyes, { k: [number, number][]; w?: [number, number][] }> = {
-    open: { k: [[5, T + 1], [5, T + 2], [9, T + 1], [9, T + 2]] },
-    blink: { k: [[5, T + 2], [9, T + 2]] },
+    open: { k: [[3, T + 1], [8, T + 1]] },
+    blink: { k: [[3, T + 2], [8, T + 2]] },
     wide: {
       k: [
-        [5, T + 1], [6, T + 1], [5, T + 2], [6, T + 2], [5, T + 3], [6, T + 3],
-        [8, T + 1], [9, T + 1], [8, T + 2], [9, T + 2], [8, T + 3], [9, T + 3],
+        [3, T + 1], [4, T + 1], [3, T + 2], [4, T + 2],
+        [7, T + 1], [8, T + 1], [7, T + 2], [8, T + 2],
       ],
-      w: [[5, T + 1], [8, T + 1]],
+      w: [[3, T + 1], [7, T + 1]],
     },
     happy: {
-      k: [
-        [4, T + 1], [5, T + 1], [6, T + 1], [4, T + 2], [6, T + 2],
-        [8, T + 1], [9, T + 1], [10, T + 1], [8, T + 2], [10, T + 2],
-      ],
+      k: [[3, T + 1], [2, T + 2], [4, T + 2], [8, T + 1], [7, T + 2], [9, T + 2]],
     },
     sleep: {
-      k: [[4, T + 2], [5, T + 2], [6, T + 2], [8, T + 2], [9, T + 2], [10, T + 2]],
+      k: [[2, T + 2], [3, T + 2], [4, T + 2], [7, T + 2], [8, T + 2], [9, T + 2]],
     },
   }
   const e = eyes[look.eyes]
@@ -116,11 +115,11 @@ function compose(look: Look): Grid {
   if (e.w) putAll(g, e.w, 'w')
 
   // Marks
-  if (look.mark === 'bang') putAll(g, [[7, 0], [7, 1], [7, 3]], 'w')
+  if (look.mark === 'bang') putAll(g, [[5, 0], [6, 0], [5, 1], [6, 1], [5, 3], [6, 3]], 'w')
   if (look.mark === 'zzz')
     putAll(
       g,
-      [[11, 0], [12, 0], [13, 0], [14, 0], [13, 1], [12, 2], [11, 3], [12, 3], [13, 3], [14, 3]],
+      [[8, 0], [9, 0], [10, 0], [11, 0], [10, 1], [9, 2], [8, 3], [9, 3], [10, 3], [11, 3]],
       'w',
     )
 

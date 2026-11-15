@@ -46,7 +46,8 @@ import { Icon } from 'astro-icon/components'
         counter.
       </p>
       <button type="submit" class="btn btn-primary mt-4 w-full" data-claim-submit>
-        Get card
+        <Icon name="lucide:loader-circle" class="claim-spinner size-4" />
+        <span data-claim-submit-label>Get card</span>
       </button>
     </form>
 
@@ -195,6 +196,25 @@ import { Icon } from 'astro-icon/components'
   .claim-stage[data-holo='true'][data-tilting] .claim-sheen {
     opacity: 0.7;
   }
+  /* Plain spinner in the submit button while the card is made. */
+  .claim-spinner {
+    display: none;
+    flex-shrink: 0;
+  }
+  [data-claim-submit][data-busy] .claim-spinner {
+    display: block;
+    animation: claim-spin 0.9s linear infinite;
+  }
+  @keyframes claim-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-claim-submit][data-busy] .claim-spinner {
+      animation: none;
+    }
+  }
 </style>
 
 <script>
@@ -215,6 +235,7 @@ import { Icon } from 'astro-icon/components'
     const input = $<HTMLInputElement>('[data-claim-input]')
     const errorEl = $<HTMLElement>('[data-claim-error]')
     const submit = $<HTMLButtonElement>('[data-claim-submit]')
+    const submitLabel = $<HTMLElement>('[data-claim-submit-label]')
     const result = $<HTMLElement>('[data-claim-result]')
     const title = $<HTMLElement>('[data-claim-title]')
     const stage = $<HTMLElement>('[data-claim-stage]')
@@ -290,7 +311,26 @@ import { Icon } from 'astro-icon/components'
       }
       busy = true
       submit.disabled = true
-      submit.textContent = 'Making your card'
+      submit.setAttribute('data-busy', '')
+      // Something to read while the visitor counter answers: a cheeky verb, swapped now and then.
+      const verbs = [
+        'Cooking',
+        'Simmering',
+        'Marinating',
+        'Whisking',
+        'Plating',
+        'Noodling',
+        'Brewing',
+        'Conjuring',
+        'Sharpening pencils',
+      ]
+      let verb = Math.floor(Math.random() * verbs.length)
+      submitLabel.textContent = `${verbs[verb]}…`
+      announce('Making your card.')
+      const verbTimer = window.setInterval(() => {
+        verb = (verb + 1) % verbs.length
+        submitLabel.textContent = `${verbs[verb]}…`
+      }, 1600)
       try {
         name = clean
         input.value = clean
@@ -300,9 +340,11 @@ import { Icon } from 'astro-icon/components'
         shuffleBtn.focus()
         announce('Your card is ready.')
       } finally {
+        window.clearInterval(verbTimer)
         busy = false
         submit.disabled = false
-        submit.textContent = 'Get card'
+        submit.removeAttribute('data-busy')
+        submitLabel.textContent = 'Get card'
       }
     })
 

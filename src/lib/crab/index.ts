@@ -50,8 +50,8 @@ export function initCrab(): () => void {
 
   const setOn = (next: boolean) => {
     on = next
-    toggle.setAttribute('aria-pressed', String(on))
-    toggle.title = on ? 'Crab companion: on' : 'Crab companion: off'
+    toggle.setAttribute('aria-checked', String(on))
+    toggle.title = on ? 'Crab companion: on. Click to turn off' : 'Crab companion: off. Click to turn on'
     window.clearTimeout(startTimer)
     if (on) {
       layer.hidden = false

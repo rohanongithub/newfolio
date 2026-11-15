@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['Hanken Grotesk', ...defaultTheme.fontFamily.sans],
-        display: ['Bricolage Grotesque', ...defaultTheme.fontFamily.sans],
+        display: ['Instrument Sans', ...defaultTheme.fontFamily.sans],
         mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
       },
       typography: {

@@ -11,6 +11,13 @@ interface Props {
 }
 
 const { work, full = false } = Astro.props
+
+// Pencil-sketch tiles (SVG, so they stay crisp). A frontmatter `image` wins; no sketch falls back to initials.
+const sketches = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/sketches/*.svg',
+  { eager: true },
+)
+const cover = work.image ?? sketches[`/src/assets/sketches/${work.id}.svg`]?.default
 const facts = [work.role, work.year?.toString()].filter(Boolean).join(' · ')
 ---
 
@@ -22,9 +29,9 @@ const facts = [work.role, work.year?.toString()].filter(Boolean).join(' · ')
     )}
   >
     {
-      work.image ? (
+      cover ? (
         <Image
-          src={work.image}
+          src={cover}
           alt=""
           width={224}
           height={224}

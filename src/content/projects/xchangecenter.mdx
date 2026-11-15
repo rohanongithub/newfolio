@@ -1,0 +1,68 @@
+---
+name: "XchangeCenter"
+order: 3
+description: "A REST API that serves exchange rates to client applications, built with Node.js and Express and deployed on AWS EC2 inside a configured VPC, with static assets on S3."
+tags: ["AWS", "Node.js", "Express", "REST API", "Cloud Computing"]
+role: "Solo"
+status: "Extending"
+---
+
+import XchangeCenterArchitecture from '@/components/diagrams/XchangeCenterArchitecture.astro'
+
+## Overview
+
+XchangeCenter is a REST API that provides currency exchange rates to client applications. The backend is written in Node.js with Express and is deployed on AWS rather than run locally, so the project covers the whole path from writing an API to putting it on a server that other applications can call.
+
+The focus of the project is the deployment side. The API runs on an Amazon EC2 instance inside a configured VPC, access to the instance is controlled with security groups, and static assets are hosted on Amazon S3 and connected to the backend service.
+
+## What it does
+
+- Serves exchange rates to client applications over a REST API
+- Runs as a Node.js and Express backend
+- Is deployed on an AWS EC2 instance
+- Sits inside a configured VPC, with traffic rules set through security groups
+- Allows administrative access to the server over SSH
+- Hosts static assets on Amazon S3 and integrates them with the backend
+- Is being extended with AWS Lambda to handle traffic spikes
+
+## Architecture
+
+A client application sends an HTTP request to the Express API. The API runs on an EC2 instance inside a VPC, and a security group decides which traffic is allowed to reach the instance. Static assets are not served from the instance itself: they live in an S3 bucket that the backend integrates with.
+
+Administrative access goes through SSH, which keeps server management separate from the traffic that the API serves to clients.
+
+<XchangeCenterArchitecture />
+
+## AWS services
+
+- **Amazon EC2** runs the Node.js and Express application and is the single place where the API logic lives.
+- **Amazon VPC** isolates the deployment in its own network and controls how the instance is reached.
+- **Security groups** act as the instance-level firewall, defining which inbound traffic is permitted, including SSH for administration.
+- **Amazon S3** stores the static assets, which keeps them off the application server.
+- **AWS Lambda** is the next step. It is being added so the system can respond to traffic spikes without relying on one instance.
+
+## How a request is handled
+
+1. A client application calls the API over HTTP.
+2. The security group lets permitted traffic through to the EC2 instance.
+3. The Express application handles the route and returns the exchange rate data as a response.
+4. Any static assets the client needs come from S3.
+
+## Engineering focus
+
+- Building a REST API with Node.js and Express
+- Deploying a backend on EC2 instead of leaving it on a local machine
+- Configuring a VPC and security groups for controlled network access
+- Using SSH for server administration
+- Hosting static assets on S3 and wiring them into the backend
+- Planning for traffic spikes with AWS Lambda
+
+## What I learned
+
+Getting an API to run on my own machine and getting it to run reliably on a cloud server are two different problems. Most of the learning in this project came from the second one: how a VPC and security groups decide who can reach a server, how SSH access fits in, and how splitting static assets into S3 keeps the application server focused on the API.
+
+It also showed me the limit of a single instance. One EC2 server is simple to reason about, but it is also the part that has to cope when traffic jumps, which is the reason for the Lambda extension.
+
+## Future direction
+
+The current work is extending the system with AWS Lambda so it can scale during traffic spikes. Beyond that, the same structure leaves room for more endpoints and for moving more of the infrastructure setup into repeatable configuration.

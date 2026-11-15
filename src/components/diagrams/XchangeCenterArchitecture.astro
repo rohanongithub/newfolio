@@ -1,0 +1,198 @@
+---
+// XchangeCenter on AWS: request path, static assets and the planned Lambda extension.
+// Same drawing conventions as AuthScaleArchitecture: inline SVG on a 300-unit canvas, theme tokens only,
+// draws itself once on scroll-in, static without JS or with reduced motion.
+---
+
+<figure class="not-prose my-8" data-diagram>
+  <svg
+    viewBox="0 0 300 312"
+    class="block h-auto w-full max-w-[380px]"
+    role="img"
+    aria-labelledby="xc-diagram-title xc-diagram-desc"
+  >
+    <title id="xc-diagram-title">XchangeCenter architecture on AWS</title>
+    <desc id="xc-diagram-desc">
+      A client application sends requests to a Node.js and Express API running on
+      an EC2 instance. The instance sits inside a security group, which sits
+      inside a VPC. An administrator reaches the instance over SSH. The backend
+      uses Amazon S3 for static assets. AWS Lambda, drawn dotted, is the planned
+      extension for traffic spikes.
+    </desc>
+
+    <!-- Boundaries -->
+    <g class="xc-fade" style="--d:0ms;--t:250ms">
+      <rect class="xc-boundary" x="2" y="64" width="296" height="244" rx="12"></rect>
+      <text class="xc-label" x="14" y="83">VPC</text>
+      <rect class="xc-boundary" x="8" y="96" width="284" height="112" rx="10"></rect>
+      <text class="xc-label" x="20" y="199">Security group</text>
+    </g>
+
+    <!-- Client and admin -->
+    <g class="xc-fade" style="--d:0ms;--t:200ms">
+      <rect class="xc-node" x="105" y="8" width="90" height="32" rx="16"></rect>
+      <text class="xc-title" x="150" y="28.5" text-anchor="middle">Client app</text>
+      <rect class="xc-node" x="215" y="8" width="80" height="32" rx="16"></rect>
+      <text class="xc-title" x="255" y="28.5" text-anchor="middle">SSH admin</text>
+    </g>
+
+    <!-- Client to API -->
+    <path class="xc-flow xc-draw" pathLength="1" d="M150 40 V111" style="--d:150ms;--t:200ms"></path>
+    <path class="xc-tip xc-fade" d="M144.75 101.5 H155.25 L150 112 Z" style="--d:330ms;--t:110ms"></path>
+
+    <!-- Admin to instance (dotted) -->
+    <path class="xc-dotted xc-fade" d="M255 40 V142 H243" style="--d:300ms;--t:200ms"></path>
+    <path class="xc-tip-muted xc-fade" d="M250.5 136.75 V147.25 L240 142 Z" style="--d:450ms;--t:100ms"></path>
+
+    <g class="xc-fade" style="--d:350ms;--t:180ms">
+      <rect class="xc-key" x="60" y="112" width="180" height="60" rx="8"></rect>
+      <text class="xc-key-title" x="150" y="138" text-anchor="middle">EC2 instance</text>
+      <text class="xc-key-sub" x="150" y="155" text-anchor="middle">Node.js, Express API</text>
+    </g>
+
+    <!-- API to S3 and Lambda -->
+    <path class="xc-flow xc-draw" pathLength="1" d="M150 172 V224" style="--d:550ms;--t:120ms"></path>
+    <path class="xc-flow xc-draw" pathLength="1" d="M150 224 H80" style="--d:620ms;--t:100ms"></path>
+    <path class="xc-flow xc-draw" pathLength="1" d="M80 224 V239" style="--d:710ms;--t:80ms"></path>
+    <path class="xc-tip xc-fade" d="M74.75 229.5 H85.25 L80 240 Z" style="--d:780ms;--t:100ms"></path>
+    <path class="xc-dotted xc-fade" d="M150 224 H220 V240" style="--d:700ms;--t:150ms"></path>
+
+    <g class="xc-fade" style="--d:760ms;--t:180ms">
+      <rect class="xc-node" x="14" y="240" width="132" height="56" rx="8"></rect>
+      <text class="xc-title" x="80" y="264" text-anchor="middle">Amazon S3</text>
+      <text class="xc-sub" x="80" y="281" text-anchor="middle">static assets</text>
+    </g>
+    <g class="xc-fade" style="--d:820ms;--t:180ms">
+      <rect class="xc-node xc-planned" x="154" y="240" width="132" height="56" rx="8"></rect>
+      <text class="xc-title" x="220" y="264" text-anchor="middle">AWS Lambda</text>
+      <text class="xc-sub" x="220" y="281" text-anchor="middle">in progress</text>
+    </g>
+  </svg>
+  <figcaption class="mt-3 max-w-[68ch] text-xs text-muted-foreground">
+    The request path is drawn in the accent colour. Dotted lines and the dashed
+    Lambda box are SSH access and the extension that is still being built. The
+    dashed outlines are the VPC and the security group.
+  </figcaption>
+</figure>
+
+<style>
+  .xc-boundary {
+    fill: none;
+    stroke: hsl(var(--input));
+    stroke-width: 1.25;
+    stroke-dasharray: 5 4;
+  }
+  .xc-node {
+    fill: hsl(var(--background));
+    stroke: hsl(var(--input));
+    stroke-width: 1.5;
+  }
+  .xc-planned {
+    stroke-dasharray: 5 4;
+  }
+  .xc-key {
+    fill: hsl(var(--accent));
+    stroke: hsl(var(--primary));
+    stroke-width: 1.5;
+  }
+  .xc-title {
+    font-size: 12px;
+    font-weight: 600;
+    fill: hsl(var(--foreground));
+  }
+  .xc-sub,
+  .xc-label {
+    font-size: 12px;
+    fill: hsl(var(--muted-foreground));
+  }
+  .xc-key-title {
+    font-size: 12px;
+    font-weight: 600;
+    fill: hsl(var(--accent-foreground));
+  }
+  .xc-key-sub {
+    font-size: 12px;
+    fill: hsl(var(--accent-foreground));
+  }
+  .xc-flow {
+    fill: none;
+    stroke: hsl(var(--primary));
+    stroke-width: 1.5;
+  }
+  .xc-dotted {
+    fill: none;
+    stroke: hsl(var(--muted-foreground));
+    stroke-width: 1.5;
+    stroke-dasharray: 2 4;
+    stroke-linecap: round;
+  }
+  .xc-tip {
+    fill: hsl(var(--primary));
+  }
+  .xc-tip-muted {
+    fill: hsl(var(--muted-foreground));
+  }
+
+  /* Static by default. The script arms a hidden start state only when the figure is below the
+     fold and motion is allowed, then plays it once when it scrolls into view. */
+  [data-draw='armed'] .xc-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  [data-draw='armed'] .xc-fade {
+    opacity: 0;
+  }
+  [data-draw='play'] .xc-draw {
+    stroke-dasharray: 1;
+    animation: xc-draw var(--t) var(--ease-out-expo) var(--d) both;
+  }
+  [data-draw='play'] .xc-fade {
+    animation: xc-fade var(--t) var(--ease-out-expo) var(--d) both;
+  }
+  @keyframes xc-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes xc-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  function initDiagram() {
+    const figure = document.querySelector<HTMLElement>('[data-diagram]')
+    if (!figure || figure.dataset.draw) return
+
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    if (reduceMotion || !('IntersectionObserver' in window)) return
+
+    // Already on screen at load: leave it fully drawn instead of flashing and replaying.
+    const rect = figure.getBoundingClientRect()
+    if (rect.top < window.innerHeight * 0.7 && rect.bottom > 0) return
+
+    figure.dataset.draw = 'armed'
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          figure.dataset.draw = 'play'
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.25 },
+    )
+    observer.observe(figure)
+  }
+
+  document.addEventListener('astro:page-load', initDiagram)
+</script>

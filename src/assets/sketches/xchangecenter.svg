@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none"><defs><filter id="p" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter><g id="art" transform="translate(100 100) scale(.68) translate(-100 -100)" stroke="#fff" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="62" cy="78" r="30"/>
+<path d="M71 67C71 58 53 58 53 67C53 77 71 79 71 89C71 98 53 98 53 89M62 53V103"/>
+<circle cx="138" cy="122" r="30"/>
+<path d="M152 108C130 98 120 130 152 138M122 118H144M122 128H144"/>
+<path d="M104 50C150 28 178 58 170 88M163 79L170 90L177 79"/>
+<path d="M96 150C50 172 22 142 30 112M23 121L30 110L37 121"/>
+<g stroke-width="4.4" opacity=".6"><path d="M42 94l12 12M118 142l14 14"/></g>
+</g></defs><rect width="200" height="200" fill="#2440F5"/><g filter="url(#p)"><use href="#art" transform="translate(1.6 1.2)" opacity=".35"/><use href="#art"/></g></svg>

@@ -1,0 +1,55 @@
+---
+name: "StoxArena"
+order: 4
+description: "An AI options-trading system that turns candlestick data into indicators, asks open-source models to choose hold, long or short, and executes the decision through the Lighter APIs."
+tags: ["Artificial Intelligence", "LLMs", "Trading Systems", "APIs"]
+role: "Solo"
+status: "In progress"
+---
+
+import StoxArenaPipeline from '@/components/diagrams/StoxArenaPipeline.astro'
+
+## Overview
+
+StoxArena is an AI options-trading project that I am currently building. Instead of training a prediction model of my own, it hands market data to open-source language models such as Qwen and DeepSeek and lets them decide what to do with a trade.
+
+The system reads candlestick data, calculates financial indicators from it, and gives that processed data to a model as a prompt. The model answers with one of three decisions: hold, long or short. That decision is then carried out through the Lighter APIs, which act on a real-money account.
+
+## How a decision is made
+
+The flow has five stages, each one feeding the next.
+
+1. **Market data.** The Lighter-SDK provides candlestick data.
+2. **Indicators.** Financial indicators are calculated from the candles. This smooths the curve, so the model reads a cleaner trend instead of raw, noisy price movement.
+3. **Prompt.** The indicator data is written into a prompt for the model.
+4. **Decision.** An open-source model such as Qwen or DeepSeek answers with hold, long or short.
+5. **Execution.** The decision is sent through the Lighter APIs, which manage the position.
+
+<StoxArenaPipeline />
+
+## Why indicators before the model
+
+Candlestick data on its own is a lot of numbers with a lot of noise. Calculating indicators first reduces that noise and turns many candles into a few signals, which also keeps the prompt shorter and easier for a model to work with. The model is asked to judge the situation, not to do the arithmetic.
+
+## Models
+
+StoxArena uses open-source models, currently Qwen and DeepSeek. Because the decision step is just a prompt and a response, the model behind it can be swapped, and different models can be compared on the same input.
+
+## Engineering focus
+
+- Pulling market data through the Lighter-SDK
+- Calculating indicators from candlestick data
+- Turning numeric data into a clear prompt
+- Constraining a model's answer to three actions: hold, long or short
+- Executing decisions through the Lighter APIs
+- Treating real-money execution as the part that needs the most care
+
+## What I am learning
+
+Language models are good at reading a situation described in text, but a trade is a hard, irreversible action. The interesting engineering problem is the boundary between the two: making sure what the model says maps cleanly onto an action, and that nothing unexpected reaches the execution step.
+
+Working with real money changes how I think about every stage. A bug in a report is an inconvenience, but a bug in an order is a cost.
+
+## Future direction
+
+The project is still being built. Next steps are comparing how different models behave on the same data, refining the indicators that go into the prompt, and strengthening the checks that sit between a model's answer and an executed trade.

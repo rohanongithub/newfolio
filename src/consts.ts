@@ -57,5 +57,5 @@ export const CARD = {
   counterUrl: 'https://abacus.jasoncameron.dev',
   counterNamespace: 'rohandev-vercel-app',
   counterKey: 'cards',
-  counterTimeoutMs: 4000,
+  counterTimeoutMs: 10000,
 } as const

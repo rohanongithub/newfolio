@@ -136,7 +136,7 @@ function emblem(ctx: CanvasRenderingContext2D, kind: Emblem, r: number) {
       ctx.stroke()
       break
     case 'ist':
-      ctx.font = `800 ${r * 1.15}px "Bricolage Grotesque", sans-serif`
+      ctx.font = `800 ${r * 1.15}px "Instrument Sans", sans-serif`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText('IST', 0, r * 0.06)
